@@ -31,3 +31,5 @@ bin/*
 
 .kitchen/
 .kitchen.local.yml
+
+lib/
