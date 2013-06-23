@@ -1,6 +1,6 @@
 #!/usr/bin/env lsc -cj
 author: 'Chia-liang Kao'
-name: 'api.ly.g0v.tw'
+name: 'twly'
 description: 'api.ly.g0v.tw'
 version: '0.0.1'
 repository:

@@ -52,7 +52,7 @@ END
 $$;
 
 CREATE OR REPLACE VIEW pgrest.calendar AS
-  SELECT * FROM public.calendar WHERE (calendar.ad IS NOT NULL)
+  SELECT _calendar_session(calendar) as _session, * FROM public.calendar WHERE (calendar.ad IS NOT NULL)
 """
 
 cols <- mount-default plx, 'pgrest', route
