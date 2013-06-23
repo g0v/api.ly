@@ -67,12 +67,12 @@ funcs = entries.map ({ad,id}:entry) ->
     (done) ->
         if ad
             return done! unless force
-            <- update-from-raw id, JSON.parse entry.raw
+            <- update-from-raw id, entry.raw
             done!
         else
             content <- ly.getCalendarEntry id
             <- setTimeout _, 1000ms
-            raw = (JSON.parse entry.raw) <<< content
+            raw = entry.raw <<< content
             update-from-raw id, raw, done
 
 console.log funcs.length
