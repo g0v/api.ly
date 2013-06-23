@@ -8,7 +8,9 @@ unless conString
 
 require! pgrest
 plx <- pgrest .new conString, meta: do
-  'pgrest.calendar': {}
+  'pgrest.calendar': do
+    f: {-raw}
+    s: {date: -1}
 
 {mount-default}:routes = pgrest.routes!
 
