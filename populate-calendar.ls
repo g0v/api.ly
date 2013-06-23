@@ -35,6 +35,8 @@ console.log entries.length
 update-from-raw = (id, {name,chair=''}:raw, cb) ->
     if raw.committee is \院會
         committee = null
+    else if raw.committee is \臨時會
+        committee = null
     else
         committee = [raw.committee]
         for c in raw.cocommittee?split \, when c and c not in committee
@@ -51,12 +53,17 @@ update-from-raw = (id, {name,chair=''}:raw, cb) ->
     name -= /\s/g if name
     [type, sitting] = match name
     | /公聽會/ => [\hearing, null]
-    | /第(\d+)次((聯席|全體|全院)(委員)?)?會議?/ => [\sitting, +that.1]
+    | /第(\d+)次?((聯席|全體|全院)(委員)?)?會議?/ => [\sitting, +that.1]
     | /考察|視察|參訪|教育訓練/ => [\misc, null]
     | /預備會議/ => [\sitting, 0]
     | /談話會/ => [\talk, null]
+    | /臨時會/ => [\sitting]
     else => console.log id, name; [null, null]
     extra = if name is /第(\d+)次臨時會/ => +that.1 else null
+    extra ?= if name is /第(\S{1,2})次臨時會第(\S{1,2})次會議/
+      sitting = util.intOfZHNumber that.2
+      util.intOfZHNumber that.1
+    else null
     $set = raw{ad,session,time} <<< {name,type,extra,committee,chair,sitting} <<< do
         summary: raw.agenda
         raw: JSON.stringify raw
