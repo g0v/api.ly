@@ -55,9 +55,6 @@ $$;
 
 CREATE OR REPLACE VIEW pgrest.calendar AS
   SELECT _calendar_session(calendar) as _session, * FROM public.calendar WHERE (calendar.ad IS NOT NULL);
-
-CREATE OR REPLACE VIEW pgrest.ttsinter AS
-  SELECT * from ttsinter;
 """
 
 cols <- mount-default plx, 'pgrest', route
