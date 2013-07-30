@@ -1,0 +1,23 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "g0v"
+  config.vm.box_url = "https://dl.dropboxusercontent.com/u/4339854/g0v/g0v-ubuntu-precise64.box"
+  config.vm.network :forwarded_port, host: 6987, guest: 3000
+  config.vm.synced_folder "../../..", "/vagrant_git"
+  config.berkshelf.enabled = true
+  config.vm.provision :chef_solo do |chef|
+  chef.add_recipe 'git'
+  chef.add_recipe 'runit'
+  chef.add_recipe 'nodejs'
+  chef.add_recipe 'postgresql'
+  chef.add_recipe 'postgresql::apt_repository'
+  chef.add_recipe 'postgresql::server'
+  chef.add_recipe 'postgresql::server_dev'
+  chef.add_recipe 'pgrest'
+  chef.add_recipe 'ly.g0v.tw'
+
+  chef.json.merge!(JSON.parse(File.read("./dna.json")))
+  end
+end
