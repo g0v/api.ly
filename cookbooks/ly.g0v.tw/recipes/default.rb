@@ -11,7 +11,7 @@ end
 execute "install twlyparser" do
   action :nothing
   subscribes :run, resources(:git => "/opt/ly/twlyparser")
-  command "npm i && npm link"
+  command "npm i && sudo npm link"
 end
 
 # XXX: when used with vagrant, use /vagrant_git as source
@@ -24,7 +24,7 @@ end
 execute "install api.ly" do
   action :nothing
   subscribes :run, resources(:git => "/opt/ly/api.ly")
-  command "npm link twlyparser && npm i"
+  command "sudo npm link twlyparser && npm i"
 end
 
 runit_service "lyapi" do
