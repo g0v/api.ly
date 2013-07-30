@@ -1,6 +1,7 @@
 const { USER, DB } = process.env
 
-require! <[async optimist path fs ../twlyparser/lib/util ../twlyparser/lib/ly pgrest]>
+require! <[async optimist path fs pgrest]>
+{util}:ly = require \twlyparser
 
 {year, force, all} = optimist.argv
 
