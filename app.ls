@@ -12,7 +12,7 @@ plx <- pgrest .new conString, meta: do
     f: {-raw}
     s: {date: -1}
 
-{mount-default}:routes = pgrest.routes!
+{mount-default,with-prefix} = pgrest.routes!
 
 process.exit 0 if argv.boot
 {port=3000, prefix="/collections", host="127.0.0.1"} = argv
@@ -57,7 +57,12 @@ CREATE OR REPLACE VIEW pgrest.calendar AS
   SELECT _calendar_session(calendar) as _session, * FROM public.calendar WHERE (calendar.ad IS NOT NULL);
 """
 
-cols <- mount-default plx, 'pgrest', route
+require cors! if argv.cors
+cols <- mount-default plx, 'pgrest', with-prefix prefix, (path, r) ->
+  args = [r]
+  args.unshift cors! if argv.cors
+  args.unshift path
+  app.all ...args
 
 app.listen port, host
 console.log "Available collections:\n#{ cols.sort! * ' ' }"
