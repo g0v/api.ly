@@ -26,7 +26,7 @@ execute "install api.ly" do
   cwd "/opt/ly/api.ly"
   action :nothing
   subscribes :run, resources(:git => "/opt/ly/api.ly")
-  command "sudo npm link twlyparser && npm i && npm run prepublish"
+  command "sudo npm link twlyparser pgrest && npm i && npm run prepublish"
   notifies :restart, "service[lyapi]", :immediately
 end
 
