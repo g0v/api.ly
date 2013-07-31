@@ -1,4 +1,7 @@
 {
+    "pgrest": {
+        "dev": true
+    },
     "postgresql": {
         "enable_pgdg_apt": true,
         "version": "9.2",
