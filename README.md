@@ -3,9 +3,20 @@ api.ly
 
 api.ly.g0v.tw endpoint source and utility scripts
 
+## Prepare
+
+To install vagrant and berkshelf. The version of vagrant on gem is too old to run on cookbook. Get the version which provided by your package management of system. Vergrant >= 1.2.x should work.
+
+For example, in Debian
+
+    $ sudo aptitude install vagrant
+
+Then install plugin for vegrant. (the plugin has been renamed from berkshelf-vagrant to vagrang-berkshelf)
+
+    $ vagrant plugin install vagrant-berkshelf
+
 ## using vagrant for development
 
-    # install vagrant, berkshelf
     % cd cookbooks/ly.g0v.tw/
     % vagrant up
 
