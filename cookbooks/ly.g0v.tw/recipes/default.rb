@@ -1,3 +1,5 @@
+include_recipe "runit"
+
 directory "/opt/ly" do
   action :create
 end
