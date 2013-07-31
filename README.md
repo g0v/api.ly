@@ -11,7 +11,7 @@ For example, in Debian
 
     $ sudo aptitude install vagrant
 
-Then install plugin for vegrant. (the plugin has been renamed from berkshelf-vagrant to vagrang-berkshelf)
+Then install plugin for vegrant. (the plugin has been renamed from berkshelf-vagrant to vagrant-berkshelf)
 
     $ vagrant plugin install vagrant-berkshelf
 
