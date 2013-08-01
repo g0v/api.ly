@@ -10,6 +10,11 @@ git "/opt/ly/twlyparser" do
   action :sync
 end
 
+execute "install LiveScript" do
+  command "npm i -g LiveScript@1.1.1"
+  not_if "test -e /usr/bin/lsc"
+end
+
 execute "install twlyparser" do
   cwd "/opt/ly/twlyparser"
   action :nothing
