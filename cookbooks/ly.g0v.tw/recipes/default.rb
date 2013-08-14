@@ -41,48 +41,50 @@ db_user = postgresql_database_user 'ly' do
   database_name 'ly'
   password 'password'
   privileges [:all]
+  action :create
 end
 
-db_user.run_action(:create)
 
-if db_user.updated_by_last_action?
+remote_file "/tmp/api.ly.bz2" do
+  source "https://dl.dropboxusercontent.com/u/30657009/ly/api.ly.bz2"
+end
 
-  remote_file "/tmp/api.ly.bz2" do
-    source "https://dl.dropboxusercontent.com/u/30657009/ly/api.ly.bz2"
-  end
-
-  bash 'extract api.ly' do
-    cwd ::File.dirname('/tmp/api.ly.sql')
-    code <<-EOH
-      bzcat /tmp/api.ly.bz2 > /tmp/api.ly.sql
-      EOH
-    not_if { ::File.exists?('/tmp/api.ly.sql') }
-  end
-
-  postgresql_database "grant schema" do
-    connection postgresql_connection_info
-    database_name 'ly'
-    sql "grant CREATE on database ly to ly"
-    action :query
-  end
-
-  # XXX: use whitelist
-  postgresql_database "plv8" do
-    connection postgresql_connection_info
-    database_name 'ly'
-    sql "create extension plv8"
-    action :query
-  end
-
-  bash 'init db' do
-    connection_info = postgresql_connection_info.clone()
-    connection_info[:username] = 'ly'
-    connection_info[:password] = 'password'
-    conn = "postgres://#{connection_info[:username]}:#{connection_info[:password]}@#{connection_info[:host]}/ly"
-    code <<-EOH
-      bzcat /tmp/api.ly.bz2 | psql #{conn}
+bash 'extract api.ly' do
+  cwd ::File.dirname('/tmp/api.ly.sql')
+  code <<-EOH
+    bzcat /tmp/api.ly.bz2 > /tmp/api.ly.sql
     EOH
-  end
+  not_if { ::File.exists?('/tmp/api.ly.sql') }
+end
+
+postgresql_database "grant schema" do
+  connection postgresql_connection_info
+  database_name 'ly'
+  sql "grant CREATE on database ly to ly"
+  action :nothing
+  subscribes :query, resources(:postgresql_database_user => 'ly')
+end
+
+# XXX: use whitelist
+postgresql_database "plv8" do
+  connection postgresql_connection_info
+  database_name 'ly'
+  sql "create extension plv8"
+  action :nothing
+  subscribes :query, resources(:postgresql_database_user => 'ly')
+end
+
+bash 'init db' do
+  connection_info = postgresql_connection_info.clone()
+  connection_info[:username] = 'ly'
+  connection_info[:password] = 'password'
+  conn = "postgres://#{connection_info[:username]}:#{connection_info[:password]}@#{connection_info[:host]}/ly"
+  code <<-EOH
+    bzcat /tmp/api.ly.bz2 | psql #{conn}
+  EOH
+  action :nothing
+  subscribes :run, resources(:postgresql_database_user => 'ly'), :immediately
+end
 
 #  postgresql_database "init" do
 #    connection postgresql_connection_info
@@ -90,8 +92,6 @@ if db_user.updated_by_last_action?
 #    sql { ::File.open("/tmp/api.ly.sql").read }
 #    action :query
 #  end
-
-end
 
 
 # XXX: when used with vagrant, use /vagrant_git as source
