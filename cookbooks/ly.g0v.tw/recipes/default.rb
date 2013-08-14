@@ -1,5 +1,6 @@
 include_recipe "runit"
 include_recipe "database"
+include_recipe "cron"
 include_recipe "postgresql::ruby"
 
 directory "/opt/ly" do
@@ -52,11 +53,12 @@ postgresql_database "grant schema" do
   subscribes :query, resources(:postgresql_database_user => 'ly'), :immediately
 end
 
+connection_info = postgresql_connection_info.clone()
+connection_info[:username] = 'ly'
+connection_info[:password] = 'password'
+conn = "postgres://#{connection_info[:username]}:#{connection_info[:password]}@#{connection_info[:host]}/ly"
+
 bash 'init db' do
-  connection_info = postgresql_connection_info.clone()
-  connection_info[:username] = 'ly'
-  connection_info[:password] = 'password'
-  conn = "postgres://#{connection_info[:username]}:#{connection_info[:password]}@#{connection_info[:host]}/ly"
   code <<-EOH
     curl https://dl.dropboxusercontent.com/u/30657009/ly/api.ly.bz2 | bzcat | psql #{conn}
   EOH
@@ -93,3 +95,8 @@ runit_service "lyapi" do
   action :enable
 end
 
+cron "populate-calendar" do
+  minute "30"
+  action :create
+  command "cd /opt/ly/api.ly && lsc populate-calendar --yaer `date +%Y` --db #{conn}"
+end
