@@ -43,7 +43,7 @@ update-from-raw = (id, {name,chair=''}:raw, cb) ->
         for c in raw.cocommittee?split \, when c and c not in committee
             committee.push c
         try
-            committee .= map -> util.parseCommittee it - /委員會$/
+            committee = committee.map(-> util.parseCommittee it - /委員會$/).reduce (++)
         catch
             console.log id, e
     chair = match chair
@@ -68,6 +68,7 @@ update-from-raw = (id, {name,chair=''}:raw, cb) ->
     $set = raw{ad,session,time} <<< {name,type,extra,committee,chair,sitting} <<< do
         summary: raw.agenda
         raw: JSON.stringify raw
+    delete $set.extra unless $set.extra
     <- plx.upsert {collection: \calendar, q: {id}, $: {$set}}, _, -> throw it
     cb!
 
