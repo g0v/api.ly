@@ -3,9 +3,9 @@ const { USER, DB } = process.env
 require! <[async optimist path fs pgrest]>
 {util}:ly = require \twlyparser
 
-{year, force, all} = optimist.argv
+{year, force, all, db=DB} = optimist.argv
 
-plx <- pgrest.new DB, {}
+plx <- pgrest.new db, {}
 
 update-list = (year, cb) ->
     return cb! unless year
