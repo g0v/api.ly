@@ -13,6 +13,7 @@
             "packages": ["postgresql-9.2", "postgresql-server-dev-9.2"]
         },
         "pg_hba": [
+            {"type": "local", "db": "all", "user": "postgres", "addr": null, "method": "password"},
             {"type": "local", "db": "all", "user": "postgres", "addr": null, "method": "ident"},
             {"type": "local", "db": "all", "user": "ly", "addr": null, "method": "password"},
             {"type": "host", "db": "all", "user": "all", "addr": "127.0.0.1/32", "method": "md5"},
@@ -20,22 +21,6 @@
         ],
         "password": {
             "postgres": "hackg0v"
-        },
-	"users": [
-	    {
-		"username": "ly",
-		"password": "password",
-		"superuser": false,
-		"createdb": false,
-		"login": true
-	    }
-	],
-        "databases": [
-	    {
-		"name": "ly",
-		"owner": "ly",
-		"template": "template0",
-		"encoding": "utf8"
-	    }]
+        }
     }
 }
