@@ -14,13 +14,14 @@ For example, in Debian
 Then install plugin for vegrant. (the plugin has been renamed from berkshelf-vagrant to vagrant-berkshelf)
 
     $ vagrant plugin install vagrant-berkshelf
+    $ vagrant plugin install vagrant-cachier
 
 ## using vagrant for development
 
     % cd cookbooks/ly.g0v.tw/
     % vagrant up
 
-    # these should be part of the cookbook, but you'll need to do these manually for now:
+    # these are now part of the cookbook, but if you want to bootstrap database manually:
     % vagrant ssh
     vagrant % sudo su postgres -c "psql ly -c 'create extension plv8'"
     vagrant % curl https://dl.dropboxusercontent.com/u/30657009/ly/api.ly.bz2 | bzcat |  psql postgresql://ly:password@localhost/ly
