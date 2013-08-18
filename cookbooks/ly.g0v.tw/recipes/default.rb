@@ -9,6 +9,7 @@ end
 
 git "/opt/ly/twlyparser" do
   repository "git://github.com/g0v/twlyparser.git"
+  enable_submodules true
   reference "master"
   action :sync
 end
