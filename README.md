@@ -3,6 +3,10 @@ api.ly
 
 api.ly.g0v.tw endpoint source and utility scripts
 
+# Vagrant
+
+Vagrant provides a virtual machine that helps developers have consistent developing environment.
+
 ## Prepare
 
 To install vagrant and berkshelf. The version of vagrant on gem is too old to run on cookbook. Get the version which provided by your package management of system. Vergrant >= 1.2.x should work.
@@ -28,14 +32,28 @@ Then install plugin for vegrant. (the plugin has been renamed from berkshelf-vag
 
 You should now have localhost:6987 served by pgrest within the vagrant
 
+# Host
+
+Besides Vagrant, of course you can run a api server in your host.
+
 ## init
 
     % npm i
+
+Then refer to the cookbook to initialize your postgresql.
 
 Bootstrap with the initial dump file:
 
     % createdb ly
     % curl https://dl.dropboxusercontent.com/u/30657009/ly/api.ly.bz2 | bzcat |  psql ly -f -
+
+## run pgrest
+
+    $ lsc app.ls tcp://ly:password@localhost/ly
+    or
+    $ lsc app.ls tcp://ly:password@localhost:5433/ly    # if your postgresql is running on port 5433
+
+pgrest will bind a local port to serve
 
 ## calendar
 
