@@ -69,6 +69,14 @@ pgrest will bind a local port to serve
 
 ## fulltext from gazettes
 
+## TTS data (WIP)
+
+National Parliament Library provides a database called TTS.  to work with it you'll need to have lisproxy.psgi up and running, and install phatomjs and casperjs to use scripts/tts.coffee
+
+    % npm i -g bower
+    % bower install jquery
+    % casperjs scripts/tts.coffee
+
 License
 =======
 MIT: http://g0v.mit-license.org
