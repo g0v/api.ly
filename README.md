@@ -73,8 +73,11 @@ pgrest will bind a local port to serve
 
 National Parliament Library provides a database called TTS.  to work with it you'll need to have lisproxy.psgi up and running, and install phatomjs and casperjs to use scripts/tts.coffee
 
+    % cpanm Plack::App::Proxy
     % npm i -g bower
     % bower install jquery
+
+    % plackup lisproxy.psgi &
     % casperjs scripts/tts.coffee
 
 License

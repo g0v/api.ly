@@ -2,11 +2,10 @@ use Plack::Builder;
 use Encode qw(encode decode);
 
 # requires listening on 5000 for now.
-# requires this version: https://github.com/clkao/Plack-App-Proxy/
 # Usage:
 #     plackup lisproxy.psgi
 
-use Plack::App::Proxy;
+use Plack::App::Proxy 0.28;
 use Plack::Request;
 use Plack::Response;
 use URI::Escape;
