@@ -3,6 +3,8 @@ use Encode qw(encode decode);
 
 # requires listening on 5000 for now.
 # requires this version: https://github.com/clkao/Plack-App-Proxy/
+# Usage:
+#     plackup lisproxy.psgi
 
 use Plack::App::Proxy;
 use Plack::Request;
@@ -21,6 +23,7 @@ builder {
 
       if ($req->method eq 'POST') {
         my $transcoded = '';
+        # warn Dumper($req->body_parameters); use Data::Dumper;
         $req->body_parameters->each(sub {
             my ($k, $v) = @_;
             $transcoded .= uri_escape( encode('big5', decode('utf-8', $k)) );
@@ -28,13 +31,10 @@ builder {
             $transcoded .= uri_escape( encode('big5', decode('utf-8', $v)) );
             $transcoded .= '&';
         });
-        my $input = $req->input;
         open my $t, '<', \$transcoded;
         $env->{CONTENT_LENGTH} = length $transcoded;
         delete $env->{'psgix.input.buffered'};
         $env->{'psgi.input'} = $t;
-        local $/;
-        my $content = <$input>;
       }
       my $res = $app->($env);
       my $resp = Plack::Response->new(@$res);
@@ -43,9 +43,9 @@ builder {
           my @res = map {
             Encode::from_to($_, 'big5', 'utf-8');
           } @{$resp->body};
+          $resp->content_type('text/html; charset=UTF-8');
           return $resp->finalize;
         }
-
       }
       return $res;
     };
