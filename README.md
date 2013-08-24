@@ -67,6 +67,10 @@ pgrest will bind a local port to serve
 
 ## interpellation
 
+See TTS for setting up casperjs environment.
+
+    % casperjs scripts/tts.coffee --type=i --session=0803 --output=i0803.html
+
 ## fulltext from gazettes
 
 ## TTS data (WIP)
@@ -78,7 +82,7 @@ National Parliament Library provides a database called TTS.  to work with it you
     % bower install jquery
 
     % plackup lisproxy.psgi &
-    % casperjs scripts/tts.coffee
+    % casperjs scripts/tts.coffee --type=m --session=0803 --output=m0803.html
 
 License
 =======
