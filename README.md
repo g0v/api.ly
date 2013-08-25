@@ -69,9 +69,16 @@ pgrest will bind a local port to serve
 
 See TTS for setting up casperjs environment.
 
+Run:
+
     % casperjs scripts/tts.coffee --type=i --session=0803 --output=i0803.html
-    % pgrest --db ly
+
+Note that you'll need to run a read-write-enabled pgrest for inserting data, so kill the app.ls above if you have it up and running.
+
+    % env PATH=node_modules/.bin:$PATH pgrest --db ly
     % lsc node_modules/twlyparser/parse-tts.ls i0803.html | curl -i -H "Content-Type: application/json" -X POST -d @- http://127.0.0.1:3000/collections/ttsinter
+
+Note that there's a bug with pgrest that if you are running multiple POST into a new collection (like ttsinter here), you need to restart the server after the first POST.
 
 ### Written Answers
 
