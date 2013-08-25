@@ -77,6 +77,10 @@ See TTS for setting up casperjs environment.
 
     % env PLV8XDB=ly ./scripts/gen-wrans.ls | curl -i -H "Content-Type: application/json" -X POST -d @- http://127.0.0.1:3000/collections/wrans
 
+### Debates
+
+    % env PLV8XDB=ly ./scripts/gen-debates.ls | curl -i -H "Content-Type: application/json" -X POST -d @- http://127.0.0.1:3000/collections/debates
+
 ## fulltext from gazettes
 
 ## TTS data (WIP)
