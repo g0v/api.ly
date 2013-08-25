@@ -70,6 +70,12 @@ pgrest will bind a local port to serve
 See TTS for setting up casperjs environment.
 
     % casperjs scripts/tts.coffee --type=i --session=0803 --output=i0803.html
+    % pgrest --db ly
+    % lsc node_modules/twlyparser/parse-tts.ls i0803.html | curl -i -H "Content-Type: application/json" -X POST -d @- http://127.0.0.1:3000/collections/ttsinter
+
+### Written Answers
+
+    % env PLV8XDB=ly ./scripts/gen-wrans.ls | curl -i -H "Content-Type: application/json" -X POST -d @- http://127.0.0.1:3000/collections/wrans
 
 ## fulltext from gazettes
 
