@@ -39,9 +39,9 @@ builder {
       my $resp = Plack::Response->new(@$res);
       if ($resp->content_type eq 'text/html') {
         if ($resp->body->[0] =~ s!<META HTTP-EQUIV=Content-Type Content="text/html; charset=big5">!<META HTTP-EQUIV=Content-Type Content="text/html; charset=utf-8">!i) {
-          my @res = map {
-            Encode::from_to($_, 'big5', 'utf-8');
-          } @{$resp->body};
+          my $body = join('', @{$resp->body});
+          Encode::from_to($body, 'big5', 'utf-8');
+          $resp->body($body);
           $resp->content_type('text/html; charset=UTF-8');
           return $resp->finalize;
         }
