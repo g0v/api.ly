@@ -36,6 +36,13 @@ You should now have localhost:6987 served by pgrest within the vagrant
 
 Besides Vagrant, of course you can run a api server in your host.
 
+the server provides RESTFUL service by pgrest. pgrest rely on postgresql, so you should install postgresql and related components to your host.
+
+For example, in Debian
+
+    $ sudo aptitude install postgresql
+    $ sudo aptitude install postgresql-plv8  # for plv8 extension
+
 ## init
 
     % npm i
@@ -45,6 +52,7 @@ Then refer to the cookbook to initialize your postgresql.
 Bootstrap with the initial dump file:
 
     % createdb ly
+    % psql ly -c 'create extension plv8'
     % curl https://dl.dropboxusercontent.com/u/30657009/ly/api.ly.bz2 | bzcat |  psql ly -f -
 
 ## run pgrest
