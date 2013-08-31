@@ -1,0 +1,39 @@
+{
+  "author": "clkao",
+  "contributors": [
+    "walkingice"
+  ],
+  "status": "alpha",
+  "homepage": "http://api.ly.g0v.tw",
+  "name": "api.ly",
+  "name_zh": "g0v 立法院資料 API",
+  "description": " Source code of api.ly.g0v.tw to provide RESTFUL api",
+  "description_zh": "api.ly.g0v.tw 的原始碼，提供 RESTFUL 的 api",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/g0v/api.ly"
+  },
+  "licenses": [
+    {
+      "type": "MIT"
+    }
+  ],
+  "keywords": [
+    "livescript",
+    "postgresql",
+    "pgrest"
+  ],
+  "audience": [
+    "contributor"
+  ],
+  "products": [
+    "api",
+    "data"
+  ],
+  "projects": [
+    "ly"
+  ],
+  "needs": [
+    "programmer"
+  ]
+}
