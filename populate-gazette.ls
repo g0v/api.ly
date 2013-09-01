@@ -67,7 +67,7 @@ check-index-table = (cb) ->
          sitting INTEGER ,
          extra INTEGER ,
          committee TEXT[],
-         PRIMARY KEY (gazette, book, seq))"
+         PRIMARY KEY (gazette, book, seq, type))"
         cb!
     else
         cb!
@@ -83,7 +83,7 @@ update-index-list = (cb) ->
         if +i.gazette > seen
             funcs.push (done) ->
                 console.log \upserting: +i.gazette
-                res <- plx.upsert collection: \gazette_index q:{gazette: +i.gazette, i.book, i.seq}, $: $set: {i.type, i.summary, i.files, i.ad, i.session, i.sitting, i.extra, i.committee}, _, -> throw it
+                res <- plx.upsert collection: \gazette_index q:{gazette: +i.gazette, i.book, i.seq, i.type}, $: $set: {i.summary, i.files, i.ad, i.session, i.sitting, i.extra, i.committee}, _, -> throw it
                 done!
 
     console.log \to \upsert: funcs.length
