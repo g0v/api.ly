@@ -9,20 +9,20 @@ plx <- pgrest.new db, {}
 
 check-gazette-table = (cb) ->
     table = \gazette
-    err, {rows: entries}? <- plx.conn.query "select * from pg_tables where schemaname='public' and tablename='#table'"
+    err, {rows: entries}? <- plx.conn.query "SELECT * FROM pg_tables WHERE schemaname='public' AND tablename='#table'"
     if !entries.length then do ->
         console.log "gazette table does not exist, create it"
         <- plx.conn.query "
-        create table #table
-         (id integer primary key,
-         year text,
-         vol text,
-         date timestamp,
-         ad integer,
-         session integer,
-         sitting integer,
-         secret integer,
-         extra integer)"
+        CREATE TABLE #table
+         (id INTEGER PRIMARY KEY,
+         year TEXT,
+         vol TEXT,
+         date TIMESTAMP,
+         ad INTEGER,
+         session INTEGER,
+         sitting INTEGER,
+         secret INTEGER,
+         extra INTEGER)"
         cb!
     else
         cb!
@@ -30,7 +30,7 @@ check-gazette-table = (cb) ->
 <- check-gazette-table
 
 update-gazette-list = (cb) ->
-    err, {rows:[{max:seen}]} <- plx.conn.query "select max(id) from gazette"
+    err, {rows:[{max:seen}]} <- plx.conn.query "SELECT max(id) FROM gazette"
     throw err if err
 
     funcs = []
@@ -51,22 +51,22 @@ console.log "upserted entries from twlyparser.gazette to postgresql"
 
 check-index-table = (cb) ->
     table = \gazette_index
-    err, {rows: entries}? <- plx.conn.query "select * from pg_tables where schemaname='public' and tablename='#table'"
+    err, {rows: entries}? <- plx.conn.query "SELECT * FROM pg_tables WHERE schemaname='public' AND tablename='#table'"
     if !entries.length then do ->
         console.log "index table does not exist, create it"
         <- plx.conn.query "
-        create table #table
-         (gazette integer references gazette(id),
-         book text,
-         seq text,
-         type text,
-         summary text,
-         files text[],
-         ad integer,
-         session integer,
-         sitting integer,
-         extra integer,
-         committee text[],
+        CREATE TABLE #table
+         (gazette INTEGER REFERENCES gazette(id),
+         book TEXT,
+         seq TEXT,
+         type TEXT,
+         summary TEXT,
+         files TEXT[],
+         ad INTEGER,
+         session INTEGER ,
+         sitting INTEGER ,
+         extra INTEGER ,
+         committee TEXT[],
          PRIMARY KEY (gazette, book, seq))"
         cb!
     else
@@ -75,7 +75,7 @@ check-index-table = (cb) ->
 <- check-index-table
 
 update-index-list = (cb) ->
-    err, {rows:[{max:seen}]} <- plx.conn.query "select max(gazette) from gazette_index"
+    err, {rows:[{max:seen}]} <- plx.conn.query "SELECT max(gazette) FROM gazette_index"
     throw err if err
 
     funcs = []
