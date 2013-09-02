@@ -33,13 +33,11 @@ update-gazette-list = (cb) ->
     err, {rows:[{max:seen}]} <- plx.conn.query "SELECT max(id) FROM gazette"
     throw err if err
 
-    funcs = []
-    for k, v of ly.gazettes => let k, v
-        if +k > seen
-            funcs.push (done) ->
-                console.log \upserting: +k
-                res <- plx.upsert collection: \gazette q:{id: +k}, $: $set: {v.year, v.vol, v.date, v.ad, v.session, v.sitting, v.secret, v.extra}, _, -> throw it
-                done!
+    funcs = for let k, v of ly.gazettes when +k > seen
+        (done) ->
+            console.log \upserting: +k
+            res <- plx.upsert collection: \gazette q:{id: +k}, $: $set: {v.year, v.vol, v.date, v.ad, v.session, v.sitting, v.secret, v.extra}, _, -> throw it
+            done!
 
     console.log \to \upsert: funcs.length
     err, res <- async.series funcs
