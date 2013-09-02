@@ -78,13 +78,11 @@ update-index-list = (cb) ->
     err, {rows:[{max:seen}]} <- plx.conn.query "SELECT max(gazette) FROM gazette_index"
     throw err if err
 
-    funcs = []
-    for i in ly.index => let i
-        if +i.gazette > seen
-            funcs.push (done) ->
-                console.log \upserting: +i.gazette
-                res <- plx.upsert collection: \gazette_index q:{gazette: +i.gazette, i.book, i.seq, i.type}, $: $set: {i.summary, i.files, i.ad, i.session, i.sitting, i.extra, i.committee}, _, -> throw it
-                done!
+    funcs = for i in ly.index when +i.gazette > seen => let i
+      (done) ->
+        console.log \upserting: +i.gazette
+        res <- plx.upsert collection: \gazette_index q:{gazette: +i.gazette, i.book, i.seq, i.type}, $: $set: {i.summary, i.files, i.ad, i.session, i.sitting, i.extra, i.committee}, _, -> throw it
+        done!
 
     console.log \to \upsert: funcs.length
     err, res <- async.series funcs
