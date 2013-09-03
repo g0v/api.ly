@@ -2,6 +2,8 @@ include_recipe "runit"
 include_recipe "database"
 include_recipe "cron"
 include_recipe "postgresql::ruby"
+include_recipe "ly.g0v.tw::libreoffice"
+include_recipe "libreoffice::unoconv"
 
 directory "/opt/ly" do
   action :create

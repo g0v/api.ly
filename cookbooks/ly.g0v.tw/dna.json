@@ -2,6 +2,9 @@
     "pgrest": {
         "dev": true
     },
+    "libreoffice": {
+        "version": "4.1"
+    },
     "postgresql": {
         "enable_pgdg_apt": true,
         "version": "9.2",

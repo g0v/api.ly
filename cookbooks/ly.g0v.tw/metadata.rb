@@ -9,3 +9,4 @@ version          '0.1.0'
 depends "runit"
 depends "database"
 depends "cron"
+depends "libreoffice"
