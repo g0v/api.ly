@@ -5,11 +5,13 @@ fs = require('fs')
 
 if type == 'i'
   url = 'http://localhost:5000/lgcgi/ttswebpw?in_out/qrin'
+else if type == 'b'
+  url = 'http://localhost:5000/lgcgi/ttsweb?@0:0:1:lgmempropg08'
 else
-  url = 'http://localhost:5000/ttscgi/ttsweb?@0:0:1:/disk1/lg/lgmeet'
   [_, ad, s] = session.match /(\d\d)(\d\d)/
   session = "#{ad}屆#{s}期"
   console.log session
+  url = 'http://localhost:5000/ttscgi/ttsweb?@0:0:1:/disk1/lg/lgmeet'
 
 casper.start url, ->
   @page.onConsoleMessage = (msg) ->
@@ -37,6 +39,19 @@ if type == 'i'
         @click 'a[href="'+href+'"]'
 
         @echo 'nextup!'
+else if type == 'b'
+    casper.then ->
+        @echo "b!"
+        @evaluate ((args) ->
+            matched = $('select[name="_TTS.SBT1"] option').filter ->
+                $(this).val().indexOf(args) == 0
+
+            console.log matched[matched.length - 1].value
+            $('select[name="_TTS.SBT1"]').val matched[0].value
+            $('select[name="_TTS.SBT1.83.40"]').val matched[matched.length - 1].value
+        ), session
+    casper.thenClick 'input[name="_IMG_執行檢索"]', ->
+        console.log 'nextup!'
 else
     casper.then ->
       # search for 'casperjs' from google form
