@@ -6,7 +6,8 @@ fs = require('fs')
 if type == 'i'
   url = 'http://localhost:5000/lgcgi/ttswebpw?in_out/qrin'
 else if type == 'b'
-  url = 'http://localhost:5000/lgcgi/ttsweb?@0:0:1:lgmempropg08'
+  [_, ad, s] = session.match /(\d\d)(\d\d)/
+  url = "http://localhost:5000/lgcgi/ttsweb?@0:0:1:lgmempropg#{ad}"
 else
   [_, ad, s] = session.match /(\d\d)(\d\d)/
   session = "#{ad}屆#{s}期"
