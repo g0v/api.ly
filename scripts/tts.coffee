@@ -1,7 +1,7 @@
 casper = require('casper').create { clientScripts: ["components/jquery/jquery.min.js"] }
 fs = require('fs')
 
-{session, type, output} = casper.cli.raw.options
+{session, extra, type, output} = casper.cli.raw.options
 
 if type == 'i'
   url = 'http://localhost:5000/lgcgi/ttswebpw?in_out/qrin'
@@ -19,10 +19,8 @@ casper.start url, ->
 
 if type == 'i'
     casper.then ->
-        @echo 'grr!'
         @click 'input[name="_IMG_瀏覽索引"]'
     casper.then ->
-        @echo 'foo!'
         @evaluate ((args) ->
             [res] = $('select[name="_TTS.BROWSEKEY"] option').filter (index) ->
                 $(this).text().replace(/\s/g, '') == '屆期'
@@ -37,19 +35,30 @@ if type == 'i'
             return $(res).attr('href')
         ), session
         @click 'a[href="'+href+'"]'
-
-        @echo 'nextup!'
 else if type == 'b'
-    casper.then ->
-        @echo "b!"
-        @evaluate ((args) ->
-            matched = $('select[name="_TTS.SBT1"] option').filter ->
-                $(this).val().indexOf(args) == 0
+    if extra == true
+        casper.then ->
+            res = @evaluate ->
+                x = []
+                $('select[name="_TTS.SBT2"] option').map ->
+                    x.push this.value if this.value
+                return x
+        casper.then -> @exit()
+    else if extra
+        casper.then ->
+            res = @evaluate ((args) ->
+                $('select[name="_TTS.SBT2"]').val args
+            ), extra
+    else
+        casper.then ->
+            @evaluate ((args) ->
+                matched = $('select[name="_TTS.SBT1"] option').filter ->
+                    $(this).val().indexOf(args) == 0
 
-            console.log matched[matched.length - 1].value
-            $('select[name="_TTS.SBT1"]').val matched[0].value
-            $('select[name="_TTS.SBT1.83.40"]').val matched[matched.length - 1].value
-        ), session
+                console.log matched[matched.length - 1].value
+                $('select[name="_TTS.SBT1"]').val matched[0].value
+                $('select[name="_TTS.SBT1.83.40"]').val matched[matched.length - 1].value
+            ), session
     casper.thenClick 'input[name="_IMG_執行檢索"]', ->
         console.log 'nextup!'
 else
@@ -75,7 +84,6 @@ casper.then -> @evaluate ->
         toClick = 'input[name="_IMG_顯示結果"]'
 
 casper.thenClick 'input[name="_IMG_顯示詳目"]', ->
-    @echo 'clicked?', toClick
 
 casper.run ->
     # display results
