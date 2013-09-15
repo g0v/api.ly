@@ -31,3 +31,11 @@ export function _calendar_session({ad,session,extra})
   sprintf "%02d-%s", ad, _session
 
 _calendar_session.$plv8x = '(calendar):text'
+
+export function _calendar_sitting_id({type,committee,sitting}:calendar)
+  return unless type is \sitting
+  session = _calendar_session calendar
+  sitting_type = if committee => committee.join '-' else 'YS'
+  [session, sitting_type, sitting].join \-
+
+_calendar_sitting_id.$plv8x = '(calendar):text'
