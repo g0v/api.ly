@@ -25,6 +25,7 @@ export function bootstrap(plx, cb)
 
 
 export function _calendar_session({ad,session,extra})
+  return unless ad
   _session = if extra
     sprintf "%02dT%02d", session, extra
   else
@@ -36,6 +37,7 @@ _calendar_session.$plv8x = '(calendar):text'
 export function _calendar_sitting_id({type,committee,sitting}:calendar)
   return unless type is \sitting
   session = _calendar_session calendar
+  return unless session
   sitting_type = if committee => committee.join '-' else 'YS'
   [session, sitting_type, sprintf "%02d" sitting].join \-
 
