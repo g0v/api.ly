@@ -35,7 +35,10 @@ console.log entries.length
 
 update-from-raw = (id, {name,chair=''}:raw, cb) ->
     if raw.committee is \院會
-        committee = null
+        committee = if name is /全院委員會/
+          ['WHL']
+        else
+          null
     else if raw.committee is \臨時會
         committee = null
     else
@@ -54,7 +57,8 @@ update-from-raw = (id, {name,chair=''}:raw, cb) ->
     name -= /\s/g if name
     [type, sitting] = match name
     | /公聽會/ => [\hearing, null]
-    | /第(\d+)次?((聯席|全體|全院)(委員)?)?會議?/ => [\sitting, +that.1]
+    | /第(\d+)次?(聯席|全體|全院)(委員)?會議?/ => [\sitting, +that.1]
+    | /第(\d+)次會議?/ => [\sitting, +that.1]
     | /考察|視察|參訪|教育訓練/ => [\misc, null]
     | /預備會議/ => [\sitting, 0]
     | /談話會/ => [\talk, null]
