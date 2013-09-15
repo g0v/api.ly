@@ -57,9 +57,9 @@ update-from-raw = (id, {name,chair=''}:raw, cb) ->
     name -= /\s/g if name
     [type, sitting] = match name
     | /公聽會/ => [\hearing, null]
+    | /考察|視察|參訪|教育訓練/ => [\misc, null]
     | /第(\d+)次?(聯席|全體|全院)(委員)?會議?/ => [\sitting, +that.1]
     | /第(\d+)次會議?/ => [\sitting, +that.1]
-    | /考察|視察|參訪|教育訓練/ => [\misc, null]
     | /預備會議/ => [\sitting, 0]
     | /談話會/ => [\talk, null]
     | /臨時會/ => [\sitting]
