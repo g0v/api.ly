@@ -101,5 +101,5 @@ end
 cron "populate-calendar" do
   minute "30"
   action :create
-  command "cd /opt/ly/api.ly && lsc populate-calendar --yaer `date +%Y` --db #{conn}"
+  command "cd /opt/ly/api.ly && lsc populate-calendar --year `date +%Y` --db #{conn}"
 end
