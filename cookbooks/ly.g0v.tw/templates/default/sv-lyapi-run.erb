@@ -1,2 +1,2 @@
 #!/bin/bash -e
-exec lsc /opt/ly/api.ly/app.ls --db tcp://ly:password@localhost/ly --host 0.0.0.0
+exec lsc /opt/ly/api.ly/app.ls --db tcp://ly:password@localhost/ly --host 0.0.0.0 --prefix /v0/collections --schema pgrest --cors
