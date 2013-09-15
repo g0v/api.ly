@@ -18,8 +18,10 @@ export function bootstrap(plx, cb)
   END
   $$;
 
+  CREATE INDEX calendar_sitting on calendar (_calendar_sitting_id(calendar));
+
   CREATE OR REPLACE VIEW pgrest.calendar AS
-    SELECT _calendar_session(calendar) as _session, * FROM public.calendar WHERE (calendar.ad IS NOT NULL);
+    SELECT _calendar_sitting_id(calendar) as sitting_id, * FROM public.calendar WHERE (calendar.ad IS NOT NULL);
   """
 
   cb!
