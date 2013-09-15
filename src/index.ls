@@ -2,6 +2,7 @@
 
 export function bootstrap(plx, cb)
   next <- plx.import-bundle-funcs \twly require.resolve \../package.json
+  <- next
   # XXX: make plv8x /sql define-schema reusable
   <- plx.query """
   DO $$
@@ -21,7 +22,7 @@ export function bootstrap(plx, cb)
     SELECT _calendar_session(calendar) as _session, * FROM public.calendar WHERE (calendar.ad IS NOT NULL);
   """
 
-  next cb
+  cb!
 
 
 export function _calendar_session({ad,session,extra})
