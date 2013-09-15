@@ -43,7 +43,7 @@ update-from-raw = (id, {name,chair=''}:raw, cb) ->
         committee = null
     else
         committee = [raw.committee]
-        for c in raw.cocommittee?split \, when c and c not in committee
+        for c in raw.cocommittee?split /[,、]/ when c and c not in committee
             committee.push c
         try
             committee = committee.map(-> util.parseCommittee it - /委員會$/).reduce (++)
