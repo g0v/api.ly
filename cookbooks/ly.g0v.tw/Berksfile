@@ -1,6 +1,6 @@
 site :opscode
 
-cookbook 'postgresql'
+cookbook 'postgresql', '3.0.4'
 cookbook 'git'
 cookbook 'runit'
 cookbook 'python'
