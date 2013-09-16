@@ -5,6 +5,9 @@
     "libreoffice": {
         "version": "4.1"
     },
+    "nginx": {
+        "default_site_enabled": false
+    },
     "nodejs": {
         "install_method": "package"
     },

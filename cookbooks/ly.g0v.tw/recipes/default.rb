@@ -4,6 +4,7 @@ include_recipe "cron"
 include_recipe "postgresql::ruby"
 include_recipe "ly.g0v.tw::libreoffice"
 include_recipe "libreoffice::unoconv"
+include_recipe "nginx"
 
 directory "/opt/ly" do
   action :create
@@ -97,6 +98,15 @@ runit_service "lyapi" do
   default_logger true
   action :enable
 end
+
+template "/etc/nginx/sites-available/lyapi" do
+  source "site-lyapi.erb"
+  owner "root"
+  group "root"
+  variables {}
+  mode 00755
+end
+nginx_site "lyapi"
 
 cron "populate-calendar" do
   minute "30"
