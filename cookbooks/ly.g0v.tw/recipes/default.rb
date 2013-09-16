@@ -96,7 +96,7 @@ end
 
 runit_service "lyapi" do
   default_logger true
-  action :enable
+  action [:enable, :start]
 end
 
 template "/etc/nginx/sites-available/lyapi" do
@@ -112,4 +112,46 @@ cron "populate-calendar" do
   minute "30"
   action :create
   command "cd /opt/ly/api.ly && lsc populate-calendar --year `date +%Y` --db #{conn}"
+end
+
+# pgqd
+
+package "skytools3"
+package "skytools3-ticker"
+package "postgresql-9.2-pgq3"
+
+directory "/var/log/postgresql" do
+  owner "postgres"
+  group "postgres"
+end
+
+template "/opt/ly/londiste.ini" do
+  source "londiste.erb"
+  owner "root"
+  group "root"
+  variables {}
+  mode 00644
+end
+
+template "/opt/ly/pgq.ini" do
+  source "pgq.erb"
+  owner "root"
+  group "root"
+  variables {}
+  mode 00644
+end
+
+execute "init londiste" do
+  command "londiste3 /opt/ly/londiste.ini create-root apily 'dbname=ly'"
+  user "postgres"
+end
+
+execute "init pgq" do
+  command "londiste3 /opt/ly/londiste.ini add-table calendar"
+  user "postgres"
+end
+
+runit_service "pgqd" do
+  default_logger true
+  action [:enable, :start]
 end

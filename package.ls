@@ -21,6 +21,8 @@ dependencies:
   optimist: \0.4.x
   express: \3.2.x
   sprintf: \0.1.1
+  qs: \0.6.x
+  'node-twitter-api': \1.1.x
   twlyparser: 'git://github.com/g0v/twlyparser.git'
   pgrest: 'git://github.com/clkao/pgrest.git'
 devDependencies:
