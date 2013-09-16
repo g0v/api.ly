@@ -155,3 +155,18 @@ runit_service "pgqd" do
   default_logger true
   action [:enable, :start]
 end
+
+
+# lisproxy
+# XXX: use carton
+
+package "cpanminus"
+
+execute "install plack" do
+  command "cpanm Plack::App::Proxy"
+end
+
+runit_service "lisproxy" do
+  default_logger true
+  action [:enable, :start]
+end
