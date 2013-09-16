@@ -5,6 +5,9 @@
     "libreoffice": {
         "version": "4.1"
     },
+    "nodejs": {
+        "install_method": "package"
+    },
     "postgresql": {
         "enable_pgdg_apt": true,
         "version": "9.2",
