@@ -1,4 +1,4 @@
-casper = require('casper').create { clientScripts: ["components/jquery/jquery.min.js"] }
+casper = require('casper').create { clientScripts: ["bower_components/jquery/jquery.min.js"] }
 fs = require('fs')
 
 {session, extra, type, output} = casper.cli.raw.options
