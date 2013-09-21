@@ -182,6 +182,9 @@ template "/opt/ly/api.ly/twitter.json" do
 end
 
 # calendar-twitter
+# XXX: check if node[:twitter] is defined
+# also tell the admin to apply a role with [:twitter] when bootstrap is ready
+# and pgq is flushed automatically somehow
 runit_service "calendar-twitter" do
   default_logger true
   action [:disable, :stop]

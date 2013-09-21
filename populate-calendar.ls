@@ -20,11 +20,9 @@ update-list = (year, cb) ->
     for d in entries => let d
         id = delete d.id
         funcs.push (done) ->
-            console.log id
             res <- plx.upsert collection: \calendar, q: {id}, $: $set: {d.date, raw: JSON.stringify d}, _, -> throw it
             done!
 
-    console.log \torun funcs.length
     err, res <- async.series funcs
     cb!
 
@@ -32,7 +30,6 @@ update-list = (year, cb) ->
 
 err, {rows:entries}? <- plx.conn.query "select * from calendar #{if force => "" else "where ad is null"} order by id asc"
 throw err if err
-console.log entries.length
 
 update-from-raw = (id, {name,chair=''}:raw, cb) ->
     if raw.committee is \院會
@@ -88,8 +85,6 @@ funcs = entries.map ({ad,id}:entry) ->
             <- setTimeout _, 1000ms
             raw = entry.raw <<< content
             update-from-raw id, raw, done
-
-console.log funcs.length
 
 err, res <- async.series funcs
 console.log \done
