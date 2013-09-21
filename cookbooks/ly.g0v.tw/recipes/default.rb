@@ -184,5 +184,5 @@ end
 # calendar-twitter
 runit_service "calendar-twitter" do
   default_logger true
-  action [:enable]
+  action [:disable, :stop]
 end
