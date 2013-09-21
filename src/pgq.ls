@@ -14,7 +14,6 @@ export function consume-events(plx, {queue, consumer, table, interval=3000ms}, c
     [{next_batch}]? <- plx.query "select pgq.next_batch($1, $2)" [queue, consumer]
     if next_batch
       # XXX logger
-      console.log "next batch #next_batch"
       # Event fields: (ev_id int8, ev_time timestamptz, ev_txid int8, ev_retry int4, ev_type text, ev_data text, ev_extra1, ev_extra2, ev_extra3, ev_extra4)
       # We can also use row_to_json(get_batch_events()) but we'll need polyfill for pg < 9.2
       events <- plx.query """
@@ -25,7 +24,7 @@ export function consume-events(plx, {queue, consumer, table, interval=3000ms}, c
       done <- cb next_batch, events.map -> it{ev_id, ev_time, ev_type} <<< ev_data: qs.parse it.ev_data
       if done
         [{finish_batch}]? <- plx.query "select pgq.finish_batch($1)" [next_batch]
-      setTimeout tick, interval
+      setTimeout tick, 0
     else
       setTimeout tick, interval
 
