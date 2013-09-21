@@ -67,6 +67,7 @@ connection_info[:username] = 'ly'
 connection_info[:password] = 'password'
 conn = "postgres://#{connection_info[:username]}:#{connection_info[:password]}@#{connection_info[:host]}/ly"
 
+# XXX: ensure londiste is not enabled yet
 bash 'init db' do
   code <<-EOH
     curl https://dl.dropboxusercontent.com/u/30657009/ly/api.ly.bz2 | bzcat | psql #{conn}
@@ -91,11 +92,12 @@ git "/opt/ly/api.ly" do
   action :sync
 end
 
+# XXX: use nobody user instead
 execute "install api.ly" do
   cwd "/opt/ly/api.ly"
   action :nothing
   subscribes :run, resources(:git => "/opt/ly/api.ly")
-  command "npm link twlyparser pgrest && npm i && npm run prepublish && bower install jquery"
+  command "npm link twlyparser pgrest && npm i && npm run prepublish && bower install --allow-root jquery"
   notifies :restart, "service[lyapi]", :immediately
 end
 
