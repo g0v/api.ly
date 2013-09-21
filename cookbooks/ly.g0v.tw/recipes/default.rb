@@ -110,8 +110,10 @@ nginx_site "lyapi"
 
 cron "populate-calendar" do
   minute "30"
+  mailto "clkao@clkao.org"
   action :create
-  command "cd /opt/ly/api.ly && lsc populate-calendar --year `date +%Y` --db #{conn}"
+  user "nobody"
+  command "cd /opt/ly/api.ly && lsc populate-calendar --db #{conn}"
 end
 
 # pgqd
