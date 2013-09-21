@@ -28,7 +28,7 @@ config = require \./twitter.json
 twitterAPI = require 'node-twitter-api'
 twitter = new twitterAPI config{consumerKey, consumerSecret} <<< callback: 'http://ly.g0v.tw/callback'
 
-plx <- pgrest .new conString, {}
+plx <- pgrest .new conString, {+client}
 batch, events, cb <- consume-events plx, {queue, consumer, table: 'public.calendar', interval: 200ms}
 return cb true unless events.length
 funcs = for {ev_data, ev_type, ev_id} in events when ev_type is /[UI]:id/ and ev_data.ad and ev_data.type is \sitting => let ev_data, ev_type, ev_id
