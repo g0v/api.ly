@@ -4,7 +4,7 @@ require! <[qs]>
 
 
 # XXX error callback and cps to decide if loop is cancelled
-export function consume-events(plx, {queue, consumer, table, interval=3000ms}, cb)
+export function consume-events(plx, {queue, consumer, table, interval=3000ms, dry}, cb)
   [res]? <- plx.query "select pgq.register_consumer($1, $2)" [queue, consumer]
   if res.register_consumer
     console.log "Consumer #consumer now subscribing #queue"
@@ -26,6 +26,7 @@ export function consume-events(plx, {queue, consumer, table, interval=3000ms}, c
         [{finish_batch}]? <- plx.query "select pgq.finish_batch($1)" [next_batch]
       setTimeout tick, 0
     else
+      process.exit 0 if dry
       setTimeout tick, interval
 
   tick!
