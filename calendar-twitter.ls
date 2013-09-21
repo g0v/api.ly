@@ -32,14 +32,17 @@ plx <- pgrest .new conString, {+client}
 batch, events, cb <- consume-events plx, {queue, consumer, table: 'public.calendar', interval: 200ms, dry: dry ? flush}
 return cb true unless events.length
 funcs = for {ev_data, ev_type, ev_id} in events when ev_type is /[UI]:id/ and ev_data.ad and ev_data.type is \sitting => let ev_data, ev_type, ev_id
-  console.log ev_type, ev_data.id
   (done) ->
     [res]? <- plx.query "select * from pgrest.calendar where id = $1" [ev_data.id]
+    is-old = new Date(res.raw.date) < new Date
+    if is-old
+      return done!
     if dry or flush
+      if is-old => console.log \*OLD
       console.log \sending twitter-status res
       if dry
         process.exit 0
-      done!
+      return done!
     err, data, response <- twitter.statuses "update", {status: twitter-status res}, config.accessToken, config.accessTokenSecret
     <- setTimeout _, 1000ms
     if err
