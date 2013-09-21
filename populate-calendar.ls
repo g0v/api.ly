@@ -5,7 +5,7 @@ require! <[async optimist path fs pgrest]>
 
 {year, force, all, db=DB} = optimist.argv
 
-plx <- pgrest.new db, {}
+plx <- pgrest.new db, {+client}
 
 update-list = (year, cb) ->
     return cb! unless year
