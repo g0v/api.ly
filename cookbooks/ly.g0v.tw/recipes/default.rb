@@ -22,6 +22,11 @@ execute "install LiveScript" do
   not_if "test -e /usr/bin/lsc"
 end
 
+execute "install bower" do
+  command "npm i -g bower@1.2.6"
+  not_if "test -e /usr/bin/bower"
+end
+
 execute "install twlyparser" do
   cwd "/opt/ly/twlyparser"
   action :nothing
@@ -90,7 +95,7 @@ execute "install api.ly" do
   cwd "/opt/ly/api.ly"
   action :nothing
   subscribes :run, resources(:git => "/opt/ly/api.ly")
-  command "npm link twlyparser pgrest && npm i && npm run prepublish"
+  command "npm link twlyparser pgrest && npm i && npm run prepublish && bower install jquery"
   notifies :restart, "service[lyapi]", :immediately
 end
 
