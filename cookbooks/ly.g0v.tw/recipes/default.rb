@@ -170,3 +170,17 @@ runit_service "lisproxy" do
   default_logger true
   action [:enable, :start]
 end
+
+template "/opt/ly/api.ly/twitter.json" do
+  source "twitter.conf.erb"
+  owner "root"
+  group "root"
+  variables {}
+  mode 00644
+end
+
+# calendar-twitter
+runit_service "calendar-twitter" do
+  default_logger true
+  action [:enable]
+end
