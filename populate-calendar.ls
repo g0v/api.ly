@@ -28,10 +28,9 @@ update-list = (year, cb) ->
 
 <- update-list year
 
-err, {rows:entries}? <- plx.conn.query "select * from calendar #{if force => "" else "where ad is null"} order by id desc"
+err, {rows:entries}? <- plx.conn.query "select * from calendar #{if force => "" else "where ad is null"} order by id asc"
 throw err if err
 console.log entries.length
-
 
 update-from-raw = (id, {name,chair=''}:raw, cb) ->
     if raw.committee is \院會
