@@ -2,6 +2,35 @@
 
 export function bootstrap(plx, cb)
   next <- plx.import-bundle-funcs \twly require.resolve \../package.json
+  <- plx.query """
+  CREATE TABLE IF NOT EXISTS calendar (
+      id integer PRIMARY KEY,
+      date date,
+      "time" text,
+      type text,
+      name text,
+      chair text,
+      summary text,
+      committee text[],
+      ad integer,
+      session integer,
+      extra integer,
+      sitting integer,
+      raw json
+  );
+
+  CREATE TABLE IF NOT EXISTS sittings (
+      id text PRIMARY KEY,
+      name text,
+      summary text,
+      committee text[],
+      ad integer,
+      session integer,
+      extra integer,
+      sitting integer
+  );
+  """
+
   <- next
   # XXX: make plv8x /sql define-schema reusable
   <- plx.query """
@@ -22,6 +51,9 @@ export function bootstrap(plx, cb)
 
   CREATE OR REPLACE VIEW pgrest.calendar AS
     SELECT _calendar_sitting_id(calendar) as sitting_id, * FROM public.calendar WHERE (calendar.ad IS NOT NULL);
+
+  CREATE OR REPLACE VIEW pgrest.sittings AS
+    SELECT *, (SELECT COALESCE(ARRAY_TO_JSON(ARRAY_AGG(_)), '[]') FROM (SELECT calendar.id as calendar_id, date, time from pgrest.calendar where sitting_id = sittings.id order by calendar.id) as _) as dates FROM public.sittings;
   """
 
   cb!

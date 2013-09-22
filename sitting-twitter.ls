@@ -15,11 +15,13 @@ function twitter-status(res)
   sitting_type = if res.committee is null => "院會" else res.committee.map(-> util.committees[it]).join '/'
 
   # preserve 25 chars for url
-  status = "[會議預報 - #{res.raw.date}] #{twly._calendar_session(res)}#sitting_type\##{res.sitting} #{res.summary}"
+  dates = res.dates.map (.date)
+  status = "[會議預報 - #{dates.join \,}] #{twly._calendar_session(res)}#sitting_type\##{res.sitting} #{res.summary}"
   if status.length >= 115
-    status .= substr(0, 114) + '…'
+    status .= substr(0, 114)
+    status += '…'
 
-  url = "http://www.ly.gov.tw/01_lyinfo/0109_meeting/meetingView.action?id=#{res.id}"
+  url = "http://www.ly.gov.tw/01_lyinfo/0109_meeting/meetingView.action?id=#{res.dates.0.calendar_id}"
 
   "#status #url"
 
@@ -29,14 +31,16 @@ twitterAPI = require 'node-twitter-api'
 twitter = new twitterAPI config{consumerKey, consumerSecret} <<< callback: 'http://ly.g0v.tw/callback'
 
 plx <- pgrest .new conString, {+client}
-batch, events, cb <- consume-events plx, {queue, consumer, table: 'public.calendar', interval: 200ms, dry: dry ? flush}
+batch, events, cb <- consume-events plx, {queue, consumer, table: 'public.sittings', interval: 200ms, dry: dry ? flush}
 return cb true unless events.length
-funcs = for {ev_data, ev_type, ev_id} in events when ev_type is /[UI]:id/ and ev_data.ad and ev_data.type is \sitting => let ev_data, ev_type, ev_id
+funcs = for {ev_data, ev_type, ev_id} in events when ev_type is 'I:id' => let ev_data, ev_type, ev_id
   (done) ->
-    [res]? <- plx.query "select * from pgrest.calendar where id = $1" [ev_data.id]
-    is-old = new Date(res.raw.date) < new Date
-    if is-old
-      return done!
+    <- setTimeout _, if dry or flush => 0 else 30s * 1000ms
+    [res]? <- plx.query "select * from pgrest.sittings where id = $1" [ev_data.id]
+    console.log res
+    is-old = new Date(res.dates.0.date) < new Date
+    #if is-old
+    #  return done!
     if dry or flush
       if is-old => console.log \*OLD
       console.log \sending twitter-status res
