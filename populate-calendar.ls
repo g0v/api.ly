@@ -87,5 +87,4 @@ funcs = entries.map ({ad,id}:entry) ->
             update-from-raw id, raw, done
 
 err, res <- async.series funcs
-console.log \done
 plx.end!
