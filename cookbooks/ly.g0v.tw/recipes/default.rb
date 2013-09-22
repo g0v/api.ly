@@ -164,7 +164,7 @@ execute "init londiste" do
 end
 
 execute "init pgq" do
-  command "londiste3 /opt/ly/londiste.ini add-table calendar"
+  command "londiste3 /opt/ly/londiste.ini add-table calendar sittings"
   user "postgres"
 end
 
