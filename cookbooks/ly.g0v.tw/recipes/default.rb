@@ -101,6 +101,14 @@ execute "install api.ly" do
   notifies :restart, "service[lyapi]", :immediately
 end
 
+execute "boot api.ly" do
+  cwd "/opt/ly/api.ly"
+  action :nothing
+  user "nobody"
+  command "lsc app.ls --db #{conn} --boot"
+  subscribes :run, "execute[install api.ly]", :immediately
+end
+
 runit_service "lyapi" do
   default_logger true
   action [:enable, :start]
