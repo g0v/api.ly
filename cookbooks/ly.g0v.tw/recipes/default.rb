@@ -192,7 +192,12 @@ end
 # XXX: check if node[:twitter] is defined
 # also tell the admin to apply a role with [:twitter] when bootstrap is ready
 # and pgq is flushed automatically somehow
-runit_service "calendar-twitter" do
+runit_service "sitting-twitter" do
   default_logger true
   action [:disable, :stop]
+end
+
+runit_service "calendar-sitting" do
+  default_logger true
+  action [:enable, :start]
 end
