@@ -70,8 +70,8 @@ update-from-raw = (id, {name,chair=''}:raw, cb) ->
     $set = raw{ad,session} <<< {name,type,extra,committee,chair,sitting} <<< do
         summary: raw.agenda
         raw: JSON.stringify raw
-        time_start: raw.time.split(\~)?0?match(/\d\d:\d\d(:\d\d)?/)?0
-        time_end: raw.time.split(\~)?1?match(/\d\d:\d\d(:\d\d)?/)?0
+        time_start: raw.time.split(\~)?0?match(/\d\d:\d\d(:\d\d)?/)?0 ? '00:00'
+        time_end: raw.time.split(\~)?1?match(/\d\d:\d\d(:\d\d)?/)?0 ? '23:59'
     delete $set.extra unless $set.extra
     <- plx.upsert {collection: \calendar, q: {id}, $: {$set}}, _, -> throw it
     cb!
