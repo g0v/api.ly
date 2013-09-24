@@ -3,10 +3,18 @@
 export function bootstrap(plx, cb)
   next <- plx.import-bundle-funcs \twly require.resolve \../package.json
   <- plx.query """
+  CREATE OR REPLACE function is_valid_time(text) RETURNS boolean language plpgsql immutable as $$
+  BEGIN
+    RETURN CASE WHEN $1::time is null THEN false else true END;
+  EXCEPTION WHEN OTHERS THEN
+    return false;
+  END;$$;
+
   CREATE TABLE IF NOT EXISTS calendar (
       id integer PRIMARY KEY,
       date date,
-      "time" text,
+      time_start time default '00:00',
+      time_end time default '23:59',
       type text,
       name text,
       chair text,
@@ -53,7 +61,7 @@ export function bootstrap(plx, cb)
     SELECT _calendar_sitting_id(calendar) as sitting_id, * FROM public.calendar WHERE (calendar.ad IS NOT NULL);
 
   CREATE OR REPLACE VIEW pgrest.sittings AS
-    SELECT *, (SELECT COALESCE(ARRAY_TO_JSON(ARRAY_AGG(_)), '[]') FROM (SELECT calendar.id as calendar_id, date, time from pgrest.calendar where sitting_id = sittings.id order by calendar.id) as _) as dates FROM public.sittings;
+    SELECT *, (SELECT COALESCE(ARRAY_TO_JSON(ARRAY_AGG(_)), '[]') FROM (SELECT calendar.id as calendar_id, chair, date, time_start, time_end from pgrest.calendar where sitting_id = sittings.id order by calendar.id) as _) as dates FROM public.sittings;
   """
 
   cb!
