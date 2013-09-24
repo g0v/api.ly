@@ -33,7 +33,6 @@ if init => return do ->
 
 batch, events, cb <- consume-events plx, {queue, consumer, table: 'public.calendar', interval: 200ms}
 
-console.log events
 return cb true unless events.length
 
 funcs = for {ev_data, ev_type, ev_id} in events when ev_type is /[UI]:id/ and ev_data.ad and ev_data.type is \sitting => let ev_data
