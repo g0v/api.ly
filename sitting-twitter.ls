@@ -11,6 +11,7 @@ conString = optimist.argv.db ? process.env.PGDATABASE
 conString = "localhost/#conString" unless conString is // / //
 conString = "tcp://#conString"     unless conString is // :/ //
 
+console.log "sitting-twitter listening"
 function twitter-status(res)
   sitting_type = if res.committee is null => "院會" else res.committee.map(-> util.committees[it]).join '/'
 
@@ -39,13 +40,13 @@ funcs = for {ev_data, ev_type, ev_id} in events when ev_type is 'I:id' => let ev
     [res]? <- plx.query "select * from pgrest.sittings where id = $1" [ev_data.id]
     console.log res
     is-old = new Date(res.dates.0.date) < new Date
-    #if is-old
-    #  return done!
     if dry or flush
       if is-old => console.log \*OLD
       console.log \sending twitter-status res
       if dry
         process.exit 0
+      return done!
+    if is-old
       return done!
     err, data, response <- twitter.statuses "update", {status: twitter-status res}, config.accessToken, config.accessTokenSecret
     <- setTimeout _, 1000ms
