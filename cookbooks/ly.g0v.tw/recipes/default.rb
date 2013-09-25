@@ -119,6 +119,7 @@ end
 runit_service "lyapi" do
   default_logger true
   action [:enable, :start]
+  subscribes :restart, "execute[install api.ly]", :immediately
 end
 
 template "/etc/nginx/sites-available/lyapi" do
@@ -217,4 +218,5 @@ end
 runit_service "calendar-sitting" do
   default_logger true
   action [:enable, :start]
+  subscribes :restart, "execute[install api.ly]", :immediately
 end
