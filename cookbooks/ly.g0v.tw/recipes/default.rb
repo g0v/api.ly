@@ -195,21 +195,23 @@ runit_service "lisproxy" do
   action [:enable, :start]
 end
 
-template "/opt/ly/api.ly/twitter.json" do
-  source "twitter.conf.erb"
-  owner "root"
-  group "root"
-  variables {}
-  mode 00644
-end
+if node['twitter']
+  template "/opt/ly/api.ly/twitter.json" do
+    source "twitter.conf.erb"
+    owner "root"
+    group "root"
+    variables {}
+    mode 00644
+  end
 
-# calendar-twitter
-# XXX: check if node[:twitter] is defined
-# also tell the admin to apply a role with [:twitter] when bootstrap is ready
-# and pgq is flushed automatically somehow
-runit_service "sitting-twitter" do
-  default_logger true
-  action [:disable, :stop]
+  # calendar-twitter
+  # also tell the admin to apply a role with [:twitter] when bootstrap is ready
+  # and pgq is flushed automatically somehow
+  runit_service "sitting-twitter" do
+    default_logger true
+    action [:enable, :stop]
+    subscribes :restart, "execute[install api.ly]", :immediately
+  end
 end
 
 runit_service "calendar-sitting" do
