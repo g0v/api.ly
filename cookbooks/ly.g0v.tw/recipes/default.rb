@@ -4,7 +4,14 @@ include_recipe "cron"
 include_recipe "postgresql::ruby"
 include_recipe "ly.g0v.tw::libreoffice"
 include_recipe "libreoffice::unoconv"
-include_recipe "nginx"
+
+git "/opt/nginx-rtmp-module" do
+  repository "git://github.com/arut/nginx-rtmp-module"
+  reference "v1.0.4"
+  action :sync
+end
+
+include_recipe "nginx::source"
 
 directory "/opt/ly" do
   action :create

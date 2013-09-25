@@ -6,7 +6,9 @@
         "version": "4.1"
     },
     "nginx": {
-        "default_site_enabled": false
+        "default_site_enabled": false,
+        "version": "1.4.2",
+        "configure_flags": ["--add-module=/opt/nginx-rtmp-module"]
     },
     "nodejs": {
         "install_method": "package"
