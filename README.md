@@ -3,34 +3,31 @@ api.ly
 
 api.ly.g0v.tw endpoint source and utility scripts
 
-# Vagrant
+# Development
 
-Vagrant provides a virtual machine that helps developers have consistent developing environment.
+We recommend using vagrant for developing
 
 ## Prepare
 
-To install vagrant and berkshelf. The version of vagrant on gem is too old to run on cookbook. Get the version which provided by your package management of system. Vergrant >= 1.2.x should work.
+Install [Virtualbox](https://www.virtualbox.org/wiki/Downloads) 4.2.18
 
-For example, in Debian
+Install [Vagrant](http://downloads.vagrantup.com/) 1.2.7
 
-    $ sudo aptitude install vagrant
+Install berkshelf:
 
-Then install plugin for vegrant. (the plugin has been renamed from berkshelf-vagrant to vagrant-berkshelf)
+    $ sudo gem install berkshelf
+
+Install vagrant plugins:
 
     $ vagrant plugin install vagrant-berkshelf
     $ vagrant plugin install vagrant-cachier
 
-## using vagrant for development
+## Using Vagrant for Development
 
     % cd cookbooks/ly.g0v.tw/
     % vagrant up
 
-    # these are now part of the cookbook, but if you want to bootstrap database manually:
-    % vagrant ssh
-    vagrant % sudo su postgres -c "psql ly -c 'create extension plv8'"
-    vagrant % curl https://dl.dropboxusercontent.com/u/30657009/ly/api.ly.bz2 | bzcat |  psql postgresql://ly:password@localhost/ly
-
-You should now have localhost:6987 served by pgrest within the vagrant
+You should now have localhost:6988 served by pgrest within the vagrant
 
 # Host
 
