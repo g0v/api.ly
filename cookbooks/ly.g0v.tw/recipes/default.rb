@@ -74,15 +74,6 @@ connection_info[:username] = 'ly'
 connection_info[:password] = 'password'
 conn = "postgres://#{connection_info[:username]}:#{connection_info[:password]}@#{connection_info[:host]}/ly"
 
-# XXX: ensure londiste is not enabled yet
-bash 'init db' do
-  code <<-EOH
-    curl https://dl.dropboxusercontent.com/u/30657009/ly/api.ly.bz2 | bzcat | psql #{conn}
-  EOH
-  action :nothing
-  subscribes :run, resources(:postgresql_database_user => 'ly'), :immediately
-end
-
 # XXX: use whitelist
 postgresql_database "plv8" do
   connection postgresql_connection_info
@@ -103,9 +94,10 @@ end
 execute "install api.ly" do
   cwd "/opt/ly/api.ly"
   action :nothing
-  subscribes :run, resources(:git => "/opt/ly/api.ly")
+  subscribes :run, resources(:git => "/opt/ly/api.ly"), :immediately
   command "npm link twlyparser pgrest && npm i && npm run prepublish && bower install --allow-root jquery"
-  notifies :restart, "service[lyapi]", :immediately
+  notifies :run, "execute[boot api.ly]", :immediately
+  notifies :restart, "service[lyapi]"
 end
 
 execute "boot api.ly" do
@@ -113,13 +105,21 @@ execute "boot api.ly" do
   action :nothing
   user "nobody"
   command "lsc app.ls --db #{conn} --boot"
-  subscribes :run, "execute[install api.ly]", :immediately
+end
+
+# XXX: ensure londiste is not enabled yet
+bash 'init db' do
+  code <<-EOH
+    curl https://dl.dropboxusercontent.com/u/30657009/ly/api.ly.bz2 | bzcat | psql #{conn}
+  EOH
+  action :nothing
+  subscribes :run, resources(:postgresql_database_user => 'ly')
 end
 
 runit_service "lyapi" do
   default_logger true
   action [:enable, :start]
-  subscribes :restart, "execute[install api.ly]", :immediately
+  subscribes :restart, "execute[install api.ly]"
 end
 
 template "/etc/nginx/sites-available/lyapi" do
@@ -211,12 +211,12 @@ if node['twitter']
   runit_service "sitting-twitter" do
     default_logger true
     action [:enable, :stop]
-    subscribes :restart, "execute[install api.ly]", :immediately
+    subscribes :restart, "execute[install api.ly]"
   end
 end
 
 runit_service "calendar-sitting" do
   default_logger true
   action [:enable, :start]
-  subscribes :restart, "execute[install api.ly]", :immediately
+  subscribes :restart, "execute[install api.ly]"
 end
