@@ -12,7 +12,8 @@
     },
     "nodejs": {
         "install_method": "source",
-        "version": "0.10.18"
+        "version": "0.10.18",
+        "dir": "/usr"
     },
     "postgresql": {
         "enable_pgdg_apt": true,
