@@ -16,13 +16,6 @@ directory "/opt/ly" do
   action :create
 end
 
-git "/opt/ly/twlyparser" do
-  repository "git://github.com/g0v/twlyparser.git"
-  enable_submodules true
-  reference "master"
-  action :sync
-end
-
 execute "install LiveScript" do
   command "npm i -g LiveScript@1.1.1"
   not_if "test -e /usr/bin/lsc"
@@ -33,10 +26,17 @@ execute "install bower" do
   not_if "test -e /usr/bin/bower"
 end
 
+git "/opt/ly/twlyparser" do
+  repository "git://github.com/g0v/twlyparser.git"
+  enable_submodules true
+  reference "master"
+  action :sync
+end
+
 execute "install twlyparser" do
   cwd "/opt/ly/twlyparser"
   action :nothing
-  subscribes :run, resources(:git => "/opt/ly/twlyparser")
+  subscribes :run, resources(:git => "/opt/ly/twlyparser"), :immediately
   command "npm i && npm link"
 end
 
