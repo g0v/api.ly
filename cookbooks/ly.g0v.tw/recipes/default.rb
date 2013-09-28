@@ -2,8 +2,7 @@ include_recipe "runit"
 include_recipe "database"
 include_recipe "cron"
 include_recipe "postgresql::ruby"
-include_recipe "ly.g0v.tw::libreoffice"
-include_recipe "libreoffice::unoconv"
+#include_recipe "ly.g0v.tw::libreoffice"
 
 git "/opt/nginx-rtmp-module" do
   repository "git://github.com/arut/nginx-rtmp-module"

@@ -1,3 +1,5 @@
+include_recipe "libreoffice::unoconv"
+
 major_version = '4'
 minor_version = '1'
 
