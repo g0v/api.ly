@@ -1,3 +1,10 @@
+#
+# Read parsed data from TWLyParser then insert into database.
+#
+# twlyparser is one of dependency of api.ly g0v project. twlyparser downloads
+# and parse data from "http://www.ly.gov.tw".
+# this script populates data of calendar to local postgresql database.
+
 const { USER, DB } = process.env
 
 require! <[async optimist path fs pgrest]>
