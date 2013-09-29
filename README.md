@@ -38,6 +38,7 @@ the server provides RESTFUL service by pgrest. pgrest rely on postgresql, so you
 For example, in Debian
 
     $ sudo aptitude install postgresql
+    $ sudo aptitude install skytools3 skytools3-ticker postgresql-9.2-pgq3  # for pgq
     $ sudo aptitude install postgresql-plv8  # for plv8 extension
 
 ## init
