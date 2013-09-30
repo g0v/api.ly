@@ -27,7 +27,7 @@ Install vagrant plugins:
     % cd cookbooks/ly.g0v.tw/
     % vagrant up
 
-You should now have localhost:6988 served by pgrest within the vagrant
+You should now have localhost:6988 served by pgrest within the vagrant, try to access **http://localhost:6988/v0/collections/sittings**
 
 # Host
 
