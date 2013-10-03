@@ -1,8 +1,13 @@
-meta = do
-  'pgrest.calendar': do
+meta =
+  'pgrest.calendar':
     f: {-raw}
     s: {date: -1}
-  'pgrest.sittings': do
+    as: 'public.calendar'
+    $query: ad: $not: null
+    columns:
+      sitting_id: $literal: '_calendar_sitting_id(calendar)'
+      '*': {}
+  'pgrest.sittings':
     s: {id: -1}
 
 require! pgrest

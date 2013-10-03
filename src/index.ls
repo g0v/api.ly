@@ -1,7 +1,6 @@
 { sprintf } = require \sprintf
 
 export function bootstrap(plx, cb)
-  next <- plx.import-bundle-funcs \twly require.resolve \../package.json
   <- plx.query """
   CREATE OR REPLACE function is_valid_time(text) RETURNS boolean language plpgsql immutable as $$
   BEGIN
@@ -39,7 +38,6 @@ export function bootstrap(plx, cb)
   );
   """
 
-  <- next
   # XXX: make plv8x /sql define-schema reusable
   <- plx.query """
   DO $$
@@ -55,10 +53,12 @@ export function bootstrap(plx, cb)
   END
   $$;
 
-  CREATE INDEX calendar_sitting on calendar (_calendar_sitting_id(calendar));
+  """
+  require! pgrest
+  <- pgrest.bootstrap plx, \twly require.resolve \../package.json
 
-  CREATE OR REPLACE VIEW pgrest.calendar AS
-    SELECT _calendar_sitting_id(calendar) as sitting_id, * FROM public.calendar WHERE (calendar.ad IS NOT NULL);
+  <- plx.query """
+  CREATE INDEX calendar_sitting on calendar (_calendar_sitting_id(calendar));
 
   CREATE OR REPLACE VIEW pgrest.sittings AS
     SELECT *, (SELECT COALESCE(ARRAY_TO_JSON(ARRAY_AGG(_)), '[]') FROM (SELECT calendar.id as calendar_id, chair, date, time_start, time_end from pgrest.calendar where sitting_id = sittings.id order by calendar.id) as _) as dates FROM public.sittings;
@@ -85,3 +85,4 @@ export function _calendar_sitting_id({type,committee,sitting}:calendar)
   [session, sitting_type, sprintf "%02d" sitting].join \-
 
 _calendar_sitting_id.$plv8x = '(calendar):text'
+_calendar_sitting_id.$bootstrap = true
