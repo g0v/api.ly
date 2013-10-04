@@ -59,9 +59,6 @@ export function bootstrap(plx, cb)
 
   <- plx.query """
   CREATE INDEX calendar_sitting on calendar (_calendar_sitting_id(calendar));
-
-  CREATE OR REPLACE VIEW pgrest.sittings AS
-    SELECT *, (SELECT COALESCE(ARRAY_TO_JSON(ARRAY_AGG(_)), '[]') FROM (SELECT calendar.id as calendar_id, chair, date, time_start, time_end from pgrest.calendar where sitting_id = sittings.id order by calendar.id) as _) as dates FROM public.sittings;
   """
 
   cb!
