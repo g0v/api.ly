@@ -16,6 +16,11 @@ directory "/opt/ly" do
   action :create
 end
 
+directory "/opt/ly/cache" do
+  action :create
+  owner "nobody"
+end
+
 execute "install LiveScript" do
   command "npm i -g LiveScript@1.1.1"
   not_if "test -e /usr/bin/lsc"
@@ -215,6 +220,12 @@ if node['twitter']
 end
 
 runit_service "calendar-sitting" do
+  default_logger true
+  action [:enable, :start]
+  subscribes :restart, "execute[install api.ly]"
+end
+
+runit_service "ys-misq" do
   default_logger true
   action [:enable, :start]
   subscribes :restart, "execute[install api.ly]"

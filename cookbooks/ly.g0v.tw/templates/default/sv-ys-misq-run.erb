@@ -1,0 +1,3 @@
+#!/bin/bash -e
+cd /opt/ly/api.ly
+exec chpst -u nobody /usr/bin/lsc ys-misq.ls --db tcp://ly:password@localhost/ly --dir /opt/ly/cache/misq

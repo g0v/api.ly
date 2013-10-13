@@ -19,7 +19,20 @@ meta =
         columns:
           'calendar_id': field: 'calendar.id'
           '*': <[chair date time_start time_end]>
-
+  'pgrest.motions':
+    s: {bill_id: -1}
+    as: 'public.motions LEFT JOIN bills USING (bill_id)'
+  'pgrest.bills':
+    s: {bill_id: -1}
+    as: 'bills'
+    columns:
+      '*': {}
+      motions:
+        $from: 'public.motions'
+        $query: 'bill_id': $literal: 'bills.bill_id'
+        $order: {sitting_id: 1}
+        columns:
+          '*': <[sitting_id ]>
 
 require! pgrest
 
