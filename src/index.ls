@@ -36,6 +36,35 @@ export function bootstrap(plx, cb)
       extra integer,
       sitting integer
   );
+
+  CREATE TABLE IF NOT EXISTS motions (
+      sitting_id text,
+      motion_class text,
+      agenda_item int,
+      subitem int,
+      item int,
+      bill_id text,
+      result text,
+      resolution text,
+      status text,
+
+      tts_id text,
+      tts_seq text,
+      PRIMARY KEY(sitting_id, bill_id)
+  );
+
+  CREATE TABLE IF NOT EXISTS bills (
+      bill_id text,
+      bill_ref text unique,
+      summary text,
+      proposed_by text,
+      sponsors text[],
+      cosponsors text[],
+      introduced date,
+      sitting_introduced text,
+
+      PRIMARY KEY(bill_id)
+  );
   """
 
   # XXX: make plv8x /sql define-schema reusable
