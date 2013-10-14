@@ -27,7 +27,8 @@ funcs = for {ev_data, ev_type, ev_id} in events when ev_type is /I:bill_id/ and 
       info <- ly.misq.getBill bill_id, {dir}
       <- ly.misq.ensureBillDoc bill_id, info
       return done! unless info.doc.doc
-      bill <- ly.misq.parse-bill-doc bill_id, {+lodev}
+      e, bill <- ly.misq.parse-bill-doc bill_id, {+lodev}
+      return err e if e
       console.log \=== bill.reference if bill.reference
       res <- plx.upsert {
         collection: \bills
