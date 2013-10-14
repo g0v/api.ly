@@ -65,9 +65,17 @@ pgrest will bind a local port to serve
 
     % DB=ly lsc populate-calendar.ls  --year 2013
 
+## sitting
+
+populated via pgq with `calendar-sitting.ls`
+
 ## meeting agenda and proceeding
 
+populated via pgq with `ys-misq.ls`
+
 ## bill details
+
+populated via pgq with `bill-details.ls`
 
 ## bill and motion metadata
 
