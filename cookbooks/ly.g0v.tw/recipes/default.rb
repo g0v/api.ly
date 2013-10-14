@@ -238,5 +238,5 @@ runit_service "bill-details" do
   default_logger true
   action [:enable, :start]
   subscribes :restart, "execute[install api.ly]"
-  env ({"UNOCONV_PYTHON" => "/usr/bin/python"})
+  env ({"UNOCONV_PYTHON" => "/usr/bin/python", "HOME" => "/tmp"})
 end
