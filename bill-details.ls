@@ -19,26 +19,25 @@ return cb true unless events.length
 funcs = for {ev_data, ev_type, ev_id} in events when ev_type is /I:bill_id/ and !ev_data.bill_ref
   let ev_data, ev_type, ev_id
     (done) ->
+      err = ->
+        console.log \err it?message
+        plx.query "select pgq.event_retry($1, $2, $3::int)" [batch, ev_id, 3600], -> done!
       {bill_id} = ev_data
       console.log \=== bill_id
       info <- ly.misq.getBill bill_id, {dir}
       <- ly.misq.ensureBillDoc bill_id, info
       return done! unless info.doc.doc
       bill <- ly.misq.parse-bill-doc bill_id, {+lodev}
-      console.log bill_id, bill
+      console.log \=== bill.reference if bill.reference
       res <- plx.upsert {
         collection: \bills
         q: {bill_id}
         $: $set: bill{abstract, docs, sponsors, cosponsors} <<< data: bill{related, content}, bill_ref: bill.reference
-        }, _, -> console.log \err it
+        }, _, -> err it
       console.log res
-      err = 0
-      if err
-        if err.data isnt /Status is a duplicate/
-          console.log \== err
-          return plx.query "select pgq.event_retry($1, $2, $3::int)" [batch, ev_id, 3], -> done!
       return done!
 return cb true unless funcs.length
+console.log \start batch, \with funcs.length
 
 err, res <- async.series funcs
 cb true
