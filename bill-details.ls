@@ -25,6 +25,7 @@ funcs = for {ev_data, ev_type, ev_id} in events when ev_type is /I:bill_id/ and 
       {bill_id} = ev_data
       console.log \=== bill_id
       info <- ly.misq.getBill bill_id, {dir}
+      return err new Error \getbill unless info?doc
       <- ly.misq.ensureBillDoc bill_id, info
       return done! unless info.doc.doc
       e, bill <- ly.misq.parse-bill-doc bill_id, {+lodev}
