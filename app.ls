@@ -20,10 +20,15 @@ meta =
           'calendar_id': field: 'calendar.id'
           '*': <[chair date time_start time_end]>
   'pgrest.motions':
-    s: {bill_id: -1}
+    s: {sitting_id: -1,motion_class: 1, agenda_item: 1}
     as: 'public.motions LEFT JOIN bills USING (bill_id)'
+    columns:
+      '*':
+        motions: {}
+        bills: <[bill_ref summary proposed_by doc]>
   'pgrest.bills':
     s: {bill_id: -1}
+    f: {data: -1}
     as: 'bills'
     columns:
       '*': {}
