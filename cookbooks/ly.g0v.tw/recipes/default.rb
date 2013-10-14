@@ -2,7 +2,6 @@ include_recipe "runit"
 include_recipe "database"
 include_recipe "cron"
 include_recipe "postgresql::ruby"
-#include_recipe "ly.g0v.tw::libreoffice"
 
 git "/opt/nginx-rtmp-module" do
   repository "git://github.com/arut/nginx-rtmp-module"
@@ -176,7 +175,7 @@ execute "init londiste" do
 end
 
 execute "init pgq" do
-  command "londiste3 /opt/ly/londiste.ini add-table calendar sittings"
+  command "londiste3 /opt/ly/londiste.ini add-table calendar sittings bills"
   user "postgres"
 end
 
@@ -229,4 +228,13 @@ runit_service "ys-misq" do
   default_logger true
   action [:enable, :start]
   subscribes :restart, "execute[install api.ly]"
+end
+
+include_recipe "ly.g0v.tw::libreoffice"
+
+runit_service "bill-details" do
+  default_logger true
+  action [:enable, :start]
+  subscribes :restart, "execute[install api.ly]"
+  env ({"UNOCONV_PYTHON" => "/usr/bin/python"})
 end

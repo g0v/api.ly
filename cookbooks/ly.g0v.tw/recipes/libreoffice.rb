@@ -18,3 +18,9 @@ packages.each do |p|
     action :upgrade
   end
 end
+
+runit_service "unoconv-listener" do
+  default_logger true
+  action [:enable, :start]
+  env ({"HOME" => "/tmp"})
+end
