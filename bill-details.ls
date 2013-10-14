@@ -34,7 +34,7 @@ funcs = for {ev_data, ev_type, ev_id} in events when ev_type is /I:bill_id/ and 
       res <- plx.upsert {
         collection: \bills
         q: {bill_id}
-        $: $set: bill{abstract, docs, sponsors, cosponsors} <<< data: bill{related, content}, bill_ref: bill.reference
+        $: $set: bill{abstract, doc, sponsors, cosponsors} <<< data: bill{related, content}, bill_ref: bill.reference
         }, _, -> err it
       console.log res
       return done!
