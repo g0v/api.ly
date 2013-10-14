@@ -232,6 +232,8 @@ end
 
 include_recipe "ly.g0v.tw::libreoffice"
 
+package "libimage-size-perl"
+
 runit_service "bill-details" do
   default_logger true
   action [:enable, :start]
