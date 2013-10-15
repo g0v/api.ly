@@ -25,13 +25,16 @@ meta =
     columns:
       '*':
         motions: {}
-        bills: <[bill_ref summary proposed_by doc]>
+        bills: <[bill_ref summary proposed_by]>
+      'doc': type: \json
   'pgrest.bills':
     s: {bill_id: -1}
     f: {data: -1}
     as: 'bills'
     columns:
-      '*': {}
+      '*': <[bill_id bill_ref summary proposed_by sponsors cosponsors abstract]>
+      data: type: \json
+      doc: type: \json
       motions:
         $from: 'public.motions'
         $query: 'bill_id': $literal: 'bills.bill_id'
