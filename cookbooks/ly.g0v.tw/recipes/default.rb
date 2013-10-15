@@ -194,6 +194,8 @@ execute "install plack" do
   command "cpanm Plack::App::Proxy"
 end
 
+include_recipe "casperjs"
+
 runit_service "lisproxy" do
   default_logger true
   action [:enable, :start]
