@@ -31,6 +31,10 @@ meta =
     s: {bill_id: -1}
     f: {data: -1}
     as: 'bills'
+    primary: (id) ->
+      $or:
+        bill_ref: id
+        bill_id: id
     columns:
       '*': <[bill_id bill_ref summary proposed_by sponsors cosponsors abstract]>
       data: type: \json
