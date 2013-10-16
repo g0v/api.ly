@@ -17,7 +17,8 @@ function update-bill(bill_id, cb, err)
   info <- ly.misq.getBill bill_id, {dir}
   return err new Error \getbill unless info?doc
 
-  <- ly.misq.ensureBillDoc bill_id, info
+  e <- ly.misq.ensureBillDoc bill_id, info
+  return err e if e
   return cb! unless info.doc.doc
 
   e, bill <- ly.misq.parse-bill-doc bill_id, {+lodev}
