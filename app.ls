@@ -7,18 +7,6 @@ meta =
     columns:
       sitting_id: $literal: '_calendar_sitting_id(calendar)'
       '*': {}
-  'pgrest.sittings':
-    s: {id: -1}
-    as: 'public.sittings'
-    columns:
-      '*': {}
-      dates:
-        $from: 'pgrest.calendar'
-        $query: 'sitting_id': $literal: 'sittings.id'
-        $order: {id: 1}
-        columns:
-          'calendar_id': field: 'calendar.id'
-          '*': <[chair date time_start time_end]>
   'pgrest.motions':
     s: {sitting_id: -1,motion_class: 1, agenda_item: 1}
     as: 'public.motions LEFT JOIN bills USING (bill_id)'
@@ -45,6 +33,25 @@ meta =
         $order: {sitting_id: 1}
         columns:
           '*': <[sitting_id ]>
+  'pgrest.sittings':
+    s: {id: -1}
+    as: 'public.sittings'
+    primary: \id
+    columns:
+      '*': {}
+      dates:
+        $from: 'pgrest.calendar'
+        $query: 'sitting_id': $literal: 'sittings.id'
+        $order: {id: 1}
+        columns:
+          'calendar_id': field: 'calendar.id'
+          '*': <[chair date time_start time_end]>
+      motions:
+        $from: 'pgrest.motions'
+        $query: 'sitting_id': $literal: 'sittings.id'
+        $order: {motion_class: 1, agenda_item: 1}
+        columns:
+          '*': <[motion_class agenda_item subitem item bill_id bill_ref summary proposed_by]>
 
 require! pgrest
 
