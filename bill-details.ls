@@ -31,7 +31,7 @@ function update-bill(bill_id, cb, err)
   }, cb, -> err it, bill
 
 if force
-  rows <- plx.query "select distinct bill_id from bills where abstract is null"
+  rows <- plx.query "select bill_id from bills where abstract is null"
   funcs = for {bill_id}, i in rows => let bill_id, i
     (done) ->
       <- update-bill bill_id, _, (e, bill) ->
