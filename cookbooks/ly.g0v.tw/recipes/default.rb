@@ -195,6 +195,7 @@ execute "install plack" do
 end
 
 include_recipe "casperjs"
+package "ruby"
 
 runit_service "lisproxy" do
   default_logger true
