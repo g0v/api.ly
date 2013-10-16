@@ -51,7 +51,7 @@ meta =
         $query: 'sitting_id': $literal: 'sittings.id'
         $order: {motion_class: 1, agenda_item: 1}
         columns:
-          '*': <[motion_class agenda_item subitem item bill_id bill_ref summary proposed_by]>
+          '*': <[motion_class agenda_item subitem item bill_id bill_ref proposed_by summary doc]>
 
 require! pgrest
 
