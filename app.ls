@@ -1,4 +1,8 @@
 meta =
+  'pgrest.ivod':
+    as: 'public.ivod'
+    columns:
+      '*': <[sitting_id type speaker thumb firm time length video_url_n video_url_w wmvid youtube_id]>
   'pgrest.calendar':
     f: {-raw}
     s: {date: -1}
@@ -46,6 +50,11 @@ meta =
         columns:
           'calendar_id': field: 'calendar.id'
           '*': <[chair date time_start time_end]>
+      videos:
+        $from: 'pgrest.ivod'
+        $query: 'sitting_id': $literal: 'sittings.id'
+        columns:
+          '*': {}
       motions:
         $from: 'pgrest.motions'
         $query: 'sitting_id': $literal: 'sittings.id'
