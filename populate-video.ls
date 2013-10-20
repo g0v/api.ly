@@ -13,6 +13,8 @@ ivod = JSON.parse fs.readFileSync input, \utf-8
 
 plx <- pgrest.new db, {+client}
 
+# by default, we only upsert entries within 7 days
+
 unless all
   after = new Date( new Date! - 1000ms * 60s * 60min * 24hr * 7 )
   ivod.=filter ({time})->
@@ -35,11 +37,15 @@ funcs = for {video_url_n}:x in ivod => let x, video_url_n
       x.committee = try [util.parseCommittee c - /[兩三四五六七八]?委員會$/ for c in that.1?split /[,、，]/ when c]
       x.committee ?= try [util.parseCommittee c - /[兩三四五六七八]?委員會$/ for c in that.1?split /[,、，及]/ when c]
     else
-      x.committee = [x.committee]
+      x.committee = if x.committee => [x.committee] else void
     #if type
     #  console.log x.youtube_id, type, _sitting_id x
-    return done! unless _sitting_id x
+    x.sitting_id = _sitting_id x
+    #unless x.sitting_id
+    #  console.log \wtf x
+    return done! unless x.sitting_id
     x.type = type
+    #console.log x
     res <- plx.upsert collection: \ivod, q: {video_url_n}, $: $set: x, _, ->
       console.log \err, x
       throw itx
