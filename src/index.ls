@@ -68,6 +68,25 @@ export function bootstrap(plx, cb)
 
       PRIMARY KEY(bill_id)
   );
+
+  CREATE TABLE IF NOT EXISTS ivod (
+      ad int,
+      session int,
+      extra int,
+      sitting int,
+      committee text[],
+      type text,
+      speaker text,
+      summary text,
+      thumb text,
+      firm text,
+      time timestamp,
+      length int,
+      video_url_n text primary key,
+      video_url_w text,
+      wmvid text,
+      youtube_id text
+  );
   """
 
   # XXX: make plv8x /sql define-schema reusable
@@ -97,7 +116,7 @@ export function bootstrap(plx, cb)
 
 
 export function _calendar_session({ad,session,extra})
-  return unless ad
+  return unless ad and session
   _session = if extra
     sprintf "%02dT%02d", session, extra
   else
@@ -106,10 +125,18 @@ export function _calendar_session({ad,session,extra})
 
 _calendar_session.$plv8x = '(calendar):text'
 
+# generic
+export function _sitting_id({committee,sitting}:entry)
+  session = _calendar_session entry
+  return unless session and sitting
+  sitting_type = if committee => committee.join '-' else 'YS'
+  [session, sitting_type, sprintf "%02d" sitting].join \-
+
+_sitting_id.$plv8x = '(anyelement):text'
+
 export function _calendar_sitting_id({type,committee,sitting}:calendar)
   return unless type is \sitting
-  session = _calendar_session calendar
-  return unless session
+  return _sitting_id calendar
   sitting_type = if committee => committee.join '-' else 'YS'
   [session, sitting_type, sprintf "%02d" sitting].join \-
 
