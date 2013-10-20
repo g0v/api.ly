@@ -117,7 +117,14 @@ National Parliament Library provides a database called TTS.  to work with it you
 
 API listing for api.ly
 ======================
-http://docs.twly.apiary.io/
+- http://docs.twly.apiary.io/
+
+To regenerate api, just run docgen.s then commit apiary.apib, the document will hook to apiary automatically
+
+    cd ~/api.ly
+    lsc docgen.ls
+    git commit apiary.apib
+
 
 License
 =======
