@@ -1,0 +1,37 @@
+HOST: http://api-beta.ly.g0v.tw/
+
+--- TW ly api v0 ---
+---
+This is beta version of api.ly.g0v.tw. Written in [apiblueprint](http://apiblueprint.org/) by [Markdown](http://daringfireball.net/projects/markdown/syntax) syntax.
+---
+
+--
+Version
+--
+Show specific version of API.
+GET /v0/
+< 200
+< Content-Type: application/json
+[
+"collections",
+"runCommand"
+]
+
+--
+Collections
+List all avaible collection of current version
+--
+GET /v0/collections/
+> Content-Type: application/json
+{ "product":"1AB23ORM", "quantity": 2 }
+< 201
+< Content-Type: application/json
+{ "status": "created", "url": "/shopping-cart/2" }
+
+
+-- Payment Resources --
+This resource allows you to submit payment information to process your *shopping cart* items
+POST /payment
+{ "cc": "12345678900", "cvc": "123", "expiry": "0112" }
+< 200
+{ "receipt": "/payment/receipt/1" }
