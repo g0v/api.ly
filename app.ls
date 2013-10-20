@@ -39,6 +39,7 @@ meta =
           '*': <[sitting_id ]>
   'pgrest.sittings':
     s: {id: -1}
+    f: {-videos}
     as: 'public.sittings'
     primary: \id
     columns:
