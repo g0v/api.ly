@@ -1,141 +1,87 @@
+FORMAT: X-1A
 HOST: http://api-beta.ly.g0v.tw
 
---- TW ly api v0 ---
----
+# TW ly api v0
+online test of [beta API](http://api-beta.ly.g0v.tw)
 This is beta version of api.ly.g0v.tw. Written in [apiblueprint](http://apiblueprint.org/) by [Markdown](http://daringfireball.net/projects/markdown/syntax) syntax.
------
-Version
+
+# GET /v0/
 Show specific version of API.
---
-GET /v0/
-> Content-Type: application/json
-< 200
-< Content-Type: application/json
-{}
++ Response 200 (application/json)
 
---
-Collections
+# GET /v0/collections/
 List all avaible collection of current version.
---
-GET /v0/collections/
-> Content-Type: application/json
-< 200
-< Content-Type: application/json
-{}
++ Response 200 (application/json)
 
---
-ivod
---
-GET /v0/collections/ivod/
-> Content-Type: application/json
-< 200
-< Content-Type: application/json
-{}
+This is the api group of ivod
++ Response 200 (application/json)
 
---
-calendar
---
-GET /v0/collections/calendar/
-> Content-Type: application/json
-< 200
-< Content-Type: application/json
-{}
 
---
-motions
---
-GET /v0/collections/motions/
-> Content-Type: application/json
-< 200
-< Content-Type: application/json
-{}
+## GET /v0/collections/ivod/
+Try real api path: http://api-beta.ly.g0v.tw/v0/collections/ivod/ 
++ Response 200 (application/json)
 
---
-bills
---
-GET /v0/collections/bills/
-> Content-Type: application/json
-< 200
-< Content-Type: application/json
-{}
+This is the api group of calendar
++ Response 200 (application/json)
 
---
-bills.entries
---
-GET /v0/collections/bills/{bill_id}/
-> Content-Type: application/json
-< 200
-< Content-Type: application/json
-{}
 
---
-bills.entries.data
---
-GET /v0/collections/bills/{bill_id}/data
-> Content-Type: application/json
-< 200
-< Content-Type: application/json
-{}
+## GET /v0/collections/calendar/
+Try real api path: http://api-beta.ly.g0v.tw/v0/collections/calendar/ 
++ Response 200 (application/json)
 
---
-bills.entries.doc
---
-GET /v0/collections/bills/{bill_id}/doc
-> Content-Type: application/json
-< 200
-< Content-Type: application/json
-{}
+This is the api group of motions
++ Response 200 (application/json)
 
---
-bills.entries.motions
---
-GET /v0/collections/bills/{bill_id}/motions
-> Content-Type: application/json
-< 200
-< Content-Type: application/json
-{}
 
---
-sittings
---
-GET /v0/collections/sittings/
-> Content-Type: application/json
-< 200
-< Content-Type: application/json
-{}
+## GET /v0/collections/motions/
+Try real api path: http://api-beta.ly.g0v.tw/v0/collections/motions/ 
++ Response 200 (application/json)
 
---
-sittings.entries
---
-GET /v0/collections/sittings/{id}/
-> Content-Type: application/json
-< 200
-< Content-Type: application/json
-{}
+This is the api group of bills
++ Response 200 (application/json)
 
---
-sittings.entries.dates
---
-GET /v0/collections/sittings/{id}/dates
-> Content-Type: application/json
-< 200
-< Content-Type: application/json
-{}
 
---
-sittings.entries.videos
---
-GET /v0/collections/sittings/{id}/videos
-> Content-Type: application/json
-< 200
-< Content-Type: application/json
-{}
+## GET /v0/collections/bills/
+Try real api path: http://api-beta.ly.g0v.tw/v0/collections/bills/ 
++ Response 200 (application/json)
 
---
-sittings.entries.motions
---
-GET /v0/collections/sittings/{id}/motions
-> Content-Type: application/json
-< 200
-< Content-Type: application/json
-{}
+### GET /v0/collections/bills/{bill_id}/
+Try real api path: http://api-beta.ly.g0v.tw/v0/collections/bills/{bill_id}/ 
++ Response 200 (application/json)
+
+#### GET /v0/collections/bills/{bill_id}/data
+Try real api path: http://api-beta.ly.g0v.tw/v0/collections/bills/{bill_id}/data 
++ Response 200 (application/json)
+
+#### GET /v0/collections/bills/{bill_id}/doc
+Try real api path: http://api-beta.ly.g0v.tw/v0/collections/bills/{bill_id}/doc 
++ Response 200 (application/json)
+
+#### GET /v0/collections/bills/{bill_id}/motions
+Try real api path: http://api-beta.ly.g0v.tw/v0/collections/bills/{bill_id}/motions 
++ Response 200 (application/json)
+
+This is the api group of sittings
++ Response 200 (application/json)
+
+
+## GET /v0/collections/sittings/
+Try real api path: http://api-beta.ly.g0v.tw/v0/collections/sittings/ 
++ Response 200 (application/json)
+
+### GET /v0/collections/sittings/{id}/
+Try real api path: http://api-beta.ly.g0v.tw/v0/collections/sittings/{id}/ 
++ Response 200 (application/json)
+
+#### GET /v0/collections/sittings/{id}/dates
+Try real api path: http://api-beta.ly.g0v.tw/v0/collections/sittings/{id}/dates 
++ Response 200 (application/json)
+
+#### GET /v0/collections/sittings/{id}/videos
+Try real api path: http://api-beta.ly.g0v.tw/v0/collections/sittings/{id}/videos 
++ Response 200 (application/json)
+
+#### GET /v0/collections/sittings/{id}/motions
+Try real api path: http://api-beta.ly.g0v.tw/v0/collections/sittings/{id}/motions 
++ Response 200 (application/json)
+
