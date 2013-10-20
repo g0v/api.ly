@@ -1,127 +1,51 @@
+FORMAT: X-1A
 HOST: http://api-beta.ly.g0v.tw
 
---- TW ly api v0 ---
----
-This is beta version of api.ly.g0v.tw. Written in [apiblueprint](http://apiblueprint.org/) by [Markdown](http://daringfireball.net/projects/markdown/syntax) syntax.
------
-Version
-Show specific version of API.
---
-GET /v0/
-> Content-Type: application/json
-< 200
-< Content-Type: application/json
+# TW ly api v0
+online test of [beta API](http://api-beta.ly.g0v.tw)
+This is beta version of api.ly.g0v.tw. Written in [apiblueprint](http://apiblueprint.org/) by [Markdown](http://daringfireball.net/projects/markdown/syntax) syntax.# Version
++ Show specific version of API.
++ GET /v0/
 
---
-Collections
-List all avaible collection of current version.
---
-GET /v0/collections/
-> Content-Type: application/json
-< 200
-< Content-Type: application/json
-[a,b,c,d]
+# Collections
++ List all avaible collection of current version.
++ GET /v0/collections/
 
---
-ivod
---
-GET /v0/collections/ivod/
-> Content-Type: application/json
-< 200
-< Content-Type: application/json
+# ivod
++ GET /v0/collections/ivod/
 
---
-calendar
---
-GET /v0/collections/calendar/
-> Content-Type: application/json
-< 200
-< Content-Type: application/json
+# calendar
++ GET /v0/collections/calendar/
 
---
-motions
---
-GET /v0/collections/motions/
-> Content-Type: application/json
-< 200
-< Content-Type: application/json
+# motions
++ GET /v0/collections/motions/
 
---
-bills
---
-GET /v0/collections/bills/
-> Content-Type: application/json
-< 200
-< Content-Type: application/json
+# bills
++ GET /v0/collections/bills/
 
---
-bills.entries
---
-GET /v0/collections/bills/{bill_id}/
-> Content-Type: application/json
-< 200
-< Content-Type: application/json
+## bills.entries
++ GET /v0/collections/bills/{bill_id}/
 
---
-bills.entries.data
---
-GET /v0/collections/bills/{bill_id}/data
-> Content-Type: application/json
-< 200
-< Content-Type: application/json
+### bills.entries.data
++ GET /v0/collections/bills/{bill_id}/data
 
---
-bills.entries.doc
---
-GET /v0/collections/bills/{bill_id}/doc
-> Content-Type: application/json
-< 200
-< Content-Type: application/json
+### bills.entries.doc
++ GET /v0/collections/bills/{bill_id}/doc
 
---
-bills.entries.motions
---
-GET /v0/collections/bills/{bill_id}/motions
-> Content-Type: application/json
-< 200
-< Content-Type: application/json
+### bills.entries.motions
++ GET /v0/collections/bills/{bill_id}/motions
 
---
-sittings
---
-GET /v0/collections/sittings/
-> Content-Type: application/json
-< 200
-< Content-Type: application/json
+# sittings
++ GET /v0/collections/sittings/
 
---
-sittings.entries
---
-GET /v0/collections/sittings/{id}/
-> Content-Type: application/json
-< 200
-< Content-Type: application/json
+## sittings.entries
++ GET /v0/collections/sittings/{id}/
 
---
-sittings.entries.dates
---
-GET /v0/collections/sittings/{id}/dates
-> Content-Type: application/json
-< 200
-< Content-Type: application/json
+### sittings.entries.dates
++ GET /v0/collections/sittings/{id}/dates
 
---
-sittings.entries.videos
---
-GET /v0/collections/sittings/{id}/videos
-> Content-Type: application/json
-< 200
-< Content-Type: application/json
+### sittings.entries.videos
++ GET /v0/collections/sittings/{id}/videos
 
---
-sittings.entries.motions
---
-GET /v0/collections/sittings/{id}/motions
-> Content-Type: application/json
-< 200
-< Content-Type: application/json
+### sittings.entries.motions
++ GET /v0/collections/sittings/{id}/motions
