@@ -70,6 +70,7 @@ export function bootstrap(plx, cb)
   );
 
   CREATE TABLE IF NOT EXISTS ivod (
+      sitting_id text,
       ad int,
       session int,
       extra int,
