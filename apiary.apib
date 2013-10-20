@@ -3,6 +3,7 @@ HOST: http://api-beta.ly.g0v.tw
 
 # TW ly api v0
 online test of [beta API](http://api-beta.ly.g0v.tw)
+<<<<<<< HEAD
 This is beta version of api.ly.g0v.tw. Written in [apiblueprint](http://apiblueprint.org/) by [Markdown](http://daringfireball.net/projects/markdown/syntax) syntax.
 
 # GET /v0/
@@ -85,3 +86,51 @@ Try real api path: http://api-beta.ly.g0v.tw/v0/collections/sittings/{id}/videos
 Try real api path: http://api-beta.ly.g0v.tw/v0/collections/sittings/{id}/motions 
 + Response 200 (application/json)
 
+=======
+This is beta version of api.ly.g0v.tw. Written in [apiblueprint](http://apiblueprint.org/) by [Markdown](http://daringfireball.net/projects/markdown/syntax) syntax.# Version
++ Show specific version of API.
++ GET /v0/
+
+# Collections
++ List all avaible collection of current version.
++ GET /v0/collections/
+
+# ivod
++ GET /v0/collections/ivod/
+
+# calendar
++ GET /v0/collections/calendar/
+
+# motions
++ GET /v0/collections/motions/
+
+# bills
++ GET /v0/collections/bills/
+
+## bills.entries
++ GET /v0/collections/bills/{bill_id}/
+
+### bills.entries.data
++ GET /v0/collections/bills/{bill_id}/data
+
+### bills.entries.doc
++ GET /v0/collections/bills/{bill_id}/doc
+
+### bills.entries.motions
++ GET /v0/collections/bills/{bill_id}/motions
+
+# sittings
++ GET /v0/collections/sittings/
+
+## sittings.entries
++ GET /v0/collections/sittings/{id}/
+
+### sittings.entries.dates
++ GET /v0/collections/sittings/{id}/dates
+
+### sittings.entries.videos
++ GET /v0/collections/sittings/{id}/videos
+
+### sittings.entries.motions
++ GET /v0/collections/sittings/{id}/motions
+>>>>>>> 28f8bc1cff512127e84014f83beb65fd817c0dde
