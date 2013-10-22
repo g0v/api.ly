@@ -1,6 +1,7 @@
 cd /opt/ly/api.ly
 curl -s -z /opt/ly/cache/ivod.json.bz2 http://kcwu.csie.org/~kcwu/tmp/ivod.json.bz2 -o /opt/ly/cache/ivod-new.json.bz2
 if [ -e /opt/ly/cache/ivod-new.json.bz2 ]; then
+    rm -f /opt/ly/cache/ivod-new.json
     bunzip2 -k /opt/ly/cache/ivod-new.json.bz2
     lsc populate-video.ls --db <%= @conn %> /opt/ly/cache/ivod-new.json
     mv -f /opt/ly/cache/ivod-new.json.bz2 /opt/ly/cache/ivod.json.bz2
