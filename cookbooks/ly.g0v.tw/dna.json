@@ -11,9 +11,7 @@
         "configure_flags": ["--add-module=/opt/nginx-rtmp-module"]
     },
     "nodejs": {
-        "install_method": "source",
-        "version": "0.10.18",
-        "dir": "/usr"
+        "install_method": "package"
     },
     "postgresql": {
         "enable_pgdg_apt": true,
