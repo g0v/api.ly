@@ -142,6 +142,24 @@ cron "populate-calendar" do
   command "cd /opt/ly/api.ly && lsc populate-calendar --db #{conn}"
 end
 
+
+template "/opt/ly/update-video.sh" do
+  source "update-video.erb"
+  owner "root"
+  group "root"
+  variables ({:conn => conn})
+  mode 00755
+end
+
+cron "populate-video" do
+  minute "50"
+  hour "13,19"
+  mailto "clkao@clkao.org"
+  action :create
+  user "nobody"
+  command "/opt/ly/update-video.sh"
+end
+
 # pgqd
 
 package "skytools3"
