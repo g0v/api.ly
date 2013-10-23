@@ -45,6 +45,8 @@ funcs = for {video_url_n}:x in ivod => let x, video_url_n
     #  console.log \wtf x
     return done! unless x.sitting_id
     x.type = type
+    if x.first_frame_timestamp
+      x.first_frame_timestamp = new Date that * 1000ms + 3600s * 8h * 1000ms
     #console.log x
     res <- plx.upsert collection: \ivod, q: {video_url_n}, $: $set: x, _, ->
       console.log \err, x

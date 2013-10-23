@@ -82,6 +82,7 @@ export function bootstrap(plx, cb)
       thumb text,
       firm text,
       time timestamp,
+      first_frame_timestamp timestamp,
       length int,
       video_url_n text primary key,
       video_url_w text,
