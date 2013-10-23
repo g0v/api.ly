@@ -2,7 +2,7 @@ meta =
   'pgrest.ivod':
     as: 'public.ivod'
     columns:
-      '*': <[sitting_id type speaker thumb firm time length video_url_n video_url_w wmvid youtube_id]>
+      '*': <[sitting_id type speaker thumb firm time first_frame_timestamp length video_url_n video_url_w wmvid youtube_id]>
   'pgrest.calendar':
     f: {-raw}
     s: {date: -1}
