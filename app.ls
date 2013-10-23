@@ -1,4 +1,4 @@
-require \.meta
+{meta} = require \.meta
 require! pgrest
 
 opts = pgrest.get-opts!! <<< {meta}
