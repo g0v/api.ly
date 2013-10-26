@@ -1,9 +1,29 @@
+#!/usr/bin/env st-livescript
 require! fs
+{meta} = require \./src/meta.ls
+
 base_url = 'http://api-beta.ly.g0v.tw'
 version  = \v0
 collections = \collections
 base_path = "/#{version}/#{collections}/"
 uri = "#{base_url}/#{base_path}"
+
+sample =
+  'ivod':
+    chinese: '影片'
+  'calendar':
+    chinese: '行程'
+    q: {'{"type":"hearing"}'}
+  'motions':
+    chinese: '議案'
+    q: {'{"bill_id":"1011011071000200"}','{"type":"hearing"}'}
+  'bills':
+    chinese: '提案'
+    bill_id: '1021021070200400'
+    bill_ref: '1150L15359'
+  'sittings':
+    chinese: '會議'
+    id: '08-04-YS-06'
 
 # header
 output = """
@@ -19,79 +39,14 @@ This is beta version of api.ly.g0v.tw. Written in [apiblueprint](http://apibluep
 output += doc_section('Version', 'Show specific version of API.' {'uri': "/#{version}/"});
 output += doc_section('Collections', 'List all avaible collection of current version.', {'uri': base_path});
 
-# meta define, TODO: need to seperate and require from other file
-meta =
-  'pgrest.ivod':
-    as: 'public.ivod'
-    columns:
-      '*': <[sitting_id type speaker thumb firm time length video_url_n video_url_w wmvid youtube_id]>
-  'pgrest.calendar':
-    f: {-raw}
-    s: {date: -1}
-    as: 'public.calendar'
-    $query: ad: $not: null
-    columns:
-      sitting_id: $literal: '_calendar_sitting_id(calendar)'
-      '*': {}
-  'pgrest.motions':
-    s: {sitting_id: -1,motion_class: 1, agenda_item: 1}
-    as: 'public.motions LEFT JOIN bills USING (bill_id)'
-    columns:
-      '*':
-        motions: {}
-        bills: <[bill_ref summary proposed_by]>
-      'doc': type: \json
-  'pgrest.bills':
-    s: {bill_id: -1}
-    f: {data: -1}
-    as: 'bills'
-    primary: (id) ->
-      $or:
-        bill_ref: id
-        bill_id: id
-    columns:
-      '*': <[bill_id bill_ref summary proposed_by sponsors cosponsors abstract]>
-      data: type: \json
-      doc: type: \json
-      motions:
-        $from: 'public.motions'
-        $query: 'bill_id': $literal: 'bills.bill_id'
-        $order: {sitting_id: 1}
-        columns:
-          '*': <[sitting_id ]>
-  'pgrest.sittings':
-    s: {id: -1}
-    f: {-videos}
-    as: 'public.sittings'
-    primary: \id
-    columns:
-      '*': {}
-      dates:
-        $from: 'pgrest.calendar'
-        $query: 'sitting_id': $literal: 'sittings.id'
-        $order: {id: 1}
-        columns:
-          'calendar_id': field: 'calendar.id'
-          '*': <[chair date time_start time_end]>
-      videos:
-        $from: 'pgrest.ivod'
-        $query: 'sitting_id': $literal: 'sittings.id'
-        columns:
-          '*': {}
-      motions:
-        $from: 'pgrest.motions'
-        $query: 'sitting_id': $literal: 'sittings.id'
-        $order: {motion_class: 1, agenda_item: 1}
-        columns:
-          '*': <[motion_class agenda_item subitem item bill_id bill_ref proposed_by summary doc]>
-
 for collection of meta
   c = meta[collection]
   o = ''
   collection = collection - 'pgrest.'
+  s = sample[collection]
 
   # listing only
-  o += doc_section(collection, 'This is the api group of '+collection)+"\n"
+  o += doc_section('Group '+collection, 'This is the api group of '+collection+" (#{s.chinese})")+"\n"
   o += doc_section(collection, null, {'uri': base_path+collection+'/'}, null, 2)
 
   if(c.primary?)
@@ -101,11 +56,15 @@ for collection of meta
       id = 'bill_id'
     else
       id = c.primary
-    o += doc_section(collection+'.entries', null, {'uri': base_path+collection+"/{#{id}}/"}, null, 3)
+    if(s[id]?)
+      sample_url = base_url+base_path+collection+"/#{s[id]}/"
+    o += doc_section(collection+'.entries', null, {'uri': base_path+collection+"/{#{id}}/", 'sample_url':sample_url, 'sample':s}, null, 3)
     if(c.columns?)
       for column of c.columns
         if(column != '*')
-          o += doc_section(collection+'.entries.'+column, null, {'uri': base_path+collection+"/{#{id}}/#{column}"}, null, 4)
+          if(s[id]?)
+            sample_url = base_url+base_path+collection+"/#{s[id]}/#{column}"
+          o += doc_section(collection+'.entries.'+column, null, {'uri': base_path+collection+"/{#{id}}/#{column}", 'sample_url':sample_url, 'sample':s}, null, 4)
   output += o
 
 fs.writeFile('apiary.apib', output)
@@ -117,17 +76,21 @@ function doc_section(title, desc = null, req = {}, res = {}, level = 1)
   for i from 1 to level
     sharp+='#'
   o = []
-  if(req?)
-    if(req.uri?)
-      o.push(sharp+" GET #{req.uri}")
+
+  if(req.uri?)
+    o.push(sharp+" GET #{req.uri}")
   else
     o.push(sharp+' '+title)
   if(desc?)
     o.push(desc)
   else
     if(req?)
-      o.push("Try real api path: #{base_url}#{req.uri} ");
-  o.push(doc_section_res(res))
+      if(req.sample_url?)
+        o.push("Try: #{sample_url} ");
+      else
+        o.push("Try: #{base_url}#{req.uri} ");
+  if(req.uri?)
+    o.push(doc_section_res(res))
   return o.join("\n")+"\n";
 
 function doc_section_res(res)
