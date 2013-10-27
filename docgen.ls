@@ -44,8 +44,8 @@ Every API have following attributes:
     + count (integer) ... Total number of entries
     + l (integer) ... Number of entries list in entries.
     + sk (integer) ... Start offset of entries. Start from 0
-            Sample Page 1: http://api/v0/collections/calendar?l=10&sk=10
-            Sample Page 2: http://api/v0/collections/calendar?l=10&sk=20
+        + Sample Page 1: http://api/v0/collections/calendar?l=10&sk=10
+        + Sample Page 2: http://api/v0/collections/calendar?l=10&sk=20
 
 + entries (Array)
     Every entry have it's own attributes, see following list and example. 
@@ -65,9 +65,9 @@ for collection of meta
   s = sample[collection]
 
   # listing only
-  group_desc = 'This is the api group of '+collection+" (#{s.chinese})"+"\n"
+  group_desc = '+ This is the api group of '+collection+" (#{s.chinese})"+"\n"
   if(s.desc?)
-    group_desc += s.desc+"\n"
+    group_desc += '+ '+s.desc+"\n"
   o += doc_section('Group '+collection, group_desc)
   o += doc_section(collection, null, {'uri': base_path+collection+'/'}, null, 2)
 

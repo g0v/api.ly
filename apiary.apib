@@ -10,8 +10,8 @@ Every API have following attributes:
     + count (integer) ... Total number of entries
     + l (integer) ... Number of entries list in entries.
     + sk (integer) ... Start offset of entries. Start from 0
-            Sample Page 1: http://api/v0/collections/calendar?l=10&sk=10
-            Sample Page 2: http://api/v0/collections/calendar?l=10&sk=20
+        + Sample Page 1: http://api/v0/collections/calendar?l=10&sk=10
+        + Sample Page 2: http://api/v0/collections/calendar?l=10&sk=20
 
 + entries (Array)
     Every entry have it's own attributes, see following list and example. 
@@ -28,8 +28,8 @@ List all avaible collection of current version.
 + Response 200 (application/json)
 
 # Group ivod
-This is the api group of ivod (影片)
-ivod為立法院的議事轉播公開影片，每一個entry包含影片的錄製時間、影片種類、原始連結、縮圖等資訊。
++ This is the api group of ivod (影片)
++ ivod為立法院的議事轉播公開影片，每一個entry包含影片的錄製時間、影片種類、原始連結、縮圖等資訊。
 資料來源:立法院議事轉播 http://ivod.ly.gov.tw/
 
 ## GET /v0/collections/ivod/
@@ -37,8 +37,8 @@ Example: http://api-beta.ly.g0v.tw/v0/collections/ivod/
 + Response 200 (application/json)
 
 # Group calendar
-This is the api group of calendar (行程)
-立法院最新的公開行程
++ This is the api group of calendar (行程)
++ 立法院最新的公開行程
 資料來源: http://www.ly.gov.tw/01_lyinfo/0101_lynews/lynewsList.action
 
 ## GET /v0/collections/calendar/
@@ -46,8 +46,8 @@ Example: http://api-beta.ly.g0v.tw/v0/collections/calendar/
 + Response 200 (application/json)
 
 # Group motions
-This is the api group of motions (議案/公報)
-立法院將議事的紀錄撰寫成公報，供所有公民檢閱。
++ This is the api group of motions (議案/公報)
++ 立法院將議事的紀錄撰寫成公報，供所有公民檢閱。
 資料來源: http://lci.ly.gov.tw/
 
 ## GET /v0/collections/motions/
@@ -55,8 +55,8 @@ Example: http://api-beta.ly.g0v.tw/v0/collections/motions/
 + Response 200 (application/json)
 
 # Group bills
-This is the api group of bills (提案)
-
++ This is the api group of bills (提案)
++ 
 
 ## GET /v0/collections/bills/
 Example: http://api-beta.ly.g0v.tw/v0/collections/bills/ 
@@ -79,8 +79,8 @@ Example: http://api-beta.ly.g0v.tw/v0/collections/bills/1021021070200400/motions
 + Response 200 (application/json)
 
 # Group sittings
-This is the api group of sittings (會議)
-立法院以會期為單位舉辦每個會議，此API包含該次會議的相關所有資訊，組合成一個entry。
++ This is the api group of sittings (會議)
++ 立法院以會期為單位舉辦每個會議，此API包含該次會議的相關所有資訊，組合成一個entry。
 
 ## GET /v0/collections/sittings/
 Example: http://api-beta.ly.g0v.tw/v0/collections/sittings/ 
