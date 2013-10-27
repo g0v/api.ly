@@ -11,18 +11,23 @@ uri = "#{base_url}/#{base_path}"
 sample =
   'ivod':
     chinese: '影片'
+    desc: "ivod為立法院的議事轉播公開影片，每一個entry包含影片的錄製時間、影片種類、原始連結、縮圖等資訊。\n資料來源:立法院議事轉播 http://ivod.ly.gov.tw/"
   'calendar':
     chinese: '行程'
+    desc: "立法院最新的公開行程\n資料來源: http://www.ly.gov.tw/01_lyinfo/0101_lynews/lynewsList.action"
     q: {'{"type":"hearing"}'}
   'motions':
-    chinese: '議案'
+    chinese: '議案/公報'
+    desc: "立法院將議事的紀錄撰寫成公報，供所有公民檢閱。\n資料來源: http://lci.ly.gov.tw/"
     q: {'{"bill_id":"1011011071000200"}','{"type":"hearing"}'}
   'bills':
     chinese: '提案'
+    desc: ""
     bill_id: '1021021070200400'
     bill_ref: '1150L15359'
   'sittings':
     chinese: '會議'
+    desc: "立法院以會期為單位舉辦每個會議，此API包含該次會議的相關所有資訊，組合成一個entry。"
     id: '08-04-YS-06'
 
 # header
@@ -32,7 +37,21 @@ HOST: #{base_url}
 
 # TW ly api #{version}
 online test of [beta API](http://api-beta.ly.g0v.tw)
-This is beta version of api.ly.g0v.tw. Written in [apiblueprint](http://apiblueprint.org/) by [Markdown](http://daringfireball.net/projects/markdown/syntax) syntax.\n\n
+This is beta version of api.ly.g0v.tw. Written in [apiblueprint](http://apiblueprint.org/) by [Markdown](http://daringfireball.net/projects/markdown/syntax) syntax.
+Every API have following attributes:
+
++ paging (Object)
+    + count (integer) ... Total number of entries
+    + l (integer) ... Number of entries list in entries.
+    + sk (integer) ... Start offset of entries. Start from 0
+            Sample Page 1: http://api/v0/collections/calendar?l=10&sk=10
+            Sample Page 2: http://api/v0/collections/calendar?l=10&sk=20
+
++ entries (Array)
+    Every entry have it's own attributes, see following list and example. 
+
+##### Retrieve an API [GET]
+\n\n
 """
 
 # version and collections summary
@@ -46,7 +65,10 @@ for collection of meta
   s = sample[collection]
 
   # listing only
-  o += doc_section('Group '+collection, 'This is the api group of '+collection+" (#{s.chinese})")+"\n"
+  group_desc = 'This is the api group of '+collection+" (#{s.chinese})"+"\n"
+  if(s.desc?)
+    group_desc += s.desc+"\n"
+  o += doc_section('Group '+collection, group_desc)
   o += doc_section(collection, null, {'uri': base_path+collection+'/'}, null, 2)
 
   if(c.primary?)
@@ -86,9 +108,9 @@ function doc_section(title, desc = null, req = {}, res = {}, level = 1)
   else
     if(req?)
       if(req.sample_url?)
-        o.push("Try: #{sample_url} ");
+        o.push("Example: #{sample_url} ");
       else
-        o.push("Try: #{base_url}#{req.uri} ");
+        o.push("Example: #{base_url}#{req.uri} ");
   if(req.uri?)
     o.push(doc_section_res(res))
   return o.join("\n")+"\n";
