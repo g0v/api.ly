@@ -70,9 +70,9 @@ for collection of meta
   if(s.desc?)
     group_desc += '+ '+s.desc+"\n"
   if(s.q?)
-    sample_url = base_path+collection+'?q='+s.q[0]
+    sample_url = base_url+base_path+collection+'?q='+s.q[0]
   else
-    sample_url = base_path+collection
+    sample_url = null
   o += doc_section('Group '+collection, group_desc)
   o += doc_section(collection, null, {'uri': base_path+collection+'/', 'sample_url': sample_url}, null, 2)
 
