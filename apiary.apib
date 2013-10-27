@@ -34,7 +34,7 @@ List all avaible collection of current version.
 資料來源:立法院議事轉播 http://ivod.ly.gov.tw/
 
 ## GET /v0/collections/ivod/
-Example: http://api-beta.ly.g0v.tw/v0/collections/ivod/ 
+Example: /v0/collections/ivod 
 + Response 200 (application/json)
 
 # Group calendar
@@ -43,7 +43,7 @@ Example: http://api-beta.ly.g0v.tw/v0/collections/ivod/
 資料來源: http://www.ly.gov.tw/01_lyinfo/0101_lynews/lynewsList.action
 
 ## GET /v0/collections/calendar/
-Example: http://api-beta.ly.g0v.tw/v0/collections/calendar/ 
+Example: /v0/collections/calendar?q={"type":"hearing"} 
 + Response 200 (application/json)
 
 # Group motions
@@ -52,7 +52,7 @@ Example: http://api-beta.ly.g0v.tw/v0/collections/calendar/
 資料來源: http://misq.ly.gov.tw + http://npl.ly.gov.tw
 
 ## GET /v0/collections/motions/
-Example: http://api-beta.ly.g0v.tw/v0/collections/motions/ 
+Example: /v0/collections/motions?q={"bill_id":"1011011071000200"} 
 + Response 200 (application/json)
 
 # Group bills
@@ -61,7 +61,7 @@ Example: http://api-beta.ly.g0v.tw/v0/collections/motions/
 資料來源: http://misq.ly.gov.tw + http://npl.ly.gov.tw
 
 ## GET /v0/collections/bills/
-Example: http://api-beta.ly.g0v.tw/v0/collections/bills/ 
+Example: /v0/collections/bills 
 + Response 200 (application/json)
 
 ### GET /v0/collections/bills/{bill_id}/
@@ -85,7 +85,7 @@ Example: http://api-beta.ly.g0v.tw/v0/collections/bills/1021021070200400/motions
 + 立法院以會期為單位舉辦每個會議，一次會議可能會分多天進行，此 api 包含該次會議的所有相關資訊，如議程、相關影像等。
 
 ## GET /v0/collections/sittings/
-Example: http://api-beta.ly.g0v.tw/v0/collections/sittings/ 
+Example: /v0/collections/sittings 
 + Response 200 (application/json)
 
 ### GET /v0/collections/sittings/{id}/

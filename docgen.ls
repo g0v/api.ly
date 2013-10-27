@@ -15,11 +15,11 @@ sample =
   'calendar':
     chinese: '行程'
     desc: "立法院最新的公開行程\n資料來源: http://www.ly.gov.tw/01_lyinfo/0101_lynews/lynewsList.action"
-    q: {'{"type":"hearing"}'}
+    q: ['{"type":"hearing"}']
   'motions':
     chinese: '議案/公報'
     desc: "立法院將議事的紀錄撰寫成公報，供所有公民檢閱。\n資料來源: http://misq.ly.gov.tw + http://npl.ly.gov.tw"
-    q: {'{"bill_id":"1011011071000200"}','{"type":"hearing"}'}
+    q: ['{"bill_id":"1011011071000200"}','{"type":"hearing"}']
   'bills':
     chinese: '提案'
     desc: "立法院黨團、委員、政府提出的提案，可能是法律案、預算案、其他案、宣戰案...等。\n資料來源: http://misq.ly.gov.tw + http://npl.ly.gov.tw"
@@ -69,8 +69,12 @@ for collection of meta
   group_desc = '+ This is the api group of '+collection+" (#{s.chinese})"+"\n"
   if(s.desc?)
     group_desc += '+ '+s.desc+"\n"
+  if(s.q?)
+    sample_url = base_path+collection+'?q='+s.q[0]
+  else
+    sample_url = base_path+collection
   o += doc_section('Group '+collection, group_desc)
-  o += doc_section(collection, null, {'uri': base_path+collection+'/'}, null, 2)
+  o += doc_section(collection, null, {'uri': base_path+collection+'/', 'sample_url': sample_url}, null, 2)
 
   if(c.primary?)
     #have sub query
