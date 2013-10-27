@@ -27,7 +27,7 @@ sample =
     bill_ref: '1150L15359'
   'sittings':
     chinese: '會議'
-    desc: "立法院以會期為單位舉辦每個會議，此API包含該次會議的相關所有資訊，組合成一個entry。"
+    desc: "立法院以會期為單位舉辦每個會議，此API包含該次會議的所有相關資訊，組合成一個entry。"
     id: '08-04-YS-06'
 
 # header
