@@ -18,16 +18,16 @@ sample =
     q: {'{"type":"hearing"}'}
   'motions':
     chinese: '議案/公報'
-    desc: "立法院將議事的紀錄撰寫成公報，供所有公民檢閱。\n資料來源: http://lci.ly.gov.tw/"
+    desc: "立法院將議事的紀錄撰寫成公報，供所有公民檢閱。\n資料來源: http://misq.ly.gov.tw + http://npl.ly.gov.tw"
     q: {'{"bill_id":"1011011071000200"}','{"type":"hearing"}'}
   'bills':
     chinese: '提案'
-    desc: ""
+    desc: "立法院黨團、委員、政府提出的提案，可能是法律案、預算案、其他案、宣戰案...等。\n資料來源: http://misq.ly.gov.tw + http://npl.ly.gov.tw"
     bill_id: '1021021070200400'
     bill_ref: '1150L15359'
   'sittings':
     chinese: '會議'
-    desc: "立法院以會期為單位舉辦每個會議，此API包含該次會議的所有相關資訊，組合成一個entry。"
+    desc: "立法院以會期為單位舉辦每個會議，一次會議可能會分多天進行，此 api 包含該次會議的所有相關資訊，如議程、相關影像等。"
     id: '08-04-YS-06'
 
 # header

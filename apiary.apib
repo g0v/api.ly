@@ -49,7 +49,7 @@ Example: http://api-beta.ly.g0v.tw/v0/collections/calendar/
 # Group motions
 + This is the api group of motions (議案/公報)
 + 立法院將議事的紀錄撰寫成公報，供所有公民檢閱。
-資料來源: http://lci.ly.gov.tw/
+資料來源: http://misq.ly.gov.tw + http://npl.ly.gov.tw
 
 ## GET /v0/collections/motions/
 Example: http://api-beta.ly.g0v.tw/v0/collections/motions/ 
@@ -57,7 +57,8 @@ Example: http://api-beta.ly.g0v.tw/v0/collections/motions/
 
 # Group bills
 + This is the api group of bills (提案)
-+ 
++ 立法院黨團、委員、政府提出的提案，可能是法律案、預算案、其他案、宣戰案...等。
+資料來源: http://misq.ly.gov.tw + http://npl.ly.gov.tw
 
 ## GET /v0/collections/bills/
 Example: http://api-beta.ly.g0v.tw/v0/collections/bills/ 
@@ -81,7 +82,7 @@ Example: http://api-beta.ly.g0v.tw/v0/collections/bills/1021021070200400/motions
 
 # Group sittings
 + This is the api group of sittings (會議)
-+ 立法院以會期為單位舉辦每個會議，此API包含該次會議的相關所有資訊，組合成一個entry。
++ 立法院以會期為單位舉辦每個會議，一次會議可能會分多天進行，此 api 包含該次會議的所有相關資訊，如議程、相關影像等。
 
 ## GET /v0/collections/sittings/
 Example: http://api-beta.ly.g0v.tw/v0/collections/sittings/ 
