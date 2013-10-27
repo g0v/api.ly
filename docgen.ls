@@ -44,11 +44,12 @@ Every API have following attributes:
     + count (integer) ... Total number of entries
     + l (integer) ... Number of entries list in entries.
     + sk (integer) ... Start offset of entries. Start from 0
-        + Sample Page 1: http://api/v0/collections/calendar?l=10&sk=10
-        + Sample Page 2: http://api/v0/collections/calendar?l=10&sk=20
+        + Sample Page 1: #{base_url}/v0/collections/calendar?l=10&sk=0
+        + Sample Page 2: #{base_url}/v0/collections/calendar?l=10&sk=10
+        + Sample Page 3: #{base_url}/v0/collections/calendar?l=10&sk=20
 
 + entries (Array)
-    Every entry have it's own attributes, see following list and example. 
+    + Every entry have it's own attributes, see following list and example. 
 
 ##### Retrieve an API [GET]
 \n\n
