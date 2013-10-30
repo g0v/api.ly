@@ -110,21 +110,17 @@ function doc_section(title, desc = null, req = {}, res = {}, level = 1)
   sharp = '#' * level
   o = []
 
-  if(req.uri?)
-    o.push(sharp+" GET #{req.uri}")
-  else
-    o.push(sharp+' '+title)
+  o.push if req.uri? => "#sharp GET #{req.uri}" else "#sharp #title"
   if(desc?)
     o.push(desc)
-  else
-    if(req?)
-      if(req.sample_url?)
-        o.push("Example: #{sample_url} ");
-      else
-        o.push("Example: #{base_url}#{req.uri} ");
-  if(req.uri?)
-    o.push(doc_section_res(res))
-  return o.join("\n")+"\n";
+  else if(req?)
+    if(req.sample_url?)
+      o.push("Example: #{sample_url} ");
+    else
+      o.push("Example: #{base_url}#{req.uri} ");
+  o.push doc_section_res res if req.uri?
+  o.push ''
+  return o * "\n"
 
 function doc_section_res(res)
   content_type = res.content_type ? 'application/json'
