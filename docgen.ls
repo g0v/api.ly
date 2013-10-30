@@ -120,10 +120,10 @@ function doc_section(title, desc = null, req = {}, res = {}, level = 1)
   o.push ''
   return o * "\n"
 
-function doc_section_res(res)
-  content_type = res.content_type ? 'application/json'
+function doc_section_res({content_type,example})
+  content_type ?= 'application/json'
   o = ["+ Response 200 (#content_type)"]
-  o.push "\n\t#{res.example}\n" if res.example?
+  o.push "\n\t#{example}\n" if example?
   o.push ''
   return o * "\n"
 
