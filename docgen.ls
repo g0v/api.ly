@@ -107,9 +107,7 @@ console.log(output)
 
 
 function doc_section(title, desc = null, req = {}, res = {}, level = 1)
-  sharp = ''
-  for i from 1 to level
-    sharp+='#'
+  sharp = '#' * level
   o = []
 
   if(req.uri?)
