@@ -129,13 +129,9 @@ function doc_section(title, desc = null, req = {}, res = {}, level = 1)
   return o.join("\n")+"\n";
 
 function doc_section_res(res)
-  o = []
-  if(res.content_type?)
-    content_type = '('+req.content_type+')'
-  else
-    content_type = '(application/json)'
-  o.push("+ Response 200 "+content_type)
-  if(res.example?)
-    o.push("\n\t"+res.example+"\n")
-  return o.join("\n")+"\n"
+  content_type = res.content_type ? 'application/json'
+  o = ["+ Response 200 (#content_type)"]
+  o.push "\n\t#{res.example}\n" if res.example?
+  o.push ''
+  return o * "\n"
 
