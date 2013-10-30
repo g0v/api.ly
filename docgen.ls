@@ -49,7 +49,15 @@ Every API have following attributes:
         + Sample Page 3: #{base_url}/v0/collections/calendar?l=10&sk=20
 
 + entries (Array)
-    + Every entry have it's own attributes, see following list and example. 
+    + Every entry have it's own attributes, see following list and example.
+
+Every API can pass json object as query to filter result
+
++ query sample:
+    + Filter field "proposed_by" in someone's name of bills: {"proposed_by":{"$matches":"someone's name"}}
+        + Sample URI: http://api-beta.ly.g0v.tw/v0/collections/bills?q={%22proposed_by%22:{%22$matches%22:%22%E4%BA%BA%22}}
+    + Filter field "summary" in keyword of sittings:
+        + Sample URI: http://api-beta.ly.g0v.tw/v0/collections/sittings?q={%22summary%22:{%22$matches%22:%22%E5%81%A5%E4%BF%9D%22}}
 
 ##### Retrieve an API [GET]
 \n\n
