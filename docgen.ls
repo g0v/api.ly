@@ -94,12 +94,10 @@ for collection of meta
     if(s[id]?)
       sample_url = base_url+base_path+collection+"/#{s[id]}/"
     o += doc_section(collection+'.entries', null, {'uri': base_path+collection+"/{#{id}}/", 'sample_url':sample_url, 'sample':s}, null, 3)
-    if(c.columns?)
-      for column of c.columns
-        if(column != '*')
-          if(s[id]?)
-            sample_url = base_url+base_path+collection+"/#{s[id]}/#{column}"
-          o += doc_section(collection+'.entries.'+column, null, {'uri': base_path+collection+"/{#{id}}/#{column}", 'sample_url':sample_url, 'sample':s}, null, 4)
+    for column of c.columns ? {} when column isnt '*'
+      if(s[id]?)
+        sample_url = base_url+base_path+collection+"/#{s[id]}/#{column}"
+      o += doc_section(collection+'.entries.'+column, null, {'uri': base_path+collection+"/{#{id}}/#{column}", 'sample_url':sample_url, 'sample':s}, null, 4)
   output += o
 
 fs.writeFile('apiary.apib', output)
