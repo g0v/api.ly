@@ -1,9 +1,12 @@
+include_recipe "nginx::source"
 
 package "pkg-config"
 package "yasm"
 package "libvorbis-dev"
 package "libvpx-dev"
 package "libx264-dev"
+package "libavcodec-extra-53"
+package "libmp3lame-dev"
 
 git "/opt/ffmpeg" do
   repository "git://github.com/FFmpeg/FFmpeg"
@@ -15,7 +18,7 @@ execute "install ffmpeg" do
   cwd "/opt/ffmpeg"
   action :nothing
   subscribes :run, resources(:git => "/opt/ffmpeg"), :immediately
-  command "./configure --enable-libvpx --enable-libvorbis --enable-libx264 && make"
+  command "./configure --enable-libvpx --enable-libvorbis --enable-libx264 --enable-gpl --enable-nonfree --enable-libmp3lame && make"
 end
 
 git "/opt/msdl" do
