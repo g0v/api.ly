@@ -38,3 +38,24 @@ template "/etc/nginx/rtmp.conf" do
   variables {}
   mode 00755
 end
+template "/etc/nginx/sites-available/lystream" do
+  source "site-lystream.erb"
+  owner "root"
+  group "root"
+  variables ({:fqdn => node[:ly][:lystream_fqdn]})
+  mode 00755
+end
+nginx_site "lystream"
+
+template "/etc/ffserver.conf" do
+  source "ffserver.erb"
+  owner "root"
+  group "root"
+  variables {}
+  mode 00755
+end
+
+runit_service "ffserver" do
+  default_logger true
+  action [:enable, :start]
+end

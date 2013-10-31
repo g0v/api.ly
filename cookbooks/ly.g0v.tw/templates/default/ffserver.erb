@@ -1,0 +1,46 @@
+Port 8090
+
+BindAddress 0.0.0.0
+
+MaxHTTPConnections 2000
+MaxClients 1000
+MaxBandwidth 1000
+
+CustomLog -
+
+NoDaemon
+
+<Feed YS.ffm>
+File /tmp/YS.ffm
+FileMaxSize 5M
+</Feed>
+
+<Stream YS.webm>
+Feed YS.ffm
+Format webm
+AudioCodec vorbis
+AudioBitRate 64
+VideoCodec libvpx
+#VideoFrameRate 25
+AVOptionVideo flags +global_header
+AVOptionAudio flags +global_header
+PreRoll 15
+StartSendOnKey
+#VideoSize 512x288
+#VideoBitRate 800
+
+</Stream>
+
+<Stream stat.html>
+Format status
+
+# Only allow local people to get the status
+ACL allow localhost
+ACL allow 192.168.0.0 192.168.255.255
+
+#FaviconURL http://pond1.gladstonefamily.net:8080/favicon.ico
+</Stream>
+
+<Redirect index.html>
+URL http://www.ffmpeg.org/
+</Redirect>
