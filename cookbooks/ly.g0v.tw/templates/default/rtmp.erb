@@ -1,0 +1,39 @@
+rtmp {
+    server {
+        listen 1935;
+        chunk_size 4000;
+                application hls {
+            live on;
+            hls on;
+            hls_nested on;
+
+            hls_path /tmp/app;
+            hls_fragment 10s;
+
+            exec /opt/ffmpeg/ffmpeg -re -i rtmp://localhost:1935/$app/$name http://localhost:8090/${name}.ffm;
+        }
+    }
+}
+
+http {
+    server {
+        listen      80;
+        location /hls {
+            # Serve HLS fragments
+            types {
+                application/vnd.apple.mpegurl m3u8;
+                video/mp2t ts;
+            }
+            alias /tmp/app;
+            expires -1;
+        }
+        location /stat {
+            rtmp_stat all;
+            rtmp_stat_stylesheet stat.xsl;
+        }
+        location /stat.xsl {
+            root /opt/nginx-rtmp-module/;
+        }
+
+    }
+}

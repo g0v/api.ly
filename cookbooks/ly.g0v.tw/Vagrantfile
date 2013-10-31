@@ -5,6 +5,8 @@ Vagrant.configure("2") do |config|
   config.vm.box = "ubuntu-12.04.3"
   config.vm.box_url = "https://s3-eu-west-1.amazonaws.com/ffuenf-vagrant-boxes/ubuntu/ubuntu-12.04.3-server-amd64.box"
   config.vm.network :forwarded_port, host: 6988, guest: 80
+  config.vm.network :forwarded_port, host: 6989, guest: 1935
+  config.vm.network :forwarded_port, host: 6990, guest: 8090
   config.vm.synced_folder "../../..", "/vagrant_git"
   config.cache.auto_detect = true
   config.berkshelf.enabled = true

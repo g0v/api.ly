@@ -5,7 +5,7 @@ include_recipe "postgresql::ruby"
 
 git "/opt/nginx-rtmp-module" do
   repository "git://github.com/arut/nginx-rtmp-module"
-  reference "v1.0.4"
+  reference "v1.0.5"
   action :sync
 end
 
@@ -261,3 +261,5 @@ runit_service "bill-details" do
   subscribes :restart, "execute[install api.ly]"
   env ({"UNOCONV_PYTHON" => "/usr/bin/python", "HOME" => "/tmp"})
 end
+
+include_recipe "ly.g0v.tw::stream"
