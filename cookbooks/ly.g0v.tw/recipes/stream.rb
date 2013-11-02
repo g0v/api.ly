@@ -62,3 +62,10 @@ runit_service "ffserver" do
   default_logger true
   action [:enable, :start]
 end
+
+runit_service "msdl-YS" do
+  run_template_name "msdl"
+  default_logger true
+  action [:enable, :disable]
+  options ({:ch => 14, :committee => 'YS'})
+end
