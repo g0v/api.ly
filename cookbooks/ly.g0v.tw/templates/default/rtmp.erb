@@ -9,6 +9,7 @@ rtmp {
 
             hls_path /tmp/app;
             hls_fragment 10s;
+            hls_continuous on;
 
             allow publish 127.0.0.1;
             <% @allow_publish.each do |ip| %>
