@@ -39,7 +39,7 @@ template "/etc/nginx/rtmp.conf" do
   source "rtmp.erb"
   owner "root"
   group "root"
-  variables {}
+  variables ({:allow_publish => node[:ly][:allow_publish] || []})
   mode 00755
 end
 template "/etc/nginx/sites-available/lystream" do

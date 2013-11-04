@@ -2,13 +2,19 @@ rtmp {
     server {
         listen 127.0.0.1:1935;
         chunk_size 4000;
-                application hls {
+        application hls {
             live on;
             hls on;
             hls_nested on;
 
             hls_path /tmp/app;
             hls_fragment 10s;
+
+            allow publish 127.0.0.1;
+            <% @allow_publish.each do |ip| %>
+            allow publish <%= ip %>;
+            <% end %>
+            deny publish all;
 
             exec /opt/ffmpeg/ffmpeg -re -i rtmp://localhost:1935/$app/$name http://localhost:8090/${name}.ffm;
         }
