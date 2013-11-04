@@ -35,6 +35,12 @@ execute "install msdl" do
   command "./configure && make"
 end
 
+directory "/var/run/hls" do
+  action :create
+  owner "www-data"
+  group "www-data"
+end
+
 template "/etc/nginx/rtmp.conf" do
   source "rtmp.erb"
   owner "root"
