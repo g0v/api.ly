@@ -1,7 +1,11 @@
 rtmp {
     server {
         listen <%= @rtmp_listen %>:1935;
-        chunk_size 4000;
+        chunk_size 4096;
+        max_streams 1024;
+        log_format main '$remote_addr [$time_local] $command "$app" "$name" "$args" - $bytes_received $bytes_sent "$pageurl" "$flashver" ($session_readable_time)';
+        access_log /var/log/nginx/rtmp_access.log main;
+
         application hls {
             live on;
             hls on;
