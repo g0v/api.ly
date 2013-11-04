@@ -1,4 +1,5 @@
 include_recipe "runit"
+include_recipe "ly.g0v.tw::apilib"
 
 package "pkg-config"
 package "yasm"

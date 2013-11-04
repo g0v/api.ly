@@ -3,25 +3,7 @@ include_recipe "database"
 include_recipe "cron"
 include_recipe "postgresql::ruby"
 include_recipe "ly.g0v.tw::nginx"
-
-execute "install bower" do
-  command "npm i -g bower@1.2.6"
-  not_if "test -e /usr/bin/bower"
-end
-
-git "/opt/ly/twlyparser" do
-  repository "git://github.com/g0v/twlyparser.git"
-  enable_submodules true
-  reference "master"
-  action :sync
-end
-
-execute "install twlyparser" do
-  cwd "/opt/ly/twlyparser"
-  action :nothing
-  subscribes :run, resources(:git => "/opt/ly/twlyparser"), :immediately
-  command "npm i && npm link"
-end
+include_recipe "ly.g0v.tw::apilib"
 
 postgresql_connection_info = {:host => "127.0.0.1",
                               :port => node['postgresql']['config']['port'],
@@ -64,28 +46,12 @@ postgresql_database "plv8" do
   subscribes :query, resources(:postgresql_database_user => 'ly'), :immediately
 end
 
-# XXX: when used with vagrant, use /vagrant_git as source
-git "/opt/ly/api.ly" do
-  repository "git://github.com/g0v/api.ly.git"
-  reference "master"
-  action :sync
-end
-
-# XXX: use nobody user instead
-execute "install api.ly" do
-  cwd "/opt/ly/api.ly"
-  action :nothing
-  subscribes :run, resources(:git => "/opt/ly/api.ly"), :immediately
-  command "npm link twlyparser pgrest && npm i && npm run prepublish && bower install --allow-root jquery"
-  notifies :run, "execute[boot api.ly]", :immediately
-  notifies :restart, "service[lyapi]"
-end
-
 execute "boot api.ly" do
   cwd "/opt/ly/api.ly"
   action :nothing
   user "nobody"
   command "lsc app.ls --db #{conn} --boot"
+  subscribes :run, "execute[install api.ly]", :immediately
 end
 
 # XXX: ensure londiste is not enabled yet
