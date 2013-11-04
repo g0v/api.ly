@@ -1,6 +1,6 @@
 rtmp {
     server {
-        listen 127.0.0.1:1935;
+        listen <%= @rtmp_listen %>:1935;
         chunk_size 4000;
         application hls {
             live on;
