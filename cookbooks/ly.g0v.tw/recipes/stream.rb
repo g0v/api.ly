@@ -75,6 +75,5 @@ node[:ly][:channels].each do |ch|
       :channel => ch.channel,
       :rtmp_server => 'rtmp://localhost:1935/hls'
     })
-    service_dir "/tmp"
   end
 end
