@@ -3,6 +3,7 @@
         "dev": true
     },
     "ly": {
+        "enable_msdl": false,
         "lystream_fqdn": "vagrant.local",
         "rtmp_server": "rtmp://localhost:1935/hls",
         "channels": [
