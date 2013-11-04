@@ -43,6 +43,14 @@
             "channel": "PRO"
           },
           {
+            "chid": 2,
+            "channel": "DIS"
+          },
+          {
+            "chid": 3,
+            "channel": "CON"
+          },
+          {
             "chid": 14,
             "channel": "YS"
           }
