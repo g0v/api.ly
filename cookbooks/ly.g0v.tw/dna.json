@@ -22,6 +22,18 @@
             "channel": "IAD"
           },
           {
+            "chid": 11,
+            "channel": "FND"
+          },
+          {
+            "chid": 8,
+            "channel": "ECO"
+          },
+          {
+            "chid": 13,
+            "channel": "FIN"
+          },
+          {
             "chid": 6,
             "channel": "SWE"
           },
