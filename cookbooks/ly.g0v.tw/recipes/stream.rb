@@ -16,7 +16,9 @@ template "/etc/nginx/rtmp.conf" do
     :rtmp_listen => node[:ly][:rtmp_listen] || '127.0.0.1',
   })
   mode 00755
+  notifies :restart, "service[nginx]"
 end
+
 template "/etc/nginx/sites-available/lystream" do
   source "site-lystream.erb"
   owner "root"
