@@ -26,5 +26,7 @@ server {
     }
     location / {
         root /opt/ly/ivod;
+        # angularjs
+        index index.html index.htm;          try_files $uri $uri/ /index.html?$args;
     }
 }
