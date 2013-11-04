@@ -3,7 +3,33 @@
         "dev": true
     },
     "ly": {
-        "lystream_fqdn": "vagrant.local"
+        "lystream_fqdn": "vagrant.local",
+        "channels": [
+          {
+            "chid": 1,
+            "channel": "EDU"
+          },
+          {
+            "chid": 9,
+            "channel": "TRA"
+          },
+          {
+            "chid": 12,
+            "channel": "JUD"
+          },
+          {
+            "chid": 10,
+            "channel": "IAD"
+          },
+          {
+            "chid": 6,
+            "channel": "SWE"
+          },
+          {
+            "chid": 14,
+            "channel": "YS"
+          }
+        ]
     },
     "libreoffice": {
         "version": "4.1"

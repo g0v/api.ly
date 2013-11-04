@@ -7,10 +7,11 @@ package "libvpx-dev"
 package "libx264-dev"
 package "libavcodec-extra-53"
 package "libmp3lame-dev"
+package "libfaac-dev"
 
 git "/opt/ffmpeg" do
   repository "git://github.com/FFmpeg/FFmpeg"
-  reference "n1.2.4"
+  reference "n1.0.8"
   action :sync
 end
 
@@ -18,7 +19,7 @@ execute "install ffmpeg" do
   cwd "/opt/ffmpeg"
   action :nothing
   subscribes :run, resources(:git => "/opt/ffmpeg"), :immediately
-  command "./configure --enable-libvpx --enable-libvorbis --enable-libx264 --enable-gpl --enable-nonfree --enable-libmp3lame && make"
+  command "./configure --enable-libvpx --enable-libvorbis --enable-libx264 --enable-gpl --enable-nonfree --enable-libmp3lame --enable-libfaac && make"
 end
 
 git "/opt/msdl" do
@@ -54,8 +55,9 @@ template "/etc/ffserver.conf" do
   source "ffserver.erb"
   owner "root"
   group "root"
-  variables {}
+  variables ({:channels => node[:ly][:channels]})
   mode 00755
+  notifies :restart, "service[ffserver]"
 end
 
 runit_service "ffserver" do
@@ -63,9 +65,16 @@ runit_service "ffserver" do
   action [:enable, :start]
 end
 
-runit_service "msdl-YS" do
-  run_template_name "msdl"
-  default_logger true
-  action [:enable, :disable]
-  options ({:ch => 14, :committee => 'YS'})
+node[:ly][:channels].each do |ch|
+  runit_service "msdl-#{ch.channel}" do
+    run_template_name "msdl"
+    default_logger true
+    action [:create]
+    options ({
+      :chid => ch.chid,
+      :channel => ch.channel,
+      :rtmp_server => 'rtmp://localhost:1935/hls'
+    })
+    service_dir "/tmp"
+  end
 end

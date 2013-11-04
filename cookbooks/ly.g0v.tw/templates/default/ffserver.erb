@@ -7,16 +7,16 @@ MaxClients 1000
 MaxBandwidth 1000
 
 CustomLog -
-
 NoDaemon
 
-<Feed YS.ffm>
-File /tmp/YS.ffm
+<% @channels.each do |ch| %>
+<Feed <%= ch.channel %>.ffm>
+File /tmp/<%= ch.channel %>.ffm
 FileMaxSize 5M
 </Feed>
 
-<Stream YS.webm>
-Feed YS.ffm
+<Stream <%= ch.channel %>.webm>
+Feed <%= ch.channel %>.ffm
 Format webm
 AudioCodec vorbis
 AudioBitRate 64
@@ -28,8 +28,8 @@ PreRoll 15
 StartSendOnKey
 #VideoSize 512x288
 #VideoBitRate 800
-
 </Stream>
+<% end %>
 
 <Stream stat.html>
 Format status
