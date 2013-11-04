@@ -1,0 +1,3 @@
+#!/bin/bash -e
+exec 2>&1
+exec chpst -u nobody bash -c "trap 'kill 0; echo exiting; sleep 1' TERM; (/opt/msdl/src/msdl -o /dev/null  -o - 'mms://mediavod02.ly.gov.tw/ch<%= @options[:chid] %>' | /opt/ffmpeg/ffmpeg -re -i - -vcodec libx264 -vprofile baseline -acodec libfaac -ar 44100 -ac 2 -f flv <%= @options[:rtmp_server] %>/<%= @options[:channel] %>) & wait; echo end of stream; sleep 5"
