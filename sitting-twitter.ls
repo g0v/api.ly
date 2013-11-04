@@ -17,12 +17,12 @@ function twitter-status(res)
 
   # preserve 25 chars for url
   dates = res.dates.map (.date)
-  status = "[會議預報 - #{dates.join \,}] #{twly._calendar_session(res)}#sitting_type\##{res.sitting} #{res.summary}"
+  status = "[會議預報 - #{dates.sort!join \,}] #{twly._calendar_session(res)}#sitting_type\##{res.sitting} #{res.summary}"
   if status.length >= 115
     status .= substr(0, 114)
     status += '…'
 
-  url = "http://www.ly.gov.tw/01_lyinfo/0109_meeting/meetingView.action?id=#{res.dates.0.calendar_id}"
+  url = "http://ly.g0v.tw/sittings/#{res.id}"
 
   "#status #url"
 
