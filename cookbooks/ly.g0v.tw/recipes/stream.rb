@@ -1,4 +1,3 @@
-include_recipe "nginx::source"
 include_recipe "ly.g0v.tw::stream-worker"
 
 directory "/var/run/hls" do
@@ -18,6 +17,8 @@ template "/etc/nginx/rtmp.conf" do
   mode 00755
   notifies :restart, "service[nginx]"
 end
+
+include_recipe "ly.g0v.tw::nginx"
 
 template "/etc/nginx/sites-available/lystream" do
   source "site-lystream.erb"
