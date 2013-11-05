@@ -144,3 +144,14 @@ runit_service "pgqd" do
   default_logger true
   action [:enable, :start]
 end
+
+if node[:ly][:firebase]
+  runit_service "live-firebase" do
+    default_logger true
+    action [:enable, :start]
+    env ({
+      "FIREBASE" => node[:ly][:firebase],
+      "FIREBASE_SECRET" => node[:ly][:firebase_secret]
+    })
+  end
+end
