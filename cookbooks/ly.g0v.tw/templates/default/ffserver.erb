@@ -11,7 +11,7 @@ NoDaemon
 
 <% @channels.each do |ch| %>
 <Feed <%= ch.channel %>.ffm>
-File /tmp/<%= ch.channel %>.ffm
+File /var/run/ffserver/<%= ch.channel %>.ffm
 FileMaxSize 5M
 </Feed>
 
