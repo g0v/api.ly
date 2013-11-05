@@ -2,9 +2,9 @@ Port 8090
 
 BindAddress 127.0.0.1
 
-MaxHTTPConnections 2000
-MaxClients 1000
-MaxBandwidth 1000
+MaxHTTPConnections <%= @max_http_connections %>
+MaxClients <%= @max_clients %>
+MaxBandwidth <%= @max_bandwidth %>
 
 CustomLog -
 NoDaemon

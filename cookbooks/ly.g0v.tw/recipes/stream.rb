@@ -32,7 +32,12 @@ template "/etc/ffserver.conf" do
   source "ffserver.erb"
   owner "root"
   group "root"
-  variables ({:channels => node[:ly][:channels]})
+  variables ({
+    :channels => node[:ly][:channels],
+    :max_clients => 1024,
+    :max_http_connections => 2048,
+    :max_bandwidth => 1024 * 1024,
+  })
   mode 00755
   notifies :restart, "service[ffserver]"
 end

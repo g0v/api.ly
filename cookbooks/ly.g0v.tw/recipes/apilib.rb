@@ -1,3 +1,7 @@
+include_recipe "ly.g0v.tw::default"
+include_recipe 'nodejs'
+include_recipe 'git'
+
 execute "install bower" do
   command "npm i -g bower@1.2.6"
   not_if "test -e /usr/bin/bower"
