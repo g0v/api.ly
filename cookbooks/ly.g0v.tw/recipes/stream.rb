@@ -53,3 +53,22 @@ runit_service "ffserver" do
   default_logger true
   action [:enable, :start]
 end
+
+git "/opt/ly/ivod.ly.g0v.tw" do
+  repository "git://github.com/g0v/ivod.ly.g0v.tw.git"
+  enable_submodules true
+  reference "master"
+  action :sync
+end
+
+execute "install ivod.ly.g0v.tw" do
+  cwd "/opt/ly/ivod.ly.g0v.tw"
+  action :nothing
+  subscribes :run, resources(:git => "/opt/ly/ivod.ly.g0v.tw"), :immediately
+  command "npm i && ./node_modules/.bin/brunch b -o"
+end
+
+link "/opt/ly/ivod" do
+  to "/opt/ly/ivod.ly.g0v.tw/_public"
+  action :create
+end
