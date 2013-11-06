@@ -35,7 +35,7 @@ doit = ->
               EDU ECO FIN
               PRO CON DIS]>
   files = channels.map -> if status[it].live => "/tmp/#it.jpg" else "empty.png"
-  shell.exec "montage #{files.join ' '} -geometry 160x128+0+0 -tile 3x4 #output"
+  code, output <- shell.exec "montage #{files.join ' '} -geometry 160x128+0+0 -tile 3x4 #output"
   setTimeout doit, 60s * 1000ms
 
 doit!
