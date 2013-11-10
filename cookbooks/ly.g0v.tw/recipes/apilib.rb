@@ -2,6 +2,11 @@ include_recipe "ly.g0v.tw::default"
 include_recipe 'nodejs'
 include_recipe 'git'
 
+execute "install LiveScript" do
+  command "npm i -g LiveScript@1.1.1"
+  not_if "test -e /usr/bin/lsc"
+end
+
 execute "install bower" do
   command "npm i -g bower@1.2.6"
   not_if "test -e /usr/bin/bower"
