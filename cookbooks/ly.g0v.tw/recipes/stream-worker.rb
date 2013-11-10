@@ -1,3 +1,4 @@
+include_recipe "nodejs"
 include_recipe "runit"
 include_recipe "ly.g0v.tw::apilib"
 
@@ -52,7 +53,7 @@ node[:ly][:channels].each do |ch|
 end
 
 if node[:ly][:enable_msdl]
-  cron "populate-calendar" do
+  cron "msdl-live" do
     minute "*/5"
     hour "0-16" # UTC
     mailto "clkao@clkao.org"

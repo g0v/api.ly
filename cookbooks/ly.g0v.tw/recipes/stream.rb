@@ -12,6 +12,8 @@ directory "/var/run/ffserver" do
   group "www-data"
 end
 
+include_recipe "ly.g0v.tw::nginx"
+
 template "/etc/nginx/rtmp.conf" do
   source "rtmp.erb"
   owner "root"
@@ -23,8 +25,6 @@ template "/etc/nginx/rtmp.conf" do
   mode 00755
   notifies :restart, "service[nginx]"
 end
-
-include_recipe "ly.g0v.tw::nginx"
 
 template "/etc/nginx/sites-available/lystream" do
   source "site-lystream.erb"
@@ -61,14 +61,14 @@ git "/opt/ly/ivod.ly.g0v.tw" do
   action :sync
 end
 
+link "/opt/ly/ivod" do
+  to "/opt/ly/ivod.ly.g0v.tw/_public"
+  action :create
+end
+
 execute "install ivod.ly.g0v.tw" do
   cwd "/opt/ly/ivod.ly.g0v.tw"
   action :nothing
   subscribes :run, resources(:git => "/opt/ly/ivod.ly.g0v.tw"), :immediately
   command "npm i && ./node_modules/.bin/brunch b -o"
-end
-
-link "/opt/ly/ivod" do
-  to "/opt/ly/ivod.ly.g0v.tw/_public"
-  action :create
 end
