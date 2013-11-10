@@ -1,6 +1,7 @@
 # lisproxy
 # XXX: use carton
 include_recipe "runit"
+include_recipe "ly.g0v.tw::apilib"
 
 package "cpanminus"
 
