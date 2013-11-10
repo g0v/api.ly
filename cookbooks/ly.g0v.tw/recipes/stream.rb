@@ -54,6 +54,13 @@ runit_service "ffserver" do
   action [:enable, :start]
 end
 
+package "ruby1.9.1"
+
+execute "install compass" do
+  command "gem install compass sass"
+  only_if { ::File.exists?("/usr/local/bin/compass") }
+end
+
 git "/opt/ly/ivod.ly.g0v.tw" do
   repository "git://github.com/g0v/ivod.ly.g0v.tw.git"
   enable_submodules true
