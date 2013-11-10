@@ -44,9 +44,8 @@ while 1:
 # run assigned command (as thread). trigger fifo reader while ended
 def runproc():
   global is_done
-  proc = subprocess.Popen(CMD_FORMAT%(sys.argv[1], fifo1, fifo2, sys.argv[2]), shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+  proc = subprocess.Popen(CMD_FORMAT%(sys.argv[1], fifo1, fifo2, sys.argv[2]), shell=True, stdout=subprocess.PIPE)
   [stdout, stderr] = proc.communicate(None)
-  sys.stderr.write(stderr)
   is_done = True
   while not stream: time.sleep(1)
   s = os.open(stream , os.O_WRONLY)
