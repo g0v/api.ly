@@ -1,5 +1,6 @@
 # lisproxy
 # XXX: use carton
+include_recipe "runit"
 
 package "cpanminus"
 
