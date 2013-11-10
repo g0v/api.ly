@@ -11,18 +11,14 @@ WAIT_TIME = 5           # in second
 READ_SIZE = 1024        # size of each read from fifo
 
 # formatter for command. 
-# arg1: command
-# arg2: fifo1
-# arg3: fifo2
-# i.e., it will be used as CMD_FORMAT%(cmd_name, fifo1_name, fifo2_name)
-# some other usage may look like: "%s -O %s -O %s"
-CMD_FORMAT = "%s %s %s"
+#CMD_FORMAT = "%s %s %s"
+CMD_FORMAT = "%s -o %s -o %s %s"
                   
 
 #################################################################
 
-if len(sys.argv)<2: 
-  print("usage: divide.py [command name]")
+if len(sys.argv)<3: 
+  print("usage: divide.py [command] [arg]")
   sys.exit(-1)
 
 stream = None      # chosen fifo file name
@@ -48,7 +44,7 @@ while 1:
 # run assigned command (as thread). trigger fifo reader while ended
 def runproc():
   global is_done
-  proc = subprocess.Popen(CMD_FORMAT%(sys.argv[1], fifo1, fifo2), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+  proc = subprocess.Popen(CMD_FORMAT%(sys.argv[1], fifo1, fifo2, sys.argv[2]), shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
   proc.communicate(None)
   is_done = True
   while not stream: time.sleep(1)
