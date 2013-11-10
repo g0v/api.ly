@@ -12,7 +12,7 @@ READ_SIZE = 1024        # size of each read from fifo
 
 # formatter for command. 
 #CMD_FORMAT = "%s %s %s"
-CMD_FORMAT = "%s -o %s -o %s %s"
+CMD_FORMAT = "%s -o %s -o %s '%s'"
                   
 
 #################################################################
