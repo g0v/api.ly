@@ -10,14 +10,14 @@ import os, tempfile, sys, subprocess, fcntl, time, threading
 WAIT_TIME = 10          # in second
 READ_SIZE = 1024        # size of each read from fifo
 
-# formatter for command. 
+# formatter for command.
 #CMD_FORMAT = "%s %s %s"
 CMD_FORMAT = "%s -o %s -o %s '%s'"
-                  
+
 
 #################################################################
 
-if len(sys.argv)<3: 
+if len(sys.argv)<3:
   print("usage: divide.py [command] [arg]")
   sys.exit(-1)
 
@@ -39,7 +39,7 @@ while 1:
     trial += 1
     if trial >=3:
       print("try creating named pipe but failed.")
-      sys.exit(-1) 
+      sys.exit(-1)
 
 # run assigned command (as thread). trigger fifo reader while ended
 def runproc():
@@ -51,7 +51,7 @@ def runproc():
   s = os.open(stream , os.O_WRONLY)
   os.write(s, "")
   os.close(s)
-  
+
 # open fifo pair non-blockingly for peeking data
 f1 = os.open(fifo1, os.O_RDONLY | os.O_NONBLOCK)
 f2 = os.open(fifo2, os.O_RDONLY | os.O_NONBLOCK)
@@ -85,6 +85,6 @@ while True:
   if len(data)>0:
     stdout.write(data)
     stdout.flush()
-  elif is_done: 
+  elif is_done:
     spawner.join()
     break
