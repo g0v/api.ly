@@ -7,7 +7,7 @@ import os, tempfile, sys, subprocess, fcntl, time, threading
 # tweak your wait time, read size and command para format below
 
 # configuration
-WAIT_TIME = 5           # in second
+WAIT_TIME = 10          # in second
 READ_SIZE = 1024        # size of each read from fifo
 
 # formatter for command. 
