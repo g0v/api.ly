@@ -48,9 +48,10 @@ def runproc():
   [stdout, stderr] = proc.communicate(None)
   is_done = True
   while not stream: time.sleep(1)
-  s = os.open(stream , os.O_WRONLY)
-  os.write(s, "")
-  os.close(s)
+  if stream!="failed":
+    s = os.open(stream , os.O_WRONLY)
+    os.write(s, "")
+    os.close(s)
 
 # open fifo pair non-blockingly for peeking data
 f1 = os.open(fifo1, os.O_RDONLY | os.O_NONBLOCK)
@@ -60,19 +61,36 @@ f2 = os.open(fifo2, os.O_RDONLY | os.O_NONBLOCK)
 spawner = threading.Thread(target=runproc)
 spawner.start()
 
-# wait several seconds for command to prepare data
-time.sleep(WAIT_TIME)
+time.sleep(1)
+stdout = os.fdopen(sys.stdout.fileno(), "wb", 0) # binary write, no buffer
+
+count = 0
+buf, d1, d2 = "", "",""
+while True:
+  d1, d2 = "", ""
+  try:
+    d1 = os.read(f1, READ_SIZE)
+    d2 = os.read(f2, READ_SIZE)
+  except: pass
+  if len(d1):
+    count += len(d1)
+    buf += d1
+  if d2 or count >= 114845: break
+  if is_done:
+    stream = "failed"
+    sys.stderr.writelines("command stopped too soon.\n")
+    spawner.join()
+    sys.exit(-1)
 
 # choose fifo1 if no data in fifo2. else choose fifo2
-data = None
-try: data = os.read(f2, READ_SIZE)
-except: pass
 os.close(f1)
 os.close(f2)
-stream = fifo2 if data else fifo1
+stream = fifo2 if d2 else fifo1
 
 # dump data first, if got any
-stdout = os.fdopen(sys.stdout.fileno(), "wb", 0) # binary write, no buffer
+data = d2 if d2 else buf
+sys.stderr.writelines("\ndata length: fifo1:%d  / fifo2:%d\n"%(count, len(d2)))
+sys.stderr.writelines("use %s\n"%("fifo2" if d2 else "fifo1"))
 if data:
   stdout.write(data)
   stdout.flush()
