@@ -75,7 +75,7 @@ while True:
   if len(d1):
     count += len(d1)
     buf += d1
-  if d2 or count >= 114845: break
+  if d2 or count > 114845: break
   if is_done:
     stream = "failed"
     sys.stderr.writelines("command stopped too soon.\n")
