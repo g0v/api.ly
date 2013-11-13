@@ -7,7 +7,6 @@ import os, tempfile, sys, subprocess, fcntl, time, threading
 # tweak your wait time, read size and command para format below
 
 # configuration
-WAIT_TIME = 10          # in second
 READ_SIZE = 1024        # size of each read from fifo
 
 # formatter for command.
@@ -75,7 +74,7 @@ while True:
   if len(d1):
     count += len(d1)
     buf += d1
-  if d2 or count > 114845: break
+  if d2 or count > 165385: break
   if is_done:
     stream = "failed"
     sys.stderr.writelines("command stopped too soon.\n")
