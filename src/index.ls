@@ -62,8 +62,8 @@ export function bootstrap(plx, cb)
       cosponsors text[],
       introduced date,
       abstract text,
-      data plv8x.json,
-      doc plv8x.json,
+      data json,
+      doc json,
       sitting_introduced text,
 
       PRIMARY KEY(bill_id)
