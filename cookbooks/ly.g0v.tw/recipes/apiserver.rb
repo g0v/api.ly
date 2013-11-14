@@ -2,6 +2,7 @@ include_recipe "runit"
 include_recipe "database"
 include_recipe "cron"
 include_recipe "postgresql"
+include_recipe "postgresql::ruby"
 include_recipe "ly.g0v.tw::nginx"
 
 postgresql_connection_info = {:host => "127.0.0.1",
