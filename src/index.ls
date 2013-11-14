@@ -113,7 +113,16 @@ export function bootstrap(plx, cb)
   <- pgrest.bootstrap plx, \twly require.resolve \../package.json
 
   <- plx.query """
-  CREATE INDEX motions_bill_id on motions (bill_id);
+  DO $$
+  BEGIN
+    IF NOT EXISTS (
+        SELECT 1 FROM   pg_class c WHERE  c.relname = 'motions_bill_id'
+    ) THEN
+
+        CREATE INDEX motions_bill_id on motions (bill_id);
+
+    END IF;
+  END $$;
   CREATE INDEX calendar_sitting on calendar (_calendar_sitting_id(calendar));
   """
 
