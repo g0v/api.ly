@@ -57,7 +57,7 @@ end
 # XXX: ensure londiste is not enabled yet
 bash 'init db' do
   code <<-EOH
-    curl https://dl.dropboxusercontent.com/u/30657009/ly/api.ly.bz2 | bzcat | psql #{conn}
+    curl https://dl.dropboxusercontent.com/u/30657009/ly/api.ly.bz2 | bzcat | psql -v 'session_replication_role=replica' #{conn}
   EOH
   action :nothing
   subscribes :run, resources(:postgresql_database_user => 'ly')
