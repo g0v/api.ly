@@ -54,6 +54,7 @@ export function bootstrap(plx, cb)
       tts_seq text,
       PRIMARY KEY(sitting_id, bill_id)
   );
+  CREATE INDEX motions_bill_id on motions (bill_id)
 
   CREATE TABLE IF NOT EXISTS bills (
       bill_id text,
