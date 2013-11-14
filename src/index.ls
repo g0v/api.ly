@@ -142,8 +142,6 @@ _sitting_id.$plv8x = '(anyelement):text'
 export function _calendar_sitting_id({type,committee,sitting}:calendar)
   return unless type is \sitting
   return _sitting_id calendar
-  sitting_type = if committee => committee.join '-' else 'YS'
-  [session, sitting_type, sprintf "%02d" sitting].join \-
 
 _calendar_sitting_id.$plv8x = '(calendar):text'
 _calendar_sitting_id.$bootstrap = true
