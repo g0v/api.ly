@@ -11,7 +11,7 @@ conString = "tcp://#conString"     unless conString is // :/ //
 {misq} = require \twlyparser
 
 plx <- pgrest .new conString, {+client}
-sittings <- plx.query "select * from pgrest.sittings where committee is null and proceeding_url is null order by id desc limit 10"
+sittings <- plx.query "select * from pgrest.sittings where ad = 8 and committee is null and proceeding_url is null order by id desc limit 10"
 
 funcs = for {dates}:s in sittings => let s, dates
   (done) ->
