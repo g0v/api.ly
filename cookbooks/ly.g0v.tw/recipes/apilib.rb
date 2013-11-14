@@ -23,6 +23,7 @@ execute "install twlyparser" do
   cwd "/opt/ly/twlyparser"
   action :nothing
   subscribes :run, resources(:git => "/opt/ly/twlyparser"), :immediately
+  environment ({"SUDO_USER" => "", "SUDO_UID" => ""})
   command "npm i && npm link"
 end
 
@@ -38,5 +39,6 @@ execute "install api.ly" do
   cwd "/opt/ly/api.ly"
   action :nothing
   subscribes :run, resources(:git => "/opt/ly/api.ly"), :immediately
+  environment ({"SUDO_USER" => "", "SUDO_UID" => ""})
   command "npm link twlyparser pgrest && npm i && npm run prepublish && bower install --allow-root jquery"
 end
