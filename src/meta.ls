@@ -19,24 +19,6 @@ export meta =
         motions: {}
         bills: <[bill_ref summary proposed_by]>
       'doc': type: \json
-  'pgrest.bills':
-    s: {bill_id: -1}
-    f: {data: -1}
-    as: 'bills'
-    primary: (id) ->
-      $or:
-        bill_ref: id
-        bill_id: id
-    columns:
-      '*': <[bill_id bill_ref summary proposed_by sponsors cosponsors abstract]>
-      data: type: \json
-      doc: type: \json
-      motions:
-        $from: 'public.motions'
-        $query: 'bill_id': $literal: 'bills.bill_id'
-        $order: {sitting_id: 1}
-        columns:
-          '*': <[sitting_id ]>
   'pgrest.sittings':
     s: {id: -1}
     f: {-videos}
@@ -62,3 +44,23 @@ export meta =
         $order: {motion_class: 1, agenda_item: 1}
         columns:
           '*': <[motion_class agenda_item subitem item bill_id bill_ref proposed_by summary doc]>
+  'pgrest.bills':
+    s: {bill_id: -1}
+    f: {data: -1}
+    as: 'bills'
+    primary: (id) ->
+      $or:
+        bill_ref: id
+        bill_id: id
+    columns:
+      '*': <[bill_id bill_ref summary proposed_by sponsors cosponsors abstract]>
+      data: type: \json
+      doc: type: \json
+      motions:
+        $from: 'pgrest.motions JOIN pgrest.sittings ON (sitting_id = sittings.id)'
+        $query: 'bill_id': $literal: 'bills.bill_id'
+        $order: {sitting_id: 1}
+        columns:
+          '*':
+            motions: <[sitting_id resolution committee]>
+            sittings: <[dates]>
