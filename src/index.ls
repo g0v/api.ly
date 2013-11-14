@@ -31,6 +31,7 @@ export function bootstrap(plx, cb)
       name text,
       summary text,
       committee text[],
+      proceeding_url text,
       ad integer,
       session integer,
       extra integer,
@@ -47,6 +48,7 @@ export function bootstrap(plx, cb)
       result text,
       resolution text,
       status text,
+      committee text[],
 
       tts_id text,
       tts_seq text,
