@@ -29,7 +29,7 @@ export meta =
       dates:
         $from: 'pgrest.calendar'
         $query: 'sitting_id': $literal: 'sittings.id'
-        $order: {id: 1}
+        $order: {date: 1}
         columns:
           'calendar_id': field: 'calendar.id'
           '*': <[chair date time_start time_end]>
