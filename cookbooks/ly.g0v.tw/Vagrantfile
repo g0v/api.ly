@@ -13,9 +13,11 @@ Vagrant.configure("2") do |config|
   config.vm.provision :chef_solo do |chef|
     chef.data_bags_path = "data_bags"
     chef.add_recipe 'pgrest'
-    chef.add_recipe 'ly.g0v.tw::worker'
     chef.add_recipe 'ly.g0v.tw::apiserver'
-    chef.add_recipe 'ly.g0v.tw::stream'
+    ### Enable the following recipes for worker and streaming related services
+    # chef.add_recipe 'ly.g0v.tw::worker'
+    # chef.add_recipe 'ly.g0v.tw::stream'
+    # chef.add_recipe 'ly.g0v.tw::stream-worker'
 
     chef.json.merge!(JSON.parse(File.read("./dna.json")))
   end
