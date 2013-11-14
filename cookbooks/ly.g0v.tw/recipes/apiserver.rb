@@ -1,9 +1,8 @@
 include_recipe "runit"
 include_recipe "database"
 include_recipe "cron"
-include_recipe "postgresql::ruby"
+include_recipe "postgresql"
 include_recipe "ly.g0v.tw::nginx"
-include_recipe "ly.g0v.tw::apilib"
 
 postgresql_connection_info = {:host => "127.0.0.1",
                               :port => node['postgresql']['config']['port'],
@@ -16,7 +15,7 @@ database 'ly' do
   action :create
 end
 
-db_user = postgresql_database_user 'ly' do
+postgresql_database_user 'ly' do
   connection postgresql_connection_info
   database_name 'ly'
   password 'password'
@@ -46,6 +45,8 @@ postgresql_database "plv8" do
   subscribes :query, resources(:postgresql_database_user => 'ly'), :immediately
 end
 
+include_recipe "ly.g0v.tw::apilib"
+
 execute "boot api.ly" do
   cwd "/opt/ly/api.ly"
   action :nothing
@@ -54,7 +55,6 @@ execute "boot api.ly" do
   subscribes :run, "execute[install api.ly]", :immediately
 end
 
-# XXX: ensure londiste is not enabled yet
 bash 'init db' do
   code <<-EOH
     curl https://dl.dropboxusercontent.com/u/30657009/ly/api.ly.bz2 | bzcat | psql -v 'session_replication_role=replica' #{conn}
