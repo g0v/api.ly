@@ -62,5 +62,5 @@ export meta =
         $order: {sitting_id: 1}
         columns:
           '*':
-            motions: <[sitting_id resolution committee]>
+            motions: <[sitting_id resolution status committee]>
             sittings: <[dates]>
