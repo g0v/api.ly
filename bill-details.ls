@@ -3,7 +3,7 @@ require! <[optimist pgrest async]>
 {consume-events} = require \./lib/pgq
 twly = require \./lib
 
-{ queue="ldqueue", consumer="bill-details", dry, flush, dir, force} = optimist.argv
+{queue="ldqueue", consumer="bill-details", dry, flush, dir, force, id} = optimist.argv
 
 conString = optimist.argv.db ? process.env.PGDATABASE
 conString = "localhost/#conString" unless conString is // / //
@@ -24,14 +24,20 @@ function update-bill(bill_id, cb, err)
   e, bill <- ly.misq.parse-bill-doc bill_id, {+lodev}
   return err e, bill if e
 
+  if bill.summary is /報告(併案)?審查/
+    report_of = bill.related?map (.0)
   plx.upsert {
     collection: \bills
     q: {bill_id}
-    $: $set: bill{bill_ref, abstract, doc, sponsors, cosponsors} <<< data: bill{related, content}
+    $: $set: bill{bill_ref, abstract, doc, sponsors, cosponsors} <<< {report_of, data: bill{related, content}}
   }, cb, -> err it, bill
 
 if force
-  rows <- plx.query "select bill_id from bills where abstract is null"
+  [query, params] = if id
+    ["select bill_id from bills where bill_id = $1", [id]]
+  else
+    ["select bill_id from bills where abstract is null", []]
+  rows <- plx.query query, params
   funcs = for {bill_id}, i in rows => let bill_id, i
     (done) ->
       <- update-bill bill_id, _, (e, bill) ->
