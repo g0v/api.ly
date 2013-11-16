@@ -59,6 +59,7 @@ export meta =
       motions:
         $from: 'pgrest.motions JOIN pgrest.sittings ON (sitting_id = sittings.id)'
         $query: 'bill_id': $literal: 'bills.bill_id'
+        # XXX: better sorting required, since 08-03T01-XX comes before 08-03-XX
         $order: {sitting_id: 1}
         columns:
           '*':
