@@ -94,6 +94,27 @@ export function bootstrap(plx, cb)
       wmvid text,
       youtube_id text
   );
+  CREATE TABLE IF NOT EXISTS ttsmotions (
+      tts_key text PRIMARY KEY,
+      sitting_name text,
+      sitting_id text,
+      source json[],
+      chair text[],
+      date date,
+      sitting_type text,
+      motion_type text[],
+      summary text,
+      resolution text,
+      topic text[],
+      category text[],
+      tags text[],
+      bill_refs text[],
+      progress text,
+      memo text,
+      speakers text[],
+      agencies text[]
+  );
+
   """
 
   # XXX: make plv8x /sql define-schema reusable
@@ -121,11 +142,20 @@ export function bootstrap(plx, cb)
     IF NOT EXISTS (
         SELECT 1 FROM   pg_class c WHERE  c.relname = 'motions_bill_id'
     ) THEN
-
         CREATE INDEX motions_bill_id on motions (bill_id);
-
+    END IF;
+    IF NOT EXISTS (
+        SELECT 1 FROM   pg_class c WHERE  c.relname = 'ttsmotions_bill_refs'
+    ) THEN
+        CREATE INDEX ttsmotions_bill_refs on ttsmotions USING gin (bill_refs);
+    END IF;
+    IF NOT EXISTS (
+        SELECT 1 FROM   pg_class c WHERE  c.relname = 'ttsmotions_sitting_id'
+    ) THEN
+        CREATE INDEX ttsmotions_sitting_id on ttsmotions (sitting_id);
     END IF;
   END $$;
+
   CREATE INDEX calendar_sitting on calendar (_calendar_sitting_id(calendar));
   """
 
