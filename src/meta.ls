@@ -53,7 +53,7 @@ export meta =
         bill_ref: id
         bill_id: id
     columns:
-      '*': <[bill_id bill_ref summary proposed_by sponsors cosponsors abstract]>
+      '*': <[bill_id bill_ref summary proposed_by sponsors cosponsors abstract report_of reconsideration_of]>
       data: type: \json
       doc: type: \json
       motions:

@@ -68,6 +68,9 @@ export function bootstrap(plx, cb)
       doc json,
       sitting_introduced text,
 
+      report_of text[],
+      reconsideration_of text[],
+
       PRIMARY KEY(bill_id)
   );
 
