@@ -1,5 +1,14 @@
 { sprintf } = require \sprintf
 
+function sql-ensure-index(table, index_name, expression)
+  """
+    IF NOT EXISTS (
+        SELECT 1 FROM pg_class c WHERE  c.relname = '#index_name'
+    ) THEN
+        CREATE INDEX #index_name on #table #expression;
+    END IF
+  """
+
 export function bootstrap(plx, cb)
   <- plx.query """
   CREATE OR REPLACE function is_valid_time(text) RETURNS boolean language plpgsql immutable as $$
@@ -139,24 +148,12 @@ export function bootstrap(plx, cb)
   <- plx.query """
   DO $$
   BEGIN
-    IF NOT EXISTS (
-        SELECT 1 FROM   pg_class c WHERE  c.relname = 'motions_bill_id'
-    ) THEN
-        CREATE INDEX motions_bill_id on motions (bill_id);
-    END IF;
-    IF NOT EXISTS (
-        SELECT 1 FROM   pg_class c WHERE  c.relname = 'ttsmotions_bill_refs'
-    ) THEN
-        CREATE INDEX ttsmotions_bill_refs on ttsmotions USING gin (bill_refs);
-    END IF;
-    IF NOT EXISTS (
-        SELECT 1 FROM   pg_class c WHERE  c.relname = 'ttsmotions_sitting_id'
-    ) THEN
-        CREATE INDEX ttsmotions_sitting_id on ttsmotions (sitting_id);
-    END IF;
+    #{ sql-ensure-index \motions, \motions_bill_id, "(bill_id)"};
+    #{ sql-ensure-index \ttsmotions \ttsmotions_sitting_id, "(sitting_id)"};
+    #{ sql-ensure-index \ttsmotions \ttsmotions_bill_refs, "USING gin (bill_refs)"};
+    #{ sql-ensure-index \ttsmotions \ttsmotions_speakers, "USING gin (_ttsmotions_speaker_names(speakers))"};
+    #{ sql-ensure-index \calendar, \calendar_sitting, "(_calendar_sitting_id(calendar))"};
   END $$;
-
-  CREATE INDEX calendar_sitting on calendar (_calendar_sitting_id(calendar));
   """
 
   cb!
