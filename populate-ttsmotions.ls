@@ -38,19 +38,19 @@ sitting_name = XRegExp """
   """, \x
 
 function get-sitting-id(name)
-  XRegExp.exec name, sitting_name
-    if ..committee
-      ..committee = util.parseCommittee ..committee
-      ..sitting = ..committee_sitting
-    if ..whole
-      ..committee = <[WHL]>
-    if ..talk_unspecified
-      ..talk = 1
-      ..sitting = 1
-    if ..talk
-      ..committee = <[TLK]>
-    for _ in <[ad session sitting extra]> => ..[_] = +..[_] if ..[_]
-    return twly._sitting_id ..
+  sitting = XRegExp.exec name, sitting_name
+  if sitting.committee
+    sitting.committee = util.parseCommittee sitting.committee
+    sitting.sitting = sitting.committee_sitting
+  if sitting.whole
+    sitting.committee = <[WHL]>
+  if sitting.talk_unspecified
+    sitting.talk = 1
+    sitting.sitting = 1
+  if sitting.talk
+    sitting.committee = <[TLK]>
+  for _ in <[ad session sitting extra]> => sitting[_] = +sitting[_] if sitting[_]
+  return twly._sitting_id sitting
 
 function parse_roc_date(d)
   [_, y, m, d] = d.match /^(\d\d\d?)(\d\d)(\d\d)/
