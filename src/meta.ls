@@ -11,6 +11,11 @@ export meta =
     columns:
       sitting_id: $literal: '_calendar_sitting_id(calendar)'
       '*': {}
+  'pgrest.ttsmotions':
+    s: {date: -1}
+    as: 'public.ttsmotions'
+    columns:
+      '*': <[tts_key date source sitting_id chair motion_type, summary, resolution, progress, topic, category, tags, bill_refs, memo, agencies, speakers]>
   'pgrest.motions':
     s: {sitting_id: -1,motion_class: 1, agenda_item: 1}
     as: 'public.motions LEFT JOIN bills USING (bill_id)'
