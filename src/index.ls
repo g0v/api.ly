@@ -111,7 +111,7 @@ export function bootstrap(plx, cb)
       bill_refs text[],
       progress text,
       memo text,
-      speakers text[],
+      speakers json[],
       agencies text[]
   );
 
@@ -187,3 +187,7 @@ export function _calendar_sitting_id({type,committee,sitting}:calendar)
 
 _calendar_sitting_id.$plv8x = '(calendar):text'
 _calendar_sitting_id.$bootstrap = true
+
+export function _ttsmotions_speaker_names(speakers) => speakers.map (.name)
+_ttsmotions_speaker_names.$plv8x = '(json[]):text[]'
+_ttsmotions_speaker_names.$bootstrap = true
