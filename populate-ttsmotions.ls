@@ -150,8 +150,8 @@ function _mapfields(entry)
       res{name,n} <<< {links}
     .filter -> it
 
-  #if entry.committee
-  #  entry.committee .= map -> util.parseCommittee it .0
+  # XXX just verify with entry.sitting_id
+  delete entry.committee
 
   entry.sitting_id = get-sitting-id entry.sitting_name - /\s/g - /\(勘誤\)$/
   console.error entry.sitting_name unless entry.sitting_id
