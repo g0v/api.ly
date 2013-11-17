@@ -23,6 +23,8 @@ dependencies:
   sprintf: \0.1.1
   qs: \0.6.x
   moment: \2.4.x
+  fscache: \0.0.1
+  xregexp: \2.0.x
   'node-twitter-api': \1.1.x
   twlyparser: 'git://github.com/g0v/twlyparser.git'
   pgrest: 'git://github.com/clkao/pgrest.git'
