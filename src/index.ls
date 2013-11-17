@@ -149,6 +149,7 @@ export function bootstrap(plx, cb)
   DO $$
   BEGIN
     #{ sql-ensure-index \motions, \motions_bill_id, "(bill_id)"};
+    #{ sql-ensure-index \ttsmotions \ttsmotions_date, "(date)"};
     #{ sql-ensure-index \ttsmotions \ttsmotions_sitting_id, "(sitting_id)"};
     #{ sql-ensure-index \ttsmotions \ttsmotions_bill_refs, "USING gin (bill_refs)"};
     #{ sql-ensure-index \ttsmotions \ttsmotions_speakers, "USING gin (_ttsmotions_speaker_names(speakers))"};
