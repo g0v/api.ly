@@ -24,6 +24,7 @@ stream = None      # chosen fifo file name
 spawner = None     # thread for running specified command
 trial = 0          # attempt count to create temp fifo pair
 is_done = False    # specified command is done
+proc = None
 
 # try to create a temp fifo pair, named fifo1 and fifo2
 while 1:
@@ -43,6 +44,7 @@ while 1:
 # run assigned command (as thread). trigger fifo reader while ended
 def runproc():
   global is_done
+  global proc
   proc = subprocess.Popen(CMD_FORMAT%(sys.argv[1], fifo1, fifo2, sys.argv[2]), shell=True, stdout=subprocess.PIPE)
   [stdout, stderr] = proc.communicate(None)
   is_done = True
@@ -96,12 +98,24 @@ if data:
 
 # read chosen fifo until the specified command is over.
 handle = os.open(stream, os.O_RDONLY)
-while True:
-  try: data = os.read(handle, READ_SIZE)
-  except OSError: continue
-  if len(data)>0:
-    stdout.write(data)
-    stdout.flush()
-  elif is_done:
-    spawner.join()
-    break
+try:
+  while True:
+    try: data = os.read(handle, READ_SIZE)
+    except OSError: continue
+    if len(data)>0:
+      try:
+        stdout.write(data)
+        stdout.flush()
+      except OSError:
+        break
+    elif is_done:
+      break
+finally:
+  os.close(handle)
+  os.unlink(fifo1)
+  os.unlink(fifo2)
+  if proc.poll() is None:
+    proc.terminate()
+    time.sleep(1)
+    proc.kill()
+  spawner.join()
