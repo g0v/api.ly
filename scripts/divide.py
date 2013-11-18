@@ -46,7 +46,9 @@ def runproc():
   global is_done
   global proc
   proc = subprocess.Popen(CMD_FORMAT%(sys.argv[1], fifo1, fifo2, sys.argv[2]), shell=True, stdout=subprocess.PIPE)
-  [stdout, stderr] = proc.communicate(None)
+  time.sleep(5)
+  try: [stdout, stderr] = proc.communicate(None)
+  except: pass # exit gracefully
   is_done = True
   while not stream: time.sleep(1)
   if stream!="failed":
