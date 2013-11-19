@@ -20,6 +20,7 @@ if len(sys.argv)<3:
   print("usage: divide.py [command] [arg]")
   sys.exit(-1)
 
+handle = None
 stream = None      # chosen fifo file name
 spawner = None     # thread for running specified command
 trial = 0          # attempt count to create temp fifo pair
@@ -64,43 +65,43 @@ f2 = os.open(fifo2, os.O_RDONLY | os.O_NONBLOCK)
 spawner = threading.Thread(target=runproc)
 spawner.start()
 
-time.sleep(1)
-stdout = os.fdopen(sys.stdout.fileno(), "wb", 0) # binary write, no buffer
-
-count = 0
-buf, d1, d2 = "", "",""
-while True:
-  d1, d2 = "", ""
-  try:
-    d1 = os.read(f1, READ_SIZE)
-    d2 = os.read(f2, READ_SIZE)
-  except: pass
-  if len(d1):
-    count += len(d1)
-    buf += d1
-  if d2 or count > 165385: break
-  if is_done:
-    stream = "failed"
-    sys.stderr.writelines("command stopped too soon.\n")
-    spawner.join()
-    sys.exit(-1)
-
-# choose fifo1 if no data in fifo2. else choose fifo2
-os.close(f1)
-os.close(f2)
-stream = fifo2 if d2 else fifo1
-
-# dump data first, if got any
-data = d2 if d2 else buf
-sys.stderr.writelines("\ndata length: fifo1:%d  / fifo2:%d\n"%(count, len(d2)))
-sys.stderr.writelines("use %s\n"%("fifo2" if d2 else "fifo1"))
-if data:
-  stdout.write(data)
-  stdout.flush()
-
-# read chosen fifo until the specified command is over.
-handle = os.open(stream, os.O_RDONLY)
 try:
+  time.sleep(1)
+  stdout = os.fdopen(sys.stdout.fileno(), "wb", 0) # binary write, no buffer
+
+  count = 0
+  buf, d1, d2 = "", "",""
+  while True:
+    d1, d2 = "", ""
+    try:
+      d1 = os.read(f1, READ_SIZE)
+      d2 = os.read(f2, READ_SIZE)
+    except: pass
+    if len(d1):
+      count += len(d1)
+      buf += d1
+    if d2 or count > 165385: break
+    if is_done:
+      stream = "failed"
+      sys.stderr.writelines("command stopped too soon.\n")
+      spawner.join()
+      sys.exit(-1)
+
+  # choose fifo1 if no data in fifo2. else choose fifo2
+  os.close(f1)
+  os.close(f2)
+  stream = fifo2 if d2 else fifo1
+
+  # dump data first, if got any
+  data = d2 if d2 else buf
+  sys.stderr.writelines("\ndata length: fifo1:%d  / fifo2:%d\n"%(count, len(d2)))
+  sys.stderr.writelines("use %s\n"%("fifo2" if d2 else "fifo1"))
+  if data:
+    stdout.write(data)
+    stdout.flush()
+
+  # read chosen fifo until the specified command is over.
+  handle = os.open(stream, os.O_RDONLY)
   while True:
     try: data = os.read(handle, READ_SIZE)
     except OSError: continue
@@ -113,11 +114,12 @@ try:
     elif is_done:
       break
 finally:
-  os.close(handle)
+  if handle: os.close(handle)
   os.unlink(fifo1)
   os.unlink(fifo2)
   if proc.poll() is None:
     proc.terminate()
     time.sleep(1)
-    proc.kill()
+    try: proc.kill()
+    except OSError: sys.stderr.writelines("try to kill %s but it has been gone.\n"%sys.argv[1])
   spawner.join()
