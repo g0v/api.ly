@@ -1,7 +1,5 @@
 #!/usr/bin/env plv8x -jr
 
-# XXX this requires lbills and lmotions tables, which are PUT'ed with g0v-data/ly/ly-bills
-# table names are subject to change
 matrix = {}
 
 function add_edge(source,target)
@@ -10,13 +8,13 @@ function add_edge(source,target)
   ++matrix[source][target]
 
 bills = plv8.execute """
-  SELECT bill_ref from lbills
+  SELECT bill_ref from ttsbills
 """ .map ->
   is_g = it.bill_ref.match /G/
 
   source = if is_g => '政府提案' else '委員提案'
   res = plv8.execute """
-    SELECT date, progress, committee from lmotions where bill_refs @> $1  order by date
+    SELECT date, progress, committee from ttsmotions join sittings on (sitting_id = sittings.id) where bill_refs @> $1  order by date
   """ [[it.bill_ref]]
   progresses = [source] ++ [committee ? progress for {progress,committee} in res].filter -> it
   match progresses[*-1]
