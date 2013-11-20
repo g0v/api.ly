@@ -167,6 +167,7 @@ funcs = for entry in res.0 => let entry = _mapfields entry
   (done) ->
     q = entry{tts_key}
     data = entry
+    data.bill_refs ?= null
     delete data.tts_key
     res <- plx.upsert {
       collection: \ttsmotions
