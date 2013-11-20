@@ -54,6 +54,14 @@ Example: http://api-beta.ly.g0v.tw/v0/collections/ivod/
 Example: http://api-beta.ly.g0v.tw/v0/collections/calendar?q={"type":"hearing"} 
 + Response 200 (application/json)
 
+# Group ttsmotions
++ This is the api group of ttsmotions (議案進度)
++ 提供了國會圖書館上的議案進度資料 (ttsmotions collections)
+
+## GET /v0/collections/ttsmotions/
+Example: http://api-beta.ly.g0v.tw/v0/collections/ttsmotions/ 
++ Response 200 (application/json)
+
 # Group motions
 + This is the api group of motions (議案/公報)
 + 立法院將議事的紀錄撰寫成公報，供所有公民檢閱。
@@ -61,31 +69,6 @@ Example: http://api-beta.ly.g0v.tw/v0/collections/calendar?q={"type":"hearing"}
 
 ## GET /v0/collections/motions/
 Example: http://api-beta.ly.g0v.tw/v0/collections/motions?q={"bill_id":"1011011071000200"} 
-+ Response 200 (application/json)
-
-# Group bills
-+ This is the api group of bills (提案)
-+ 立法院黨團、委員、政府提出的提案，可能是法律案、預算案、其他案、宣戰案...等。
-資料來源: http://misq.ly.gov.tw + http://npl.ly.gov.tw
-
-## GET /v0/collections/bills/
-Example: http://api-beta.ly.g0v.tw/v0/collections/bills/ 
-+ Response 200 (application/json)
-
-### GET /v0/collections/bills/{bill_id}/
-Example: http://api-beta.ly.g0v.tw/v0/collections/bills/1021021070200400/ 
-+ Response 200 (application/json)
-
-#### GET /v0/collections/bills/{bill_id}/data
-Example: http://api-beta.ly.g0v.tw/v0/collections/bills/1021021070200400/data 
-+ Response 200 (application/json)
-
-#### GET /v0/collections/bills/{bill_id}/doc
-Example: http://api-beta.ly.g0v.tw/v0/collections/bills/1021021070200400/doc 
-+ Response 200 (application/json)
-
-#### GET /v0/collections/bills/{bill_id}/motions
-Example: http://api-beta.ly.g0v.tw/v0/collections/bills/1021021070200400/motions 
 + Response 200 (application/json)
 
 # Group sittings
@@ -110,5 +93,50 @@ Example: http://api-beta.ly.g0v.tw/v0/collections/sittings/08-04-YS-06/videos
 
 #### GET /v0/collections/sittings/{id}/motions
 Example: http://api-beta.ly.g0v.tw/v0/collections/sittings/08-04-YS-06/motions 
++ Response 200 (application/json)
+
+# Group amendments
++ This is the api group of amendments (法律提案資訊)
++ 提供國會圖書館裡頭的法律提案資訊，可在提案(bills)中查找此類資訊
+
+## GET /v0/collections/amendments/
+Example: http://api-beta.ly.g0v.tw/v0/collections/amendments/ 
++ Response 200 (application/json)
+
+# Group bills
++ This is the api group of bills (提案)
++ 立法院黨團、委員、政府提出的提案，可能是法律案、預算案、其他案、宣戰案...等。
+資料來源: http://misq.ly.gov.tw + http://npl.ly.gov.tw
+
+## GET /v0/collections/bills/
+Example: http://api-beta.ly.g0v.tw/v0/collections/bills/ 
++ Response 200 (application/json)
+
+### GET /v0/collections/bills/{bill_id}/
+Example: http://api-beta.ly.g0v.tw/v0/collections/bills/1021021070200400/ 
++ Response 200 (application/json)
+
+#### GET /v0/collections/bills/{bill_id}/data
+Example: http://api-beta.ly.g0v.tw/v0/collections/bills/1021021070200400/data 
++ Response 200 (application/json)
+
+#### GET /v0/collections/bills/{bill_id}/doc
+Example: http://api-beta.ly.g0v.tw/v0/collections/bills/1021021070200400/doc 
++ Response 200 (application/json)
+
+#### GET /v0/collections/bills/{bill_id}/sponsors
+Example: http://api-beta.ly.g0v.tw/v0/collections/bills/1021021070200400/sponsors 
++ Response 200 (application/json)
+
+#### GET /v0/collections/bills/{bill_id}/cosponsors
+Example: http://api-beta.ly.g0v.tw/v0/collections/bills/1021021070200400/cosponsors 
++ Response 200 (application/json)
+
+#### GET /v0/collections/bills/{bill_id}/amendments
+Example: http://api-beta.ly.g0v.tw/v0/collections/bills/1021021070200400/amendments 
++ Response 200 (application/json)
+
+#### GET /v0/collections/bills/{bill_id}/motions
+Example: http://api-beta.ly.g0v.tw/v0/collections/bills/1021021070200400/motions 
 + Response 200 (application/json)
 

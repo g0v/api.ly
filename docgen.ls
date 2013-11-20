@@ -29,6 +29,12 @@ sample =
     chinese: '會議'
     desc: "立法院以會期為單位舉辦每個會議，一次會議可能會分多天進行，此 api 包含該次會議的所有相關資訊，如議程、相關影像等。"
     id: '08-04-YS-06'
+  'amendments':
+    chinese: '法律提案資訊'
+    desc: '提供國會圖書館裡頭的法律提案資訊，可在提案(bills)中查找此類資訊'
+  'ttsmotions':
+    chinese: '議案進度'
+    desc: '提供了國會圖書館上的議案進度資料 (ttsmotions collections)'
 
 # header
 output = """
