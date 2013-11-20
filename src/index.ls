@@ -175,6 +175,8 @@ export function bootstrap(plx, cb)
     #{ sql-ensure-index \ttsmotions \ttsmotions_bill_refs, "USING gin (bill_refs)"};
     #{ sql-ensure-index \ttsmotions \ttsmotions_speakers, "USING gin (_ttsmotions_speaker_names(speakers))"};
     #{ sql-ensure-index \calendar, \calendar_sitting, "(_calendar_sitting_id(calendar))"};
+    #{ sql-ensure-index \sittings, \sittings_ad_committee, "(ad, committee)"};
+    #{ sql-ensure-index \sittings, \sittings_ad_sitting, "(ad, session, committee, sitting)"};
   END $$;
   """
 
