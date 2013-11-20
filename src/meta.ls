@@ -55,15 +55,17 @@ export meta =
   'pgrest.bills':
     s: {bill_id: -1}
     f: {data: -1}
-    as: "bills LEFT JOIN (select bill_ref, sitting_introduced, 'legislative'::text as bill_type from ttsbills) ttsbills USING (bill_ref)"
+    as: "bills LEFT JOIN (select sponsors, cosponsors, bill_ref, sitting_introduced, 'legislative'::text as bill_type from ttsbills) ttsbills USING (bill_ref)"
     primary: (id) ->
       $or:
         bill_ref: id
         bill_id: id
     columns:
-      '*': <[bill_id bill_ref summary proposed_by sponsors cosponsors abstract report_of reconsideration_of bill_type sitting_introduced]>
+      '*': <[bill_id bill_ref summary proposed_by abstract report_of reconsideration_of bill_type sitting_introduced]>
       data: type: \json
       doc: type: \json
+      sponsors: $literal: '(case array_length(ttsbills.sponsors,1) when 0 then bills.sponsors else ttsbills.sponsors end)'
+      cosponsors: $literal: '(case array_length(ttsbills.cosponsors,1) when 0 then bills.cosponsors else ttsbills.cosponsors end)'
       amendments:
         $from: 'pgrest.amendments'
         $query: 'bill_ref': $literal: 'bills.bill_ref'
