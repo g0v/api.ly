@@ -18,11 +18,12 @@ export meta =
       '*': <[tts_key date source sitting_id chair motion_type summary resolution progress topic category tags bill_refs memo agencies speakers]>
   'pgrest.motions':
     s: {sitting_id: -1,motion_class: 1, agenda_item: 1}
-    as: 'public.motions LEFT JOIN bills USING (bill_id)'
+    as: 'public.motions LEFT JOIN bills USING (bill_id) LEFT JOIN ttsbills USING (bill_ref)'
     columns:
       '*':
         motions: {}
         bills: <[bill_ref summary proposed_by]>
+        ttsbills: <[sitting_introduced]>
       'doc': type: \json
   'pgrest.sittings':
     s: {id: -1}
@@ -48,17 +49,17 @@ export meta =
         $query: 'sitting_id': $literal: 'sittings.id'
         $order: {motion_class: 1, agenda_item: 1}
         columns:
-          '*': <[motion_class agenda_item subitem item bill_id bill_ref proposed_by summary doc]>
+          '*': <[motion_class agenda_item subitem item bill_id bill_ref proposed_by summary doc sitting_introduced]>
   'pgrest.bills':
     s: {bill_id: -1}
     f: {data: -1}
-    as: 'bills'
+    as: "bills LEFT JOIN (select bill_ref, sitting_introduced, 'legislative'::text as bill_type from ttsbills) ttsbills USING (bill_ref)"
     primary: (id) ->
       $or:
         bill_ref: id
         bill_id: id
     columns:
-      '*': <[bill_id bill_ref summary proposed_by sponsors cosponsors abstract report_of reconsideration_of]>
+      '*': <[bill_id bill_ref summary proposed_by sponsors cosponsors abstract report_of reconsideration_of bill_type sitting_introduced]>
       data: type: \json
       doc: type: \json
       motions:
