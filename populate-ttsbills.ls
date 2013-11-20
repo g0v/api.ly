@@ -99,7 +99,7 @@ for entry in res.0 => let entry = _mapfields entry
     res <- plx.upsert {
       collection: \amendments
       q: entry{bill_ref,law_id}
-      $: $set: entry{law_name,json,tts_id,source}
+      $: $set: entry{json,tts_id,source}
     }, _, -> console.log \err it, \amendments, entry
     return done!
 
