@@ -75,7 +75,6 @@ export function bootstrap(plx, cb)
       abstract text,
       data json,
       doc json,
-      sitting_introduced text,
 
       report_of text[],
       reconsideration_of text[],
@@ -124,6 +123,28 @@ export function bootstrap(plx, cb)
       agencies text[]
   );
 
+  CREATE TABLE IF NOT EXISTS laws (
+    id text PRIMARY KEY,
+    name text
+  );
+
+  CREATE TABLE IF NOT EXISTS amendments (
+    bill_ref text,
+    law_id text,
+
+    tts_id text UNIQUE,
+    source json[],
+
+    PRIMARY KEY(bill_ref, law_id)
+  );
+
+  CREATE TABLE IF NOT EXISTS ttsbills (
+    bill_ref text PRIMARY KEY,
+    sitting_introduced text,
+    introduced date,
+    sponsors text[],
+    cosponsors text[]
+  );
   """
 
   # XXX: make plv8x /sql define-schema reusable
