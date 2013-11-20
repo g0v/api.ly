@@ -50,6 +50,8 @@ export meta =
         $order: {motion_class: 1, agenda_item: 1}
         columns:
           '*': <[motion_class agenda_item subitem item bill_id bill_ref proposed_by summary doc sitting_introduced]>
+  'pgrest.amendments':
+    as: "amendments JOIN laws ON (amendments.law_id = laws.id)"
   'pgrest.bills':
     s: {bill_id: -1}
     f: {data: -1}
@@ -62,6 +64,11 @@ export meta =
       '*': <[bill_id bill_ref summary proposed_by sponsors cosponsors abstract report_of reconsideration_of bill_type sitting_introduced]>
       data: type: \json
       doc: type: \json
+      amendments:
+        $from: 'pgrest.amendments'
+        $query: 'bill_ref': $literal: 'bills.bill_ref'
+        columns:
+          '*': <[law_id name source]>
       motions:
         $from: 'pgrest.motions JOIN pgrest.sittings ON (sitting_id = sittings.id)'
         $query: 'bill_id': $literal: 'bills.bill_id'
