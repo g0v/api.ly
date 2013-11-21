@@ -52,6 +52,8 @@ export meta =
           '*': <[motion_class agenda_item subitem item bill_id bill_ref proposed_by summary doc sitting_introduced]>
   'pgrest.amendments':
     as: "amendments JOIN laws ON (amendments.law_id = laws.id)"
+  'pgrest.laws':
+    as: "laws"
   'pgrest.bills':
     s: {bill_id: -1}
     f: {data: -1, law_ids: -1}
