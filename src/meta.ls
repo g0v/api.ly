@@ -64,8 +64,8 @@ export meta =
       '*': <[bill_id bill_ref summary proposed_by abstract report_of reconsideration_of bill_type sitting_introduced]>
       data: type: \json
       doc: type: \json
-      sponsors: $literal: '(case array_length(ttsbills.sponsors,1) when 0 then bills.sponsors else ttsbills.sponsors end)'
-      cosponsors: $literal: '(case array_length(ttsbills.cosponsors,1) when 0 then bills.cosponsors else ttsbills.cosponsors end)'
+      sponsors: $literal: '(case when ttsbills.sponsors is null then bills.sponsors else ttsbills.sponsors end)'
+      cosponsors: $literal: '(case when ttsbills.cosponsors is null then bills.cosponsors else ttsbills.cosponsors end)'
       amendments:
         $from: 'pgrest.amendments'
         $query: 'bill_ref': $literal: 'bills.bill_ref'
