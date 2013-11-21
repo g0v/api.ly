@@ -54,7 +54,7 @@ export meta =
     as: "amendments JOIN laws ON (amendments.law_id = laws.id)"
   'pgrest.bills':
     s: {bill_id: -1}
-    f: {data: -1}
+    f: {data: -1, law_ids: -1}
     as: "bills LEFT JOIN (select sponsors, cosponsors, bill_ref, sitting_introduced, 'legislative'::text as bill_type from ttsbills) ttsbills USING (bill_ref)"
     primary: (id) ->
       $or:
@@ -66,6 +66,8 @@ export meta =
       doc: type: \json
       sponsors: $literal: '(case when ttsbills.sponsors is null then bills.sponsors else ttsbills.sponsors end)'
       cosponsors: $literal: '(case when ttsbills.cosponsors is null then bills.cosponsors else ttsbills.cosponsors end)'
+      law_ids:
+        $literal: '(select array_agg(law_id) from amendments where amendments.bill_ref = bills.bill_ref)'
       amendments:
         $from: 'pgrest.amendments'
         $query: 'bill_ref': $literal: 'bills.bill_ref'
