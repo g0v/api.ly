@@ -84,3 +84,5 @@ export meta =
           '*':
             motions: <[sitting_id resolution status committee motion_class agenda_item item]>
             sittings: <[dates]>
+  'pgrest.ttsinterpellation':
+    as: "ttsinterpellation"
