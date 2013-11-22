@@ -14,7 +14,7 @@ require! shelljs
 {parse_roc_date,parse_source} = twly
 
 function get-inter(_session, cb)
-  key = "ttsbills-#{_session}"
+  key = "ttsinter-#{_session}"
   if val = cache.getSync key
     return cb val
   code, output <- cli.shellrun """
