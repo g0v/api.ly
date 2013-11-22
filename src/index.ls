@@ -145,6 +145,24 @@ export function bootstrap(plx, cb)
     sponsors text[],
     cosponsors text[]
   );
+
+  CREATE TABLE IF NOT EXISTS ttsinterpellation (
+    tts_id text PRIMARY KEY,
+    wrans_id text,
+    asked_by text[],
+    source json,
+    summary text,
+    answered boolean,
+    answered_by text[],
+    date_asked date,
+    category text[],
+    topic text[],
+    keywords text[],
+    interpellation_type text,
+    answers json[]
+  );
+
+
   """
 
   # XXX: make plv8x /sql define-schema reusable
@@ -177,6 +195,8 @@ export function bootstrap(plx, cb)
     #{ sql-ensure-index \calendar, \calendar_sitting, "(_calendar_sitting_id(calendar))"};
     #{ sql-ensure-index \sittings, \sittings_ad_committee, "(ad, committee)"};
     #{ sql-ensure-index \sittings, \sittings_ad_sitting, "(ad, session, committee, sitting)"};
+    #{ sql-ensure-index \ttsinterpellation, \ttsinterpellation_asked_by, "USING gin (asked_by)"};
+    #{ sql-ensure-index \ttsinterpellation, \ttsinterpellation_wrans_id, "(wrans_id)"};
   END $$;
   """
 
