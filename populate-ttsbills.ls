@@ -1,24 +1,17 @@
 #!/usr/bin/env lsc
-require! <[optimist pgrest async fscache]>
+require! <[optimist async fscache]>
 twly = require \./lib
 
-{XRegExp} = require \xregexp
+require! \./lib/cli
 
 {dir="/tmp/misq",ad,session} = optimist.argv
 
-conString = optimist.argv.db ? process.env.PGDATABASE
-conString = "localhost/#conString" unless conString is // / //
-conString = "tcp://#conString"     unless conString is // :/ //
-
 cache = fscache.createSync 3600s * 1000ms * 24h * 3d, '/tmp/tts'
 
-{util,misq} = require \twlyparser
 {sprintf} = require \sprintf
 require! shelljs
 
-function parse_roc_date(d)
-  [_, y, m, d] = d.match /^(\d\d\d?)(\d\d)(\d\d)/
-  [+y + 1911, +m , +d]
+{parse_roc_date,parse_source} = twly
 
 function parse_sitting(d)
   [_, ad, session, sitting, extra] = d.match /(\d+)屆(\d+)期(\d+)次(?:臨時會(\d+)會次)?/
@@ -27,29 +20,12 @@ function parse_sitting(d)
   else
     "#{ad}-#{session}-YS-#{sitting}"
 
-function parse_source(d)
-  a = d.split /(?:[\s,;]*)?(.*?)\s*(\[.*?\])/
-  res = []
-
-  do
-    [_, text, link]:x = a.slice 0, 3
-    if x.length is 3
-      res.push {text, link: JSON.parse link}
-    else
-      break
-  while a.splice 0, 3
-
-  res
-
-function shellrun(cmd, opts, cb)
-  c = shelljs.exec cmd, opts, cb
-  c.stderr.on 'data' -> console.error it
 
 function get-bills(_session, cb)
   key = "ttsbills-#{_session}"
   if val = cache.getSync key
     return cb val
-  code, output <- shellrun """
+  code, output <- cli.shellrun """
     casperjs scripts/tts.coffee --type=b --session=#{_session} --output=/dev/stdout | lsc node_modules/twlyparser/parse-tts.ls --bill=1 /dev/stdin
   """ {+silent}
   res = JSON.parse output
@@ -79,10 +55,9 @@ function _mapfields(entry)
 
   entry
 
-plx <- pgrest .new conString, {+client}
+plx <- cli.plx {+client}
 
-_session = sprintf '%02d%02d', +ad, +session
-res <- get-bills _session
+res <- get-bills sprintf '%02d%02d', +ad, +session
 
 funcs = []
 

@@ -212,3 +212,21 @@ _calendar_sitting_id.$bootstrap = true
 export function _ttsmotions_speaker_names(speakers) => speakers.map (.name)
 _ttsmotions_speaker_names.$plv8x = '(json[]):text[]'
 _ttsmotions_speaker_names.$bootstrap = true
+
+export function parse_roc_date(d)
+  [_, y, m, d] = d.match /^(\d\d\d?)(\d\d)(\d\d)/
+  [+y + 1911, +m , +d]
+
+export function parse_source(d)
+  a = d.split /(?:[\s,;]*)?(.*?)\s*(\[.*?\])/
+  res = []
+
+  do
+    [_, text, link]:x = a.slice 0, 3
+    if x.length is 3
+      res.push {text, link: JSON.parse link}
+    else
+      break
+  while a.splice 0, 3
+
+  res
