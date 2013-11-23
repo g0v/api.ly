@@ -79,6 +79,12 @@ populated via pgq with `bill-details.ls`
 
 ## fulltext from gazettes
 
+(not automated yet)
+
+## ivod clip metadata
+
+populated with `update-ivod.sh`
+
 ## TTS data (WIP)
 
 National Parliament Library provides a database called TTS.  to work with it you'll need to have lisproxy.psgi up and running, and install phatomjs and casperjs to use scripts/tts.coffee
