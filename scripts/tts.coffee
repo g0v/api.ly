@@ -8,6 +8,10 @@ if type == 'i'
 else if type == 'b'
   [_, ad, s] = session.match /(\d\d)(\d\d)/
   url = "http://localhost:5000/lgcgi/ttsweb?@0:0:1:lgmempropg#{ad}"
+else if type == 'x'
+  [_, ad, s] = session.match /(\d\d)(\d\d)/
+  session = "#{ad}屆#{s}期"
+  url = 'http://localhost:5000/lgcgi/ttswebpw?in_out/mempro2in'
 else
   [_, ad, s] = session.match /(\d\d)(\d\d)/
   session = "#{ad}屆#{s}期"
@@ -62,6 +66,14 @@ else if type == 'b'
             ), session
     casper.thenClick 'input[name="_IMG_執行檢索"]', ->
         console.log 'nextup!'
+else if type is 'x'
+    casper.then ->
+      # search for 'casperjs' from google form
+      @fill "form[name=TTSWEB]", {
+        "_TTS.SBF4": "SE"
+        "_TTS.SBT4": session
+      }, false
+      @click 'input[name="_IMG_執行檢索"]'
 else
     casper.then ->
       # search for 'casperjs' from google form
