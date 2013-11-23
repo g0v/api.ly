@@ -77,31 +77,6 @@ populated via pgq with `ys-misq.ls`
 
 populated via pgq with `bill-details.ls`
 
-## bill and motion metadata
-
-## interpellation
-
-See TTS for setting up casperjs environment.
-
-Run:
-
-    % casperjs scripts/tts.coffee --type=i --session=0803 --output=i0803.html
-
-Note that you'll need to run a read-write-enabled pgrest for inserting data, so kill the app.ls above if you have it up and running.
-
-    % env PATH=node_modules/.bin:$PATH pgrest --db ly
-    % lsc node_modules/twlyparser/parse-tts.ls i0803.html | curl -i -H "Content-Type: application/json" -X POST -d @- http://127.0.0.1:3000/collections/ttsinter
-
-Note that there's a bug with pgrest that if you are running multiple POST into a new collection (like ttsinter here), you need to restart the server after the first POST.
-
-### Written Answers
-
-    % env PLV8XDB=ly ./scripts/gen-wrans.ls | curl -i -H "Content-Type: application/json" -X POST -d @- http://127.0.0.1:3000/collections/wrans
-
-### Debates
-
-    % env PLV8XDB=ly ./scripts/gen-debates.ls | curl -i -H "Content-Type: application/json" -X POST -d @- http://127.0.0.1:3000/collections/debates
-
 ## fulltext from gazettes
 
 ## TTS data (WIP)
@@ -113,7 +88,14 @@ National Parliament Library provides a database called TTS.  to work with it you
     % bower install jquery
 
     % plackup lisproxy.psgi &
-    % casperjs scripts/tts.coffee --type=m --session=0803 --output=m0803.html
+
+### bill and motion metadata
+
+populated with `populate-ttsmotions.ls` and `populated-ttsbills.ls`
+
+### interpellation
+
+populated with `populate-ttsinter.ls`
 
 API listing for api.ly
 ======================
