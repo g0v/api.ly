@@ -1,8 +1,8 @@
 FORMAT: X-1A
-HOST: http://api-beta.ly.g0v.tw
+HOST: http://api.ly.g0v.tw
 
 # TW ly api v0
-online test of [beta API](http://api-beta.ly.g0v.tw)
+online test of [beta API](http://api.ly.g0v.tw)
 This is beta version of api.ly.g0v.tw. Written in [apiblueprint](http://apiblueprint.org/) by [Markdown](http://daringfireball.net/projects/markdown/syntax) syntax.
 Every API have following attributes:
 
@@ -10,9 +10,9 @@ Every API have following attributes:
     + count (integer) ... Total number of entries
     + l (integer) ... Number of entries list in entries.
     + sk (integer) ... Start offset of entries. Start from 0
-        + Sample Page 1: http://api-beta.ly.g0v.tw/v0/collections/calendar?l=10&sk=0
-        + Sample Page 2: http://api-beta.ly.g0v.tw/v0/collections/calendar?l=10&sk=10
-        + Sample Page 3: http://api-beta.ly.g0v.tw/v0/collections/calendar?l=10&sk=20
+        + Sample Page 1: http://api.ly.g0v.tw/v0/collections/calendar?l=10&sk=0
+        + Sample Page 2: http://api.ly.g0v.tw/v0/collections/calendar?l=10&sk=10
+        + Sample Page 3: http://api.ly.g0v.tw/v0/collections/calendar?l=10&sk=20
 
 + entries (Array)
     + Every entry have it's own attributes, see following list and example.
@@ -21,9 +21,9 @@ Every API can pass json object as query to filter result
 
 + query sample:
     + Filter field "proposed_by" in someone's name of bills: {"proposed_by":{"$matches":"someone's name"}}
-        + Sample URI: http://api-beta.ly.g0v.tw/v0/collections/bills?q={%22proposed_by%22:{%22$matches%22:%22%E4%BA%BA%22}}
+        + Sample URI: http://api.ly.g0v.tw/v0/collections/bills?q={%22proposed_by%22:{%22$matches%22:%22%E4%BA%BA%22}}
     + Filter field "summary" in keyword of sittings:
-        + Sample URI: http://api-beta.ly.g0v.tw/v0/collections/sittings?q={%22summary%22:{%22$matches%22:%22%E5%81%A5%E4%BF%9D%22}}
+        + Sample URI: http://api.ly.g0v.tw/v0/collections/sittings?q={%22summary%22:{%22$matches%22:%22%E5%81%A5%E4%BF%9D%22}}
 
 ##### Retrieve an API [GET]
 
@@ -42,7 +42,7 @@ List all avaible collection of current version.
 資料來源:立法院議事轉播 http://ivod.ly.gov.tw/
 
 ## GET /v0/collections/ivod/
-Example: http://api-beta.ly.g0v.tw/v0/collections/ivod/ 
+Example: http://api.ly.g0v.tw/v0/collections/ivod/
 + Response 200 (application/json)
 
 # Group calendar
@@ -51,7 +51,7 @@ Example: http://api-beta.ly.g0v.tw/v0/collections/ivod/
 資料來源: http://www.ly.gov.tw/01_lyinfo/0101_lynews/lynewsList.action
 
 ## GET /v0/collections/calendar/
-Example: http://api-beta.ly.g0v.tw/v0/collections/calendar?q={"type":"hearing"} 
+Example: http://api.ly.g0v.tw/v0/collections/calendar?q={"type":"hearing"}
 + Response 200 (application/json)
 
 # Group ttsmotions
@@ -59,7 +59,7 @@ Example: http://api-beta.ly.g0v.tw/v0/collections/calendar?q={"type":"hearing"}
 + 提供了國會圖書館上的議案進度資料 (ttsmotions collections)
 
 ## GET /v0/collections/ttsmotions/
-Example: http://api-beta.ly.g0v.tw/v0/collections/ttsmotions/ 
+Example: http://api.ly.g0v.tw/v0/collections/ttsmotions/
 + Response 200 (application/json)
 
 # Group motions
@@ -68,7 +68,7 @@ Example: http://api-beta.ly.g0v.tw/v0/collections/ttsmotions/
 資料來源: http://misq.ly.gov.tw + http://npl.ly.gov.tw
 
 ## GET /v0/collections/motions/
-Example: http://api-beta.ly.g0v.tw/v0/collections/motions?q={"bill_id":"1011011071000200"} 
+Example: http://api.ly.g0v.tw/v0/collections/motions?q={"bill_id":"1011011071000200"}
 + Response 200 (application/json)
 
 # Group sittings
@@ -76,23 +76,23 @@ Example: http://api-beta.ly.g0v.tw/v0/collections/motions?q={"bill_id":"10110110
 + 立法院以會期為單位舉辦每個會議，一次會議可能會分多天進行，此 api 包含該次會議的所有相關資訊，如議程、相關影像等。
 
 ## GET /v0/collections/sittings/
-Example: http://api-beta.ly.g0v.tw/v0/collections/sittings/ 
+Example: http://api.ly.g0v.tw/v0/collections/sittings/
 + Response 200 (application/json)
 
 ### GET /v0/collections/sittings/{id}/
-Example: http://api-beta.ly.g0v.tw/v0/collections/sittings/08-04-YS-06/ 
+Example: http://api.ly.g0v.tw/v0/collections/sittings/08-04-YS-06/
 + Response 200 (application/json)
 
 #### GET /v0/collections/sittings/{id}/dates
-Example: http://api-beta.ly.g0v.tw/v0/collections/sittings/08-04-YS-06/dates 
+Example: http://api.ly.g0v.tw/v0/collections/sittings/08-04-YS-06/dates
 + Response 200 (application/json)
 
 #### GET /v0/collections/sittings/{id}/videos
-Example: http://api-beta.ly.g0v.tw/v0/collections/sittings/08-04-YS-06/videos 
+Example: http://api.ly.g0v.tw/v0/collections/sittings/08-04-YS-06/videos
 + Response 200 (application/json)
 
 #### GET /v0/collections/sittings/{id}/motions
-Example: http://api-beta.ly.g0v.tw/v0/collections/sittings/08-04-YS-06/motions 
+Example: http://api.ly.g0v.tw/v0/collections/sittings/08-04-YS-06/motions
 + Response 200 (application/json)
 
 # Group amendments
@@ -100,7 +100,7 @@ Example: http://api-beta.ly.g0v.tw/v0/collections/sittings/08-04-YS-06/motions
 + 提供國會圖書館裡頭的法律提案資訊，可在提案(bills)中查找此類資訊
 
 ## GET /v0/collections/amendments/
-Example: http://api-beta.ly.g0v.tw/v0/collections/amendments/ 
+Example: http://api.ly.g0v.tw/v0/collections/amendments/
 + Response 200 (application/json)
 
 # Group bills
@@ -109,34 +109,34 @@ Example: http://api-beta.ly.g0v.tw/v0/collections/amendments/
 資料來源: http://misq.ly.gov.tw + http://npl.ly.gov.tw
 
 ## GET /v0/collections/bills/
-Example: http://api-beta.ly.g0v.tw/v0/collections/bills/ 
+Example: http://api.ly.g0v.tw/v0/collections/bills/
 + Response 200 (application/json)
 
 ### GET /v0/collections/bills/{bill_id}/
-Example: http://api-beta.ly.g0v.tw/v0/collections/bills/1021021070200400/ 
+Example: http://api.ly.g0v.tw/v0/collections/bills/1021021070200400/
 + Response 200 (application/json)
 
 #### GET /v0/collections/bills/{bill_id}/data
-Example: http://api-beta.ly.g0v.tw/v0/collections/bills/1021021070200400/data 
+Example: http://api.ly.g0v.tw/v0/collections/bills/1021021070200400/data
 + Response 200 (application/json)
 
 #### GET /v0/collections/bills/{bill_id}/doc
-Example: http://api-beta.ly.g0v.tw/v0/collections/bills/1021021070200400/doc 
+Example: http://api.ly.g0v.tw/v0/collections/bills/1021021070200400/doc
 + Response 200 (application/json)
 
 #### GET /v0/collections/bills/{bill_id}/sponsors
-Example: http://api-beta.ly.g0v.tw/v0/collections/bills/1021021070200400/sponsors 
+Example: http://api.ly.g0v.tw/v0/collections/bills/1021021070200400/sponsors
 + Response 200 (application/json)
 
 #### GET /v0/collections/bills/{bill_id}/cosponsors
-Example: http://api-beta.ly.g0v.tw/v0/collections/bills/1021021070200400/cosponsors 
+Example: http://api.ly.g0v.tw/v0/collections/bills/1021021070200400/cosponsors
 + Response 200 (application/json)
 
 #### GET /v0/collections/bills/{bill_id}/amendments
-Example: http://api-beta.ly.g0v.tw/v0/collections/bills/1021021070200400/amendments 
+Example: http://api.ly.g0v.tw/v0/collections/bills/1021021070200400/amendments
 + Response 200 (application/json)
 
 #### GET /v0/collections/bills/{bill_id}/motions
-Example: http://api-beta.ly.g0v.tw/v0/collections/bills/1021021070200400/motions 
+Example: http://api.ly.g0v.tw/v0/collections/bills/1021021070200400/motions
 + Response 200 (application/json)
 

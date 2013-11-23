@@ -2,7 +2,7 @@
 require! fs
 {meta} = require \./src/meta.ls
 
-base_url = 'http://api-beta.ly.g0v.tw'
+base_url = 'http://api.ly.g0v.tw'
 version  = \v0
 collections = \collections
 base_path = "/#{version}/#{collections}/"
@@ -42,7 +42,7 @@ FORMAT: X-1A
 HOST: #{base_url}
 
 # TW ly api #{version}
-online test of [beta API](http://api-beta.ly.g0v.tw)
+online test of [beta API](http://api.ly.g0v.tw)
 This is beta version of api.ly.g0v.tw. Written in [apiblueprint](http://apiblueprint.org/) by [Markdown](http://daringfireball.net/projects/markdown/syntax) syntax.
 Every API have following attributes:
 
@@ -61,9 +61,9 @@ Every API can pass json object as query to filter result
 
 + query sample:
     + Filter field "proposed_by" in someone's name of bills: {"proposed_by":{"$matches":"someone's name"}}
-        + Sample URI: http://api-beta.ly.g0v.tw/v0/collections/bills?q={%22proposed_by%22:{%22$matches%22:%22%E4%BA%BA%22}}
+        + Sample URI: http://api.ly.g0v.tw/v0/collections/bills?q={%22proposed_by%22:{%22$matches%22:%22%E4%BA%BA%22}}
     + Filter field "summary" in keyword of sittings:
-        + Sample URI: http://api-beta.ly.g0v.tw/v0/collections/sittings?q={%22summary%22:{%22$matches%22:%22%E5%81%A5%E4%BF%9D%22}}
+        + Sample URI: http://api.ly.g0v.tw/v0/collections/sittings?q={%22summary%22:{%22$matches%22:%22%E5%81%A5%E4%BF%9D%22}}
 
 ##### Retrieve an API [GET]
 \n\n
