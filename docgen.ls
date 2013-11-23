@@ -32,9 +32,15 @@ sample =
   'amendments':
     chinese: '法律提案資訊'
     desc: '提供國會圖書館裡頭的法律提案資訊，可在提案(bills)中查找此類資訊'
+  'laws':
+    chinese: '法律資訊'
+    desc: '提供國會圖書館上的法律名稱及代號'
   'ttsmotions':
     chinese: '議案進度'
     desc: '提供了國會圖書館上的議案進度資料 (ttsmotions collections)'
+  'ttsinterpellation':
+    chinese: '議案進度'
+    desc: '提供了國會圖書館上的質詢資料'
 
 # header
 output = """
@@ -119,9 +125,9 @@ function doc_section(title, desc = null, req = {}, res = {}, level = 1)
     o.push(desc)
   else if(req?)
     if(req.sample_url?)
-      o.push("Example: #{sample_url} ");
+      o.push("Example: #{sample_url}");
     else
-      o.push("Example: #{base_url}#{req.uri} ");
+      o.push("Example: #{base_url}#{req.uri}");
   o.push doc_section_res res if req.uri?
   o.push ''
   return o * "\n"

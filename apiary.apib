@@ -103,6 +103,14 @@ Example: http://api.ly.g0v.tw/v0/collections/sittings/08-04-YS-06/motions
 Example: http://api.ly.g0v.tw/v0/collections/amendments/
 + Response 200 (application/json)
 
+# Group laws
++ This is the api group of laws (法律資訊)
++ 提供國會圖書館上的法律名稱及代號
+
+## GET /v0/collections/laws/
+Example: http://api.ly.g0v.tw/v0/collections/laws/
++ Response 200 (application/json)
+
 # Group bills
 + This is the api group of bills (提案)
 + 立法院黨團、委員、政府提出的提案，可能是法律案、預算案、其他案、宣戰案...等。
@@ -132,11 +140,23 @@ Example: http://api.ly.g0v.tw/v0/collections/bills/1021021070200400/sponsors
 Example: http://api.ly.g0v.tw/v0/collections/bills/1021021070200400/cosponsors
 + Response 200 (application/json)
 
+#### GET /v0/collections/bills/{bill_id}/law_ids
+Example: http://api.ly.g0v.tw/v0/collections/bills/1021021070200400/law_ids
++ Response 200 (application/json)
+
 #### GET /v0/collections/bills/{bill_id}/amendments
 Example: http://api.ly.g0v.tw/v0/collections/bills/1021021070200400/amendments
 + Response 200 (application/json)
 
 #### GET /v0/collections/bills/{bill_id}/motions
 Example: http://api.ly.g0v.tw/v0/collections/bills/1021021070200400/motions
++ Response 200 (application/json)
+
+# Group ttsinterpellation
++ This is the api group of ttsinterpellation (議案進度)
++ 提供了國會圖書館上的質詢資料
+
+## GET /v0/collections/ttsinterpellation/
+Example: http://api.ly.g0v.tw/v0/collections/ttsinterpellation/
 + Response 200 (application/json)
 
