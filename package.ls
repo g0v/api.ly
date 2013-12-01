@@ -19,7 +19,7 @@ main: \lib/index.js
 dependencies:
   async: \0.2.x
   optimist: \0.4.x
-  express: \3.2.x
+  express: \3.4.x
   sprintf: \0.1.1
   qs: \0.6.x
   moment: \2.4.x
