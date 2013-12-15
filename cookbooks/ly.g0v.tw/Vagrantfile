@@ -16,6 +16,7 @@ Vagrant.configure("2") do |config|
   config.vm.provision :chef_solo do |chef|
     chef.data_bags_path = "data_bags"
     chef.add_recipe 'pgrest'
+    chef.add_recipe 'monit'
     chef.add_recipe 'ly.g0v.tw::apiserver'
     ### Enable the following recipes for worker and streaming related services
     # chef.add_recipe 'ly.g0v.tw::worker'
