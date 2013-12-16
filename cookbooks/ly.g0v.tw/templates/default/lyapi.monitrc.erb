@@ -1,8 +1,6 @@
 set daemon 120
 
-check system mem
-  start program = "/usr/sbin/service lyapi start"
-  stop program = "/usr/sbin/service lyapi stop"
-  # XXX: what is the usage threshold?
-  if memory > 1024 MB then restart
+check host localhost with address localhost
+  if failed url http://localhost/v0/collections/bills then exec "/usr/sbin/service lyapi restart"
+  if failed url http://localhost/v0/collections/bills for 3 times within 3 cycles then exec "/bin/sh -c 'echo Restart Fail > /tmp/monit_restart; /bin/date |/usr/bin/tee -a /tmp/monit_restart'"
 
