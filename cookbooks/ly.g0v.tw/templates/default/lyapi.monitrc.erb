@@ -1,0 +1,8 @@
+set daemon 120
+
+check system mem
+  start program = "/usr/sbin/service lyapi start"
+  stop program = "/usr/sbin/service lyapi stop"
+  # XXX: what is the usage threshold?
+  if memory > 1024 MB then restart
+
