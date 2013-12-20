@@ -1,2 +1,4 @@
 #!/bin/bash -e
+mkdir -p /var/run/ffserver
+chown www-data /var/run/ffserver
 exec chpst -u www-data /opt/ffmpeg/ffserver -f /etc/ffserver.conf
