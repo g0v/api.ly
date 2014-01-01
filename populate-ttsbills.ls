@@ -62,21 +62,24 @@ res <- get-bills sprintf '%02d%02d', +ad, +session
 funcs = []
 
 for entry in res.0 => let entry = _mapfields entry
-  funcs.push (done) ->
-    res <- plx.upsert {
-      collection: \laws
-      q: id: entry.law_id
-      $: $set: name: entry.law_name ? 'NA'
-    }, _, -> console.log \err it, \laws, entry
-    return done!
+  if entry.law_id
+    funcs.push (done) ->
+      res <- plx.upsert {
+        collection: \laws
+        q: id: entry.law_id
+        $: $set: name: entry.law_name ? 'NA'
+      }, _, -> console.log \err it, \laws, entry
+      return done!
+    funcs.push (done) ->
+      res <- plx.upsert {
+        collection: \amendments
+        q: entry{bill_ref,law_id}
+        $: $set: entry{json,tts_id,source}
+      }, _, -> console.log \err it, \amendments, entry
+      return done!
+  else
+    console.error "no law_id", entry.bill_ref
 
-  funcs.push (done) ->
-    res <- plx.upsert {
-      collection: \amendments
-      q: entry{bill_ref,law_id}
-      $: $set: entry{json,tts_id,source}
-    }, _, -> console.log \err it, \amendments, entry
-    return done!
 
   funcs.push (done) ->
     res <- plx.upsert {
