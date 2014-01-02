@@ -1,56 +1,23 @@
 #!/usr/bin/env lsc
 require! <[optimist pgrest async fscache]>
 twly = require \./lib
+cli = require \./lib/cli
 
 {XRegExp} = require \xregexp
 
 {dir="/tmp/misq",ad,session} = optimist.argv
 
-conString = optimist.argv.db ? process.env.PGDATABASE
-conString = "localhost/#conString" unless conString is // / //
-conString = "tcp://#conString"     unless conString is // :/ //
-
 cache = fscache.createSync 3600s * 1000ms * 24h * 3d, '/tmp/tts'
+
+plx <- cli.plx {+client}
 
 {util,misq} = require \twlyparser
 {sprintf} = require \sprintf
 require! shelljs
 
-sitting_name = XRegExp """
-    立法院(?:第(?<ad> \\d+)屆?第(?<session> \\d+)會期
-      (?:第(?<extra> \\d+)次臨時會)?)?
-    (?:
-      第(?<sitting> \\d+)次(?<talk> 全院委員談話會?)?(?<whole> 全院委員會(?:(?<hearing>.*?)公聽會)?)?會議?
-      |
-      (?<committee>\\D+?)[兩三四五六七八2-8]?委員會
-        (?:
-          第?(?<committee_sitting> \\d+)次(?:全體委員|聯席)會?會議?
-        |
-          (?:舉行)?(?<committee_hearing> .*?公聽會.*?)(?:會議)?
-        )
-      |
-      (?<talk_unspecified> 全院委員談話會(?:會議)?)
-      |
-      (?<election> 選舉院長、副院長會議)
-      |
-      (?<consultation>黨團協商會議)
-    )
-  """, \x
-
 function get-sitting-id(name)
-  sitting = XRegExp.exec name, sitting_name
-  if sitting.committee
-    sitting.committee = util.parseCommittee sitting.committee
-    sitting.sitting = sitting.committee_sitting
-  if sitting.whole
-    sitting.committee = <[WHL]>
-  if sitting.talk_unspecified
-    sitting.talk = 1
-    sitting.sitting = 1
-  if sitting.talk
-    sitting.committee = <[TLK]>
-  for _ in <[ad session sitting extra]> => sitting[_] = +sitting[_] if sitting[_]
-  return twly._sitting_id sitting
+  res = twly._sitting_id util.get-sitting name
+  res
 
 function parse_roc_date(d)
   [_, y, m, d] = d.match /^(\d\d\d?)(\d\d)(\d\d)/
@@ -158,7 +125,6 @@ function _mapfields(entry)
 
   entry
 
-plx <- pgrest .new conString, {+client}
 
 _session = sprintf '%02d%02d', +ad, +session
 res <- get-motions _session
@@ -177,7 +143,6 @@ funcs = for entry in res.0 => let entry = _mapfields entry
     return done!
 
 console.log \upserintg funcs.length
-return cb true unless funcs.length
 
 err, res <- async.series funcs
 
