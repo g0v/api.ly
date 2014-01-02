@@ -214,10 +214,15 @@ export function _calendar_session({ad,session,extra})
 _calendar_session.$plv8x = '(calendar):text'
 
 # generic
-export function _sitting_id({committee,sitting}:entry)
+export function _sitting_id({committee,sitting,hearing}:entry)
   session = _calendar_session entry
-  return unless session and sitting
+  return unless session
+  if hearing
+    parts = [session, committee.0, hearing]
+    parts.push sprintf "%02d" sitting if sitting
+    return parts.join '-'
   sitting_type = if committee => committee.join '-' else 'YS'
+  return unless sitting
   [session, sitting_type, sprintf "%02d" sitting].join \-
 
 _sitting_id.$plv8x = '(anyelement):text'
