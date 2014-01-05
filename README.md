@@ -9,9 +9,9 @@ We recommend using vagrant for developing
 
 ## Prepare
 
-Install [Virtualbox](https://www.virtualbox.org/wiki/Downloads) 4.2.18
+Install [Virtualbox](https://www.virtualbox.org/wiki/Downloads) 4.3.x
 
-Install [Vagrant](http://downloads.vagrantup.com/) 1.2.7 (1.3.x does not work with berkshelf yet)
+Install [Vagrant](http://downloads.vagrantup.com/) 1.4.x
 
 Install berkshelf:
 
