@@ -1,6 +1,6 @@
 site :opscode
 
-cookbook 'postgresql', github: 'opscode-cookbooks/postgresql', ref: '4b079e747bf8c1fcded2f6609569c825e3056669'
+cookbook 'postgresql', github: 'hw-cookbooks/postgresql', tag: 'v3.3.4'
 cookbook 'git'
 cookbook 'runit', github: 'clkao-cookbooks/runit', ref: 'runit-create'
 cookbook 'python'
