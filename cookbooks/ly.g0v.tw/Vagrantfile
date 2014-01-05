@@ -1,9 +1,14 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+$script = <<SCRIPT
+sudo sed -i -r 's#http://(.*?archive|security)\.ubuntu\.com/ubuntu#http://tw.archive.ubuntu.com/ubuntu#g' /etc/apt/sources.list
+which chef-solo || (curl -L https://www.opscode.com/chef/install.sh | sudo bash)
+SCRIPT
+
 Vagrant.configure("2") do |config|
-  config.vm.box = "ubuntu-12.04.3"
-  config.vm.box_url = "https://s3-eu-west-1.amazonaws.com/ffuenf-vagrant-boxes/ubuntu/ubuntu-12.04.3-server-amd64.box"
+  config.vm.box = "ubuntu-precise64"
+  config.vm.box_url = "http://cloud-images.ubuntu.com/vagrant/precise/current/precise-server-cloudimg-amd64-vagrant-disk1.box"
   config.vm.network :forwarded_port, host: 6988, guest: 80
   config.vm.network :forwarded_port, host: 6989, guest: 1935
   config.vm.network :forwarded_port, host: 6990, guest: 8090
@@ -13,6 +18,7 @@ Vagrant.configure("2") do |config|
   config.vm.provider :virtualbox do |vb|
     vb.customize ["modifyvm", :id, "--memory", "1024"]
   end
+  config.vm.provision "shell", inline: $script
   config.vm.provision :chef_solo do |chef|
     chef.data_bags_path = "data_bags"
     chef.add_recipe 'pgrest'
