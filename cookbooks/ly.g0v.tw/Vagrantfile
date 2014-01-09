@@ -3,6 +3,7 @@
 
 $script = <<SCRIPT
 sudo sed -i -r 's#http://(.*?archive|security)\.ubuntu\.com/ubuntu#http://tw.archive.ubuntu.com/ubuntu#g' /etc/apt/sources.list
+sudo apt-get update
 which chef-solo || (curl -L https://www.opscode.com/chef/install.sh | sudo bash)
 SCRIPT
 
