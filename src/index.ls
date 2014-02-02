@@ -10,6 +10,9 @@ function sql-ensure-index(table, index_name, expression)
   """
 
 export function bootstrap(plx, cb)
+  require! pgrest
+  <- plx.query pgrest.util.define-schema \pgrest "pgrest schema"
+  <- plx.query pgrest.util.define-schema \stats "stats schema"
   <- plx.query """
   CREATE OR REPLACE function is_valid_time(text) RETURNS boolean language plpgsql immutable as $$
   BEGIN
@@ -165,23 +168,6 @@ export function bootstrap(plx, cb)
 
   """
 
-  # XXX: make plv8x /sql define-schema reusable
-  <- plx.query """
-  DO $$
-  BEGIN
-      IF NOT EXISTS(
-          SELECT schema_name
-            FROM information_schema.schemata
-            WHERE schema_name = 'pgrest'
-        )
-      THEN
-        EXECUTE 'CREATE SCHEMA pgrest';
-      END IF;
-  END
-  $$;
-
-  """
-  require! pgrest
   <- pgrest.bootstrap plx, \twly require.resolve \../package.json
 
   <- plx.query """
