@@ -165,6 +165,14 @@ export function bootstrap(plx, cb)
     answers json[]
   );
 
+  CREATE TABLE IF NOT EXISTS stats.analytics (
+    name text,
+    timeframe text,
+    updated timestamp,
+    content json,
+
+    PRIMARY KEY(name, timeframe)
+  );
 
   """
 

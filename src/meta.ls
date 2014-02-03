@@ -1,9 +1,11 @@
+readonly = -> it
+
 export meta =
-  'pgrest.ivod':
+  'pgrest.ivod': readonly do
     as: 'public.ivod'
     columns:
       '*': <[sitting_id type speaker thumb firm time first_frame_timestamp length video_url_n video_url_w wmvid youtube_id]>
-  'pgrest.calendar':
+  'pgrest.calendar': readonly do
     f: {-raw}
     s: {date: -1}
     as: 'public.calendar'
@@ -11,12 +13,12 @@ export meta =
     columns:
       sitting_id: $literal: '_calendar_sitting_id(calendar)'
       '*': {}
-  'pgrest.ttsmotions':
+  'pgrest.ttsmotions': readonly do
     s: {date: -1}
     as: 'public.ttsmotions'
     columns:
       '*': <[tts_key date source sitting_id chair motion_type summary resolution progress topic category tags bill_refs memo agencies speakers]>
-  'pgrest.motions':
+  'pgrest.motions': readonly do
     s: {sitting_id: -1,motion_class: 1, agenda_item: 1}
     as: 'public.motions LEFT JOIN bills USING (bill_id) LEFT JOIN ttsbills USING (bill_ref)'
     columns:
@@ -25,7 +27,7 @@ export meta =
         bills: <[bill_ref summary proposed_by]>
         ttsbills: <[sitting_introduced]>
       'doc': type: \json
-  'pgrest.sittings':
+  'pgrest.sittings': readonly do
     s: {id: -1}
     f: {-videos}
     as: 'public.sittings'
@@ -50,11 +52,11 @@ export meta =
         $order: {motion_class: 1, agenda_item: 1}
         columns:
           '*': <[motion_class agenda_item subitem item bill_id bill_ref proposed_by summary doc sitting_introduced]>
-  'pgrest.amendments':
+  'pgrest.amendments': readonly do
     as: "amendments JOIN laws ON (amendments.law_id = laws.id)"
-  'pgrest.laws':
+  'pgrest.laws': readonly do
     as: "laws"
-  'pgrest.bills':
+  'pgrest.bills': readonly do
     s: {bill_id: -1}
     f: {data: -1, law_ids: -1}
     as: "bills LEFT JOIN (select sponsors, cosponsors, bill_ref, sitting_introduced, 'legislative'::text as bill_type from ttsbills) ttsbills USING (bill_ref)"
@@ -84,5 +86,8 @@ export meta =
           '*':
             motions: <[sitting_id resolution status committee motion_class agenda_item item]>
             sittings: <[dates]>
-  'pgrest.ttsinterpellation':
+  'pgrest.ttsinterpellation': readonly do
     as: "ttsinterpellation"
+
+  'pgrest.analytics': readonly do
+    as: "stats.analytics"
