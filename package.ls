@@ -31,3 +31,5 @@ dependencies:
 devDependencies:
   LiveScript: '1.1.x'
   googleapis: '~0.6.1'
+  xdg: '~0.1.1'
+  mkdirp: '~0.3.5'

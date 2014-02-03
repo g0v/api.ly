@@ -1,12 +1,18 @@
-require! <[googleapis moment pgrest optimist async]>
+require! <[googleapis moment pgrest optimist async xdg mkdirp path]>
 const {DB, SERVICE_ACCOUNT, KEYFILE='analytics.pem'} = process.env
+cachePath = xdg.basedir.cachePath "googleapis/discover"
+
+err <- mkdirp path.dirname cachePath
+throw err if err
 
 {db=DB} = optimist.argv
 plx <- pgrest.new db, {+client}
 
 jwt = new googleapis.auth.JWT SERVICE_ACCOUNT, KEYFILE, null, ['https://www.googleapis.com/auth/analytics.readonly']
 
-err, client <- googleapis.discover 'analytics', 'v3' .execute
+err, client <- googleapis.discover 'analytics', 'v3'
+  .withOpts cache: path: cachePath
+  .execute
 err, result <- jwt.authorize
 
 function get-ranks(from, to, cb)
