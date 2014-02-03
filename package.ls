@@ -30,3 +30,4 @@ dependencies:
   pgrest: 'git://github.com/clkao/pgrest.git'
 devDependencies:
   LiveScript: '1.1.x'
+  googleapis: '~0.6.1'
