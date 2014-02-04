@@ -61,6 +61,10 @@ Bootstrap with the initial dump file:
 
 pgrest will bind a local port to serve
 
+## data flow
+
+![](./dataflow.png)
+
 ## calendar
 
     % DB=ly lsc populate-calendar.ls  --year 2013
