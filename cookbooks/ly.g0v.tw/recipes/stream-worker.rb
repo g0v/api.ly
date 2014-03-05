@@ -32,7 +32,7 @@ node[:ly][:channels].each do |ch|
     default_logger true
     action [:create]
     options ({
-      :chid => ch.chid,
+      :imchid => ch.imchid,
       :channel => ch.channel,
       :rtmp_server => node[:ly][:rtmp_server] || 'rtmp://localhost:1935/hls'
     })

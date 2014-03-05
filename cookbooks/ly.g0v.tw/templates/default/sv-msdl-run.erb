@@ -1,3 +1,3 @@
 #!/bin/bash -e
 exec 2>&1
-exec chpst -u nobody bash -c "/opt/ffmpeg/ffmpeg -re -i rtmp://h264media02.ly.gov.tw:1935/live<% @options[:imchid] %>/300K_Live -vcodec copy -vprofile baseline -acodec copy -f flv <%= @options[:rtmp_server] %>/<%= @options[:channel] %>; echo end of stream; sleep 5"
+exec chpst -u nobody bash -c "trap 'kill 0; echo exiting; sleep 1' TERM; /opt/ffmpeg/ffmpeg -re -i rtmp://h264media02.ly.gov.tw:1935/live<%= @options[:imchid] %>/300K_Live -vcodec copy -vprofile baseline -acodec copy -f flv <%= @options[:rtmp_server] %>/<%= @options[:channel] %> & wait; echo end of stream; sleep 5"
