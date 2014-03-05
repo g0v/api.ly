@@ -9,38 +9,47 @@
         "channels": [
           {
             "chid": 1,
+            "mchid": "04",
             "channel": "EDU"
           },
           {
             "chid": 9,
+            "mchid": "06",
             "channel": "TRA"
           },
           {
             "chid": 12,
+            "mchid": "09",
             "channel": "JUD"
           },
           {
             "chid": 10,
+            "mchid": "07",
             "channel": "IAD"
           },
           {
             "chid": 11,
+            "mchid": "08",
             "channel": "FND"
           },
           {
             "chid": 8,
+            "mchid": "05",
             "channel": "ECO"
           },
           {
             "chid": 13,
+            "mchid": "02",
             "channel": "FIN"
           },
           {
             "chid": 6,
+            "mchid": "03",
             "channel": "SWE"
           },
           {
             "chid": 7,
+            "mchid": "06",
             "channel": "PRO"
           },
           {
