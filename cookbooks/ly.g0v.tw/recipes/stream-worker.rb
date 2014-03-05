@@ -24,19 +24,6 @@ execute "install ffmpeg" do
   command "./configure --enable-libvpx --enable-libvorbis --enable-libx264 --enable-gpl --enable-nonfree --enable-libmp3lame --enable-libfaac && make"
 end
 
-git "/opt/msdl" do
-  repository "git://github.com/clkao/msdl"
-  reference "master"
-  action :sync
-end
-
-execute "install msdl" do
-  cwd "/opt/msdl"
-  action :nothing
-  subscribes :run, resources(:git => "/opt/msdl"), :immediately
-  command "./configure && make"
-end
-
 # XXX: this should probably be in another service_dir and with custom runsvdir
 # so we can do the symlinks (msdl-live.ls) without being root
 node[:ly][:channels].each do |ch|
