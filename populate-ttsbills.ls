@@ -49,8 +49,8 @@ function _mapfields(entry)
   if entry.source
     entry.source = parse_source entry.source
 
-  entry.cosponsors = entry.sponsors.連署提案
-  entry.sponsors = entry.sponsors.主提案
+  entry.cosponsors = entry.sponsors?連署提案
+  entry.sponsors = entry.sponsors?主提案
   entry.sitting_introduced = parse_sitting entry.sitting_introduced
 
   entry
