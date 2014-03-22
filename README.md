@@ -51,6 +51,7 @@ Bootstrap with the initial dump file:
 
     % createdb ly
     % psql ly -c 'create extension plv8'
+    % lsc app.ls --db ly --boot
     % curl https://dl.dropboxusercontent.com/u/30657009/ly/api.ly.bz2 | bzcat |  psql ly -f -
 
 ## run pgrest
@@ -93,8 +94,11 @@ populated with `update-ivod.sh`
 
 National Parliament Library provides a database called TTS.  to work with it you'll need to have lisproxy.psgi up and running, and install phatomjs and casperjs to use scripts/tts.coffee
 
+    % sudo apt-get install cpanminus
     % cpanm Plack::App::Proxy
     % npm i -g bower
+    % npm i -g casperjs
+    % npm i -g phantomjs
     % bower install jquery
 
     % plackup lisproxy.psgi &
