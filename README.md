@@ -35,11 +35,35 @@ Besides Vagrant, of course you can run a api server in your host.
 
 the server provides RESTFUL service by pgrest. pgrest rely on postgresql, so you should install postgresql and related components to your host.
 
-For example, in Debian
+For example, in Debian/Ubuntu
 
-    $ sudo aptitude install postgresql
-    $ sudo aptitude install skytools3 skytools3-ticker postgresql-9.2-pgq3  # for pgq
-    $ sudo aptitude install postgresql-plv8  # for plv8 extension
+*   Create `/etc/apt/sources.list.d/pgdg.list`, add this line:
+
+    Replace the *codename* with the actual distribution you are using.
+
+    examples (*distribution* -> *codename*):
+
+    Debian 7.0 -> wheezy
+
+    Ubuntu 14.04 -> trusty
+
+        deb http://apt.postgresql.org/pub/repos/apt/ codename-pgdg main
+
+*   Import the repository key
+
+        $ wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+        $ sudo apt-get update
+
+*   Install the packages.
+
+        $ sudo apt-get install postgresql-9.3
+        $ sudo apt-get install skytools3 skytools3-ticker postgresql-9.3-pgq3  # for pgq
+        $ sudo apt-get install postgresql-9.3-plv8  # for plv8 extension
+
+*   Preparation
+
+        $ sudo su postgres
+        $ export PLV8XDB=ly
 
 ## init
 
