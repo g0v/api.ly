@@ -5,125 +5,109 @@ api.ly.g0v.tw endpoint source and utility scripts
 
 # Development
 
-We recommend using vagrant for developing
+*   Ubuntu 14.04 (LTS) / Mint 17 (LTS)
 
-## Prepare
+    Web server (api endpoint)
 
-Install [Virtualbox](https://www.virtualbox.org/wiki/Downloads) 4.3.x
+    1.  Install docker
 
-Install [Vagrant](http://downloads.vagrantup.com/) 1.4.x
+            $ sudo apt-get update
+            $ sudo apt-get install docker.io apparmor-utils
+            $ sudo ln -sf /usr/bin/docker.io /usr/local/bin/docker
+            $ sudo sed -i '$acomplete -F _docker docker' /etc/bash_completion.d/docker.io
 
-Install berkshelf:
+        Remove sudo
 
-    $ sudo gem install berkshelf
+            $ sudo groupadd docker
+            $ sudo gpasswd -a ${USER} docker
+            $ sudo service docker.io restart
 
-Install vagrant plugins:
+            # Please re-login
 
-    $ vagrant plugin install vagrant-berkshelf
-    $ vagrant plugin install vagrant-cachier
+        Remove docker and local DNS server warnings
 
-## Using Vagrant for Development
+            $ sudo vim /etc/default/docker.io -c '%s/#DOCKER_OPTS/DOCKER_OPTS/ | wq'
+            $ sudo service docker.io restart
 
-    % cd cookbooks/ly.g0v.tw/
-    % vagrant up
+    2.  Build image
 
-You should now have localhost:6988 served by pgrest within the vagrant, try to access **http://localhost:6988/v0/collections/sittings**
+            $ ./docker/build-image.sh
 
-# Host
+    3.  Run postgres
 
-Besides Vagrant, of course you can run a api server in your host.
+            $ ./docker/postgres.sh
 
-the server provides RESTFUL service by pgrest. pgrest rely on postgresql, so you should install postgresql and related components to your host.
+    4.  Run api.ly
 
-For example, in Debian/Ubuntu
+            $ ./docker/app.sh
 
-*   Create `/etc/apt/sources.list.d/pgdg.list`, add this line:
+        Open you browser, see http://127.0.0.1:3000/collections/sittings
 
-    Replace the *codename* with the actual distribution you are using.
+    Wokers
 
-    examples (*distribution* -> *codename*):
+    *   Run calendar worker/crawler
 
-    Debian 7.0 -> wheezy
+            $ ./docker/worker-calendar.sh
 
-    Ubuntu 14.04 -> trusty
+    *   Run sitting worker/crawler
 
-        deb http://apt.postgresql.org/pub/repos/apt/ codename-pgdg main
+            $ ./docker/worker-sitting.sh
 
-*   Import the repository key
+    *   Run motion & bill worker/crawler
 
-        $ wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
-        $ sudo apt-get update
+            $ ./docker/worker-motion-and-bill.sh
 
-*   Install the packages.
+    *   Run bill-details worker/crawler
 
-        $ sudo apt-get install postgresql-9.3
-        $ sudo apt-get install skytools3 skytools3-ticker postgresql-9.3-pgq3  # for pgq
-        $ sudo apt-get install postgresql-9.3-plv8  # for plv8 extension
+            $ ./docker/worker-bill-details.sh
 
-*   Preparation
+    Dig into database (postgres)
 
-        $ sudo su postgres
-        $ export PLV8XDB=ly
+        $ ./docker/psql.sh
+        psql (9.3.4)
+        Type "help" for help.
 
-## init
+        ly=> \d
+                    List of relations
+         Schema |       Name        | Type  | Owner 
+        --------+-------------------+-------+-------
+         public | amendments        | table | ly
+         public | bills             | table | ly
+         public | calendar          | table | ly
+         public | ivod              | table | ly
+         public | laws              | table | ly
+         public | motions           | table | ly
+         public | sittings          | table | ly
+         public | ttsbills          | table | ly
+         public | ttsinterpellation | table | ly
+         public | ttsmotions        | table | ly
+        (10 rows)
 
-    % npm i
+*   Windows or Mac
 
-Then refer to the cookbook to initialize your postgresql.
+    1.  Install [Virtualbox](https://www.virtualbox.org/wiki/Downloads) 4.3.x
 
-Bootstrap with the initial dump file:
+    2.  Install [Vagrant](http://downloads.vagrantup.com/) 1.4.x
 
-    % createdb ly
-    % psql ly -c 'create extension plv8'
-    % lsc app.ls --db ly --boot
-    % curl https://dl.dropboxusercontent.com/u/30657009/ly/api.ly.bz2 | bzcat |  psql ly -f -
+    3.  Install berkshelf:
 
-## run pgrest
+            $ sudo gem install berkshelf
 
-    $ lsc app.ls tcp://ly:password@localhost/ly
-    or
-    $ lsc app.ls tcp://ly:password@localhost:5433/ly    # if your postgresql is running on port 5433
+    4.  Install vagrant plugins:
 
-pgrest will bind a local port to serve
+            $ vagrant plugin install vagrant-berkshelf
+            $ vagrant plugin install vagrant-cachier
+
+    5.  Run
+
+            % cd cookbooks/ly.g0v.tw/
+            % vagrant up
+
+        You should now have localhost:6988 served by pgrest within the vagrant, try to access **http://localhost:6988/v0/collections/sittings**
 
 ## data flow
 
 ![](./dataflow.png)
-
-## calendar
-
-    % DB=ly lsc populate-calendar.ls  --year 2013
-
-## sitting
-
-populated via pgq with `calendar-sitting.ls`
-
-## meeting agenda and proceeding (motions and bills)
-
-Please check the `cookbooks/ly.g0v.tw/recipes/apiserver.rb`
-
-grant schema
-
-    postgres=# grant CREATE on database ly to ly;
-
-init londiste (already in skytools3)
-
-    $ sudo cp cookbooks/ly.g0v.tw/templates/default/londiste.erb /opt/ly/londiste.ini
-    $ londiste3 /opt/ly/londiste.ini create-root apily 'dbname=ly'
-
-init pgq
-
-    $ londiste3 /opt/ly/londiste.ini add-table calendar sittings bills
-
-run worker
-
-    $ lsc ys-misq.ls --db tcp://ly:password@localhost/ly
-
-populated via pgq with `ys-misq.ls`
-
-## bill details
-
-populated via pgq with `bill-details.ls`
 
 ## fulltext from gazettes
 
