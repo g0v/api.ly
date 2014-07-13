@@ -98,7 +98,26 @@ pgrest will bind a local port to serve
 
 populated via pgq with `calendar-sitting.ls`
 
-## meeting agenda and proceeding
+## meeting agenda and proceeding (motions and bills)
+
+Please check the `cookbooks/ly.g0v.tw/recipes/apiserver.rb`
+
+grant schema
+
+    postgres=# grant CREATE on database ly to ly;
+
+init londiste (already in skytools3)
+
+    $ sudo cp cookbooks/ly.g0v.tw/templates/default/londiste.erb /opt/ly/londiste.ini
+    $ londiste3 /opt/ly/londiste.ini create-root apily 'dbname=ly'
+
+init pgq
+
+    $ londiste3 /opt/ly/londiste.ini add-table calendar sittings bills
+
+run worker
+
+    $ lsc ys-misq.ls --db tcp://ly:password@localhost/ly
 
 populated via pgq with `ys-misq.ls`
 
