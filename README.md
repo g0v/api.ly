@@ -5,11 +5,13 @@ api.ly.g0v.tw endpoint source and utility scripts
 
 # Development
 
-*   Ubuntu 14.04 (LTS) / Mint 17 (LTS)
+*   Linux
+
+    We **recommend** using docker for developing. Docker will install all the packages, configurations, database needed in a image (a file), not in your computer.
 
     Web server (api endpoint)
 
-    1.  Install docker
+    1.  Install docker (eg. ubuntu 14.04)
 
             $ sudo apt-get update
             $ sudo apt-get install docker.io apparmor-utils
@@ -31,7 +33,7 @@ api.ly.g0v.tw endpoint source and utility scripts
 
     2.  Build image
 
-            $ ./docker/build-image.sh
+            $ ./docker/scripts/build-image.sh
 
     3.  Run postgres
 
@@ -45,25 +47,29 @@ api.ly.g0v.tw endpoint source and utility scripts
 
     Wokers
 
-    *   Run calendar worker/crawler
+    If you change any code of workers, please run:
 
-            $ ./docker/worker-calendar.sh
+        $ ./docker/scripts/build-image.sh
 
-    *   Run sitting worker/crawler
+    *   Run calendar worker
 
-            $ ./docker/worker-sitting.sh
+            $ ./docker/workers/calendar.sh
 
-    *   Run motion & bill worker/crawler
+    *   Run sitting worker
 
-            $ ./docker/worker-motion-and-bill.sh
+            $ ./docker/workers/sitting.sh
 
-    *   Run bill-details worker/crawler
+    *   Run motion & bill worker
 
-            $ ./docker/worker-bill-details.sh
+            $ ./docker/workers/motion-and-bill.sh
+
+    *   Run bill-details worker
+
+            $ ./docker/workers/bill-details.sh
 
     Dig into database (postgres)
 
-        $ ./docker/psql.sh
+        $ ./docker/scripts/psql.sh
         psql (9.3.4)
         Type "help" for help.
 
@@ -82,6 +88,14 @@ api.ly.g0v.tw endpoint source and utility scripts
          public | ttsinterpellation | table | ly
          public | ttsmotions        | table | ly
         (10 rows)
+
+    Delete the image
+
+        $ docker images
+        REPOSITORY  TAG           IMAGE ID      CREATED        VIRTUAL SIZE
+        api.ly      ubuntu.14.04  a254eb4d3ee2  9 minutes ago  1.253 GB
+        $ docker rmi a254eb4d3ee2
+        Deleted: a254eb4d3ee2...
 
 *   Windows or Mac
 
@@ -104,6 +118,63 @@ api.ly.g0v.tw endpoint source and utility scripts
             % vagrant up
 
         You should now have localhost:6988 served by pgrest within the vagrant, try to access **http://localhost:6988/v0/collections/sittings**
+
+# Host
+
+Besides Vagrant, of course you can run a api server in your host.
+
+the server provides RESTFUL service by pgrest. pgrest rely on postgresql, so you should install postgresql and related components to your host.
+
+For example, in Debian/Ubuntu
+
+*   Create `/etc/apt/sources.list.d/pgdg.list`, add this line:
+
+    Replace the *codename* with the actual distribution you are using.
+
+    examples (*distribution* -> *codename*):
+
+    Debian 7.0 -> wheezy
+
+    Ubuntu 14.04 -> trusty
+
+        deb http://apt.postgresql.org/pub/repos/apt/ codename-pgdg main
+
+*   Import the repository key
+
+        $ wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | sudo apt-key add -
+        $ sudo apt-get update
+
+*   Install the packages.
+
+        $ sudo apt-get install postgresql-9.3
+        $ sudo apt-get install skytools3 skytools3-ticker postgresql-9.3-pgq3  # for pgq
+        $ sudo apt-get install postgresql-9.3-plv8  # for plv8 extension
+
+*   Preparation
+
+        $ sudo su postgres
+        $ export PLV8XDB=ly
+
+## init
+
+    % npm i
+
+Then refer to the cookbook to initialize your postgresql.
+
+Bootstrap with the initial dump file:
+
+    % createdb ly
+    % psql ly -c 'create extension plv8'
+    % lsc app.ls --db ly --boot
+    % curl https://dl.dropboxusercontent.com/u/30657009/ly/api.ly.bz2 | bzcat |  psql ly -f -
+
+## run pgrest
+
+    $ lsc app.ls tcp://ly:password@localhost/ly
+    or
+    $ lsc app.ls tcp://ly:password@localhost:5433/ly    # if your postgresql is running on port 5433
+
+pgrest will bind a local port to serve
 
 ## data flow
 
