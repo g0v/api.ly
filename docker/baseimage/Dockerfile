@@ -10,18 +10,10 @@ RUN curl -L https://www.opscode.com/chef/install.sh | bash
 RUN echo "gem: --no-ri --no-rdoc" > ~/.gemrc
 RUN /opt/chef/embedded/bin/gem install berkshelf
 
-# app.ls
-ADD package.json /app/package.json
-ADD app.ls /app/app.ls
-ADD lib /app/lib
+# install dependencies
+ADD package.json app/package.json
 
 # Use cookbooks
 ADD docker/cookbooks/ly.g0v.tw /chef
 RUN cd /chef && /opt/chef/embedded/bin/berks vendor cookbooks
 RUN chef-solo -c /chef/solo.rb -j /chef/solo.json
-
-# workers
-ADD populate-calendar.ls /app/populate-calendar.ls
-ADD calendar-sitting.ls /app/calendar-sitting.ls
-ADD ys-misq.ls /app/ys-misq.ls
-ADD bill-details.ls /app/bill-details.ls

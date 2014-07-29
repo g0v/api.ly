@@ -2,9 +2,9 @@ docker run \
     -i \
     -t \
     --rm \
-    --name psql \
-    --link postgres:pg \
-    api.ly:ubuntu.14.04 \
+    --name lyapi-psql \
+    --link lyapi-postgres:pg \
+    lyapi-baseimage:latest \
     bash -c 'touch /root/.psql_history && \
              export PGPASSWORD=ly && \
              psql -h $PG_PORT_5432_TCP_ADDR \

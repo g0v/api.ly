@@ -9,93 +9,131 @@ api.ly.g0v.tw endpoint source and utility scripts
 
     We **recommend** using docker for developing. Docker will install all the packages, configurations, database needed in a image (a file), not in your computer.
 
-    Web server (api endpoint)
+    *   Workflow
 
-    1.  Install docker (eg. ubuntu 14.04)
+        1.  [Install docker](https://docs.docker.com/installation)
 
-            $ sudo apt-get update
-            $ sudo apt-get install docker.io apparmor-utils
-            $ sudo ln -sf /usr/bin/docker.io /usr/local/bin/docker
-            $ sudo sed -i '$acomplete -F _docker docker' /etc/bash_completion.d/docker.io
+            If you're using ubuntu / mint, please follow these steps:
+            [Remove sudo](https://docs.docker.com/installation/ubuntulinux/#giving-non-root-access),
+            [Remove docker and local DNS server warnings](https://docs.docker.com/installation/ubuntulinux/#docker-and-local-dns-server-warnings)
 
-        Remove sudo
+        2.  Build base image
 
-            $ sudo groupadd docker
-            $ sudo gpasswd -a ${USER} docker
-            $ sudo service docker.io restart
+                $ ./docker/baseimage/scripts/build-image.sh
 
-            # Please re-login
+        3.  Run database container (store database only, please see below)
 
-        Remove docker and local DNS server warnings
+        4.  Run postgres container (please see below)
 
-            $ sudo vim /etc/default/docker.io -c '%s/#DOCKER_OPTS/DOCKER_OPTS/ | wq'
-            $ sudo service docker.io restart
+        5.  Now you can
+            
+            *   Run web server container
+            *   Run worker containers
+            *   Dig into database
+            *   Backup the database
+            *   Restore the database
 
-    2.  Build image
+    *   Web server container (API endpoint)
 
-            $ ./docker/scripts/build-image.sh
+        Build image
 
-    3.  Run postgres
+            $ ./docker/app/scripts/build-image.sh
 
-            $ ./docker/postgres.sh
+        Open another terminal, and run:
 
-    4.  Run api.ly
-
-            $ ./docker/app.sh
+            $ ./docker/app/run.sh
 
         Open you browser, see http://127.0.0.1:3000/collections/sittings
 
-    Wokers
+    *   Woker containers
 
-    If you change any code of workers, please run:
+        Build image
 
-        $ ./docker/scripts/build-image.sh
+            $ ./docker/workers/scripts/build-image.sh
 
-    *   Run calendar worker
+        Open another terminal, and run:
 
-            $ ./docker/workers/calendar.sh
+        *   Calendar worker
 
-    *   Run sitting worker
+                $ ./docker/workers/calendar.sh
 
-            $ ./docker/workers/sitting.sh
+        *   Sitting worker
 
-    *   Run motion & bill worker
+                $ ./docker/workers/sitting.sh
 
-            $ ./docker/workers/motion-and-bill.sh
+        *   Motion & Bill worker
 
-    *   Run bill-details worker
+                $ ./docker/workers/motion-and-bill.sh
 
-            $ ./docker/workers/bill-details.sh
+        *   Bill-details worker
 
-    Dig into database (postgres)
+                $ ./docker/workers/bill-details.sh
 
-        $ ./docker/scripts/psql.sh
-        psql (9.3.4)
-        Type "help" for help.
+    *   Postgres container
 
-        ly=> \d
-                    List of relations
-         Schema |       Name        | Type  | Owner 
-        --------+-------------------+-------+-------
-         public | amendments        | table | ly
-         public | bills             | table | ly
-         public | calendar          | table | ly
-         public | ivod              | table | ly
-         public | laws              | table | ly
-         public | motions           | table | ly
-         public | sittings          | table | ly
-         public | ttsbills          | table | ly
-         public | ttsinterpellation | table | ly
-         public | ttsmotions        | table | ly
-        (10 rows)
+        Build image
 
-    Delete the image
+            $ ./docker/postgres/scripts/build-image.sh
 
-        $ docker images
-        REPOSITORY  TAG           IMAGE ID      CREATED        VIRTUAL SIZE
-        api.ly      ubuntu.14.04  a254eb4d3ee2  9 minutes ago  1.253 GB
-        $ docker rmi a254eb4d3ee2
-        Deleted: a254eb4d3ee2...
+        Open another terminal, and run:
+
+            $ ./docker/postgres/run.sh
+
+        *    Dig into database
+
+                $ ./docker/postgres/scripts/psql.sh
+                psql (9.3.4)
+                Type "help" for help.
+
+                ly=> \d
+                            List of relations
+                 Schema |       Name        | Type  | Owner 
+                --------+-------------------+-------+-------
+                 public | amendments        | table | ly
+                 public | bills             | table | ly
+                 public | calendar          | table | ly
+                 public | ivod              | table | ly
+                 public | laws              | table | ly
+                 public | motions           | table | ly
+                 public | sittings          | table | ly
+                 public | ttsbills          | table | ly
+                 public | ttsinterpellation | table | ly
+                 public | ttsmotions        | table | ly
+                (10 rows)
+
+    *   Database container
+
+        Build image
+
+            $ ./docker/dbdata/scripts/build-image.sh
+
+        Open another terminal, and run:
+
+            $ ./docker/dbdata/run.sh
+
+        *   Backup the database
+
+                $ ./docker/dbdata/scripts/backup.sh # save to backup/dbdata.tar
+
+        *   Restore the database
+
+                $ ./docker/dbdata/scripts/restore.sh
+
+            And restart postgres container
+
+        Please backup the database first before stopping database container running.
+
+    *   Delete the images
+
+            $ docker images
+            REPOSITORY  TAG     IMAGE ID      CREATED         VIRTUAL SIZE
+            lyapi-xxx   latest  569514b1aad4  42 minutes ago  1.439 GB
+            $ docker rmi 569514b1aad4
+            Deleted: 569514b1aad4...
+
+        or simply:
+
+            $ docker rmi $(doc images | grep lyapi- | awk '{ print $3 }')
 
 *   Windows or Mac
 
