@@ -37,3 +37,9 @@ bin/*
 lib/
 
 bower_components/
+
+# chef
+chef-client-running.pid
+
+# database backup
+backup/

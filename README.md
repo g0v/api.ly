@@ -5,29 +5,157 @@ api.ly.g0v.tw endpoint source and utility scripts
 
 # Development
 
-We recommend using vagrant for developing
+*   Linux
 
-## Prepare
+    We **recommend** using docker for developing. Docker will install all the packages, configurations, database needed in a image (a file), not in your computer.
 
-Install [Virtualbox](https://www.virtualbox.org/wiki/Downloads) 4.3.x
+    *   Workflow
 
-Install [Vagrant](http://downloads.vagrantup.com/) 1.4.x
+        1.  [Install docker](https://docs.docker.com/installation)
 
-Install berkshelf:
+            If you're using ubuntu / mint, please follow these steps:
+            [Remove sudo](https://docs.docker.com/installation/ubuntulinux/#giving-non-root-access),
+            [Remove docker and local DNS server warnings](https://docs.docker.com/installation/ubuntulinux/#docker-and-local-dns-server-warnings)
 
-    $ sudo gem install berkshelf
+        2.  Build base image
 
-Install vagrant plugins:
+                $ ./docker/baseimage/scripts/build-image.sh
 
-    $ vagrant plugin install vagrant-berkshelf
-    $ vagrant plugin install vagrant-cachier
+        3.  Run database container (store database only, please see below)
 
-## Using Vagrant for Development
+        4.  Run postgres container (please see below)
 
-    % cd cookbooks/ly.g0v.tw/
-    % vagrant up
+        5.  Now you can
+            
+            *   Run web server container
+            *   Run worker containers
+            *   Dig into database
+            *   Backup the database
+            *   Restore the database
 
-You should now have localhost:6988 served by pgrest within the vagrant, try to access **http://localhost:6988/v0/collections/sittings**
+    *   Web server container (API endpoint)
+
+        Build image
+
+            $ ./docker/app/scripts/build-image.sh
+
+        Open another terminal, and run:
+
+            $ ./docker/app/run.sh
+
+        Open you browser, see http://127.0.0.1:3000/collections/sittings
+
+    *   Woker containers
+
+        Build image
+
+            $ ./docker/workers/scripts/build-image.sh
+
+        Open another terminal, and run:
+
+        *   Calendar worker
+
+                $ ./docker/workers/calendar.sh
+
+        *   Sitting worker
+
+                $ ./docker/workers/sitting.sh
+
+        *   Motion & Bill worker
+
+                $ ./docker/workers/motion-and-bill.sh
+
+        *   Bill-details worker
+
+                $ ./docker/workers/bill-details.sh
+
+    *   Postgres container
+
+        Build image
+
+            $ ./docker/postgres/scripts/build-image.sh
+
+        Open another terminal, and run:
+
+            $ ./docker/postgres/run.sh
+
+        *    Dig into database
+
+                $ ./docker/postgres/scripts/psql.sh
+                psql (9.3.4)
+                Type "help" for help.
+
+                ly=> \d
+                            List of relations
+                 Schema |       Name        | Type  | Owner 
+                --------+-------------------+-------+-------
+                 public | amendments        | table | ly
+                 public | bills             | table | ly
+                 public | calendar          | table | ly
+                 public | ivod              | table | ly
+                 public | laws              | table | ly
+                 public | motions           | table | ly
+                 public | sittings          | table | ly
+                 public | ttsbills          | table | ly
+                 public | ttsinterpellation | table | ly
+                 public | ttsmotions        | table | ly
+                (10 rows)
+
+    *   Database container
+
+        Build image
+
+            $ ./docker/dbdata/scripts/build-image.sh
+
+        Open another terminal, and run:
+
+            $ ./docker/dbdata/run.sh
+
+        *   Backup the database
+
+                $ ./docker/dbdata/scripts/backup.sh # save to backup/dbdata.tar
+
+        *   Restore the database
+
+                $ ./docker/dbdata/scripts/restore.sh
+
+            And restart postgres container
+
+        Please backup the database first before stopping database container running.
+
+    *   Delete the images
+
+            $ docker images
+            REPOSITORY  TAG     IMAGE ID      CREATED         VIRTUAL SIZE
+            lyapi-xxx   latest  569514b1aad4  42 minutes ago  1.439 GB
+            $ docker rmi 569514b1aad4
+            Deleted: 569514b1aad4...
+
+        or simply:
+
+            $ docker rmi $(doc images | grep lyapi- | awk '{ print $3 }')
+
+*   Windows or Mac
+
+    1.  Install [Virtualbox](https://www.virtualbox.org/wiki/Downloads) 4.3.x
+
+    2.  Install [Vagrant](http://downloads.vagrantup.com/) 1.4.x
+
+    3.  Install berkshelf:
+
+            $ sudo gem install berkshelf
+
+    4.  Install vagrant plugins:
+
+            $ vagrant plugin install vagrant-berkshelf
+            $ vagrant plugin install vagrant-cachier
+
+    5.  Run
+
+            % cd cookbooks/ly.g0v.tw/
+            % vagrant up
+
+        You should now have localhost:6988 served by pgrest within the vagrant, try to access **http://localhost:6988/v0/collections/sittings**
 
 # Host
 
@@ -89,41 +217,6 @@ pgrest will bind a local port to serve
 ## data flow
 
 ![](./dataflow.png)
-
-## calendar
-
-    % DB=ly lsc populate-calendar.ls  --year 2013
-
-## sitting
-
-populated via pgq with `calendar-sitting.ls`
-
-## meeting agenda and proceeding (motions and bills)
-
-Please check the `cookbooks/ly.g0v.tw/recipes/apiserver.rb`
-
-grant schema
-
-    postgres=# grant CREATE on database ly to ly;
-
-init londiste (already in skytools3)
-
-    $ sudo cp cookbooks/ly.g0v.tw/templates/default/londiste.erb /opt/ly/londiste.ini
-    $ londiste3 /opt/ly/londiste.ini create-root apily 'dbname=ly'
-
-init pgq
-
-    $ londiste3 /opt/ly/londiste.ini add-table calendar sittings bills
-
-run worker
-
-    $ lsc ys-misq.ls --db tcp://ly:password@localhost/ly
-
-populated via pgq with `ys-misq.ls`
-
-## bill details
-
-populated via pgq with `bill-details.ls`
 
 ## fulltext from gazettes
 
