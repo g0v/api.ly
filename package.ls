@@ -21,7 +21,7 @@ dependencies:
   optimist: \0.4.x
   express: \3.4.x
   sprintf: \0.1.1
-  qs: \0.6.x
+  qs: \1.2.x
   moment: \2.4.x
   fscache: \0.0.1
   xregexp: \2.0.x
