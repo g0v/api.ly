@@ -1,6 +1,8 @@
 api.ly
 ======
 
+[![gemnasium](https://gemnasium.com/g0v/api.ly.svg)](https://gemnasium.com/g0v/api.ly)
+
 api.ly.g0v.tw endpoint source and utility scripts
 
 # Development
