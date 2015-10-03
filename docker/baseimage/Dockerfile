@@ -15,5 +15,5 @@ ADD package.json app/package.json
 
 # Use cookbooks
 ADD docker/cookbooks/ly.g0v.tw /chef
-RUN cd /chef && /opt/chef/embedded/bin/berks vendor cookbooks
+RUN cd /chef && LC_ALL=en_US.UTF-8 /opt/chef/embedded/bin/berks vendor cookbooks
 RUN chef-solo -c /chef/solo.rb -j /chef/solo.json
