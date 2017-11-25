@@ -206,7 +206,7 @@ Bootstrap with the initial dump file:
     % createdb ly
     % psql ly -c 'create extension plv8'
     % lsc app.ls --db ly --boot
-    % curl https://dl.dropboxusercontent.com/u/30657009/ly/api.ly.bz2 | bzcat |  psql ly -f -
+    % curl -SsL 'https://www.dropbox.com/s/6j0zlzlubq8it5u/api.ly.bz2?dl=1' | bzcat |  psql ly -f -
 
 ## run pgrest
 
